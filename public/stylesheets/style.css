@@ -1,0 +1,181 @@
+@charset "UTF-8";
+
+body, html {
+  height: 100%;
+  width: 100%; 
+}
+* {
+  padding:0;
+  margin:0;
+}
+body {
+  font-family: "微软雅黑";
+  font-family: "Microsoft YaHei","微软雅黑";
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  /* Firefox */
+  -webkit-box-sizing: border-box;
+
+}
+.body-wrap {
+  padding:15px;
+  position: relative;
+}
+[v-cloak] {
+  display: none;
+}
+h4 {
+  font-weight: bold;
+}
+.m-0 {
+  margin:0 !important;
+}
+.p-5 {
+  padding:5px;
+}
+.box-wrap {
+  /*padding: 10px 10px 0 10px;
+  border:1px solid #8e8e8e;
+  margin:0 auto;*/
+}
+.box-1 {
+    /*width:960px;*/
+}
+.box-2 {
+  width:550px;
+}
+.item_1 {
+  height:280px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:100%
+}
+.item_border {
+  border:1px solid #cacaca;
+}
+.item_select_1 {
+  display: flex;
+  align-items: center;
+  margin-top:15px;
+}
+.item_select_2 {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+.item_select_1 select {
+  flex:50%;
+}
+.item_select_2 select,.item_select_2 input {
+  flex:50%;
+  margin-left:15px;
+}
+.flex_center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color:#337ab7;
+  padding:5px;
+}
+.flex_center h4{
+  margin:0;
+  color:white;
+  font-weight: normal;
+  font-size:14px;
+}
+.table>tbody>tr>td{
+  height:25px;
+  padding:2px;
+}
+.item_2_height {
+  height:200px;
+  padding:5px;
+}
+.item_2_height .flex_around {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.item_2 {
+/*  padding:5px;*/
+}
+.item_2_lists select {
+  height:190px !important;
+}
+.item_2 textarea {
+  box-shadow: none !important;
+  border: 1px solid #cacaca;
+  border-radius: 0!important;
+  font-size: 14px !important;
+  overflow-y:scroll;
+  margin-top: 0px;
+  padding: 5px 10px;
+  resize: none;
+  width: 100%;
+}
+ .btn-bim {
+  width:100px;
+  margin:15px 0;
+}
+.btn-bim.ml-30 {
+  margin-left: 30px;
+}
+
+.item_select_2 .item_select_h{
+  height:190px !important;
+}
+.add_new_type_box {
+  border:1px solid #cacaca;
+  padding:10px;
+}
+
+.form-group {
+  display: flex;
+}
+.form-group input {
+  flex:50%;
+}
+
+
+.danger {
+  
+  border:1px solid red;
+}
+.table-height {
+    max-height: 200px;
+    overflow-y: auto;
+}
+.table-height table{
+  margin-bottom: 0;
+}
+.table-height table input{
+  border:none;
+}
+
+.form-wrap {
+  border: 1px solid #dbdbdb;
+  padding:6% 30px;
+}
+.form-wrap h2 {
+  margin:20px 0;
+}
+.flex{
+  padding:0 5px;
+}
+.panel-wrap {
+  min-width:760px !important;
+  overflow-x:auto !important;
+  border:1px solid #ccc;
+}
+
+.panel_body table {
+  margin-bottom: 0;
+}
+
+/*项目信息、图纸列表 设定 高度*/
+.panel_body {
+    max-height: 150px;
+    overflow-y: auto;
+}

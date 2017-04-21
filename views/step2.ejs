@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>布置结构柱</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+	<div class="body-wrap">
+		<div class="panel-wrap ">
+		<div class="panel-body box-wrap" id="win_hook">
+			<div  flex="box:mean">
+				<div class="flex">
+					<div class="item_select_2" id="select_zu">
+						<span>结构柱族&nbsp;</span>
+						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+							<option v-for="option in options">
+								{{option.value}}
+							</option>
+							
+						</select>
+					</div>
+					<div class="item_select_2" id="select_type_zu">
+						<span>&nbsp;&nbsp;&nbsp;族类型&nbsp;</span>
+						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
+							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
+								{{item.类型名称}}
+							</option>
+						</select>
+						<!-- <p>选择：{{selected_type}}</p> -->
+					</div>
+					<div class="item_select_2">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;插入点</span>
+						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
+							<option value="">中心</option>
+							<option value="">头部</option>
+						</select>
+					</div>
+					
+				</div>
+				<div class="flex">
+					<button class="btn btn-primary btn-sm btn-bim btn-xs">加载族</button>
+					<div class="add_new_type_box">
+						<p>新增族类型</p>
+						<div class="form-group">
+							<span>名字&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_name" class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>长度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_width"  class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>宽度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_height"  class="form-control input-sm">
+						</div>
+						<div class="clearfix">
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
+						</div>
+					</div>
+					<div style="margin-top:10px;">
+						偏移 x : <input type="text" style="width:50px;" placeholder="0.0" v-model="offset_x">
+							 y : <input type="text" style="width:50px;" placeholder="0.0" v-model="offset_y">
+					</div>
+				</div>
+			</div>
+			<div class="row box_footer">
+				<div class="col-md-12">
+					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="submit" >确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	
+
+	<script src="/javascripts/vue.js"></script>
+	<script src="/javascripts/vue-resource.min.js"></script>
+	<script>
+		new Vue ({
+			el:'#win_hook',
+			data:{
+				objs:[],
+				options:[],
+				lists:[],
+				selected:'',//设置族
+				selected_type:'',//设置族类型
+				selected_bz_type:'',//设置布置类型
+				input_dbg:'', //设置低标高
+
+				input_add_name:'',//新增类型 名字
+				input_add_width:'',//新增类型 长度
+				input_add_height:'',//新增类型 宽度
+				offset_x:'',//偏移 x
+				offset_y:'',//偏移 y
+				isDanger:false,
+				status:false
+			},
+			created(){
+				console.log("aaa")
+					var that = this;
+
+					that.$http.get('/javascripts/type.json').then(function(res){
+						// console.log(res)
+						var data = res.data;
+						// console.log(data)
+						for (var i =0 ;i < data.length; i++) {
+							var symbolData = data[i].Symbol;
+							var list= [];
+							for (var j = 0 ;j <symbolData.length; j++) {
+								list.push(data[i].Symbol[j])
+								// console.log(list[j])
+							}
+							that.options.push({value:data[i].Name,items:list})
+						}
+					})
+					.catch(function(error) {
+						console.log(error)
+					})
+				// console.log(that.options)
+			},
+			methods:{
+				clickItems(obj) {
+					this.status = true;
+					// console.log(obj)	
+					var that = this;
+					that.input_add_name = obj.族名称;
+					that.input_add_width = obj.b;
+					that.input_add_height = obj.h;					
+				},
+				submitData(obj,status) {
+					var that = this;
+					// console.log(obj)
+					if(status) {
+						console.log("=====获取修改数据api======")
+						that.input_add_name = '';
+						that.input_add_width = '';
+						that.input_add_height ='';
+						alert('修改成功')
+					}
+					else{
+						console.log('======调用增加族类型api======')
+						that.$data.options.push({value:that.input_add_name,items:[that.input_add_width + '*'+ that.input_add_height]})
+						that.input_add_name = '';
+						that.input_add_width = '';
+						that.input_add_height ='';
+						alert('增加成功')
+					}
+				},
+				submit(){
+
+				}
+			},
+			computed:{
+				items() {
+					var items = [] ,selectedValue = this.$data.selected;
+					this.$data.options.forEach(function(e){
+						if(e.value == selectedValue) {
+							items = e.items;
+						}
+					});
+					return items;
+				}
+			}	
+		})
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>布置轴网</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+	<div class="body-wrap">
+		<div class="panel-wrap">
+	      <div class="panel-body box-wrap">
+	         	<div flex="box:mean">
+	         		<div class="flex">
+						<div class="item_1 item_border">
+							轴网预览
+						</div>
+						<div class="item_select_1">
+							<span>插入基点&nbsp;</span>
+							<select name="" id=""  class="form-control input-sm">
+								<option value="">左下</option>
+								<option value="">右下</option>
+							</select>
+						</div>
+						<div class="item_select_1">
+							<span>旋转角度&nbsp;</span>
+							<select name="" id="" class="form-control input-sm">
+								<option value="">0</option>
+								<option value="">90</option>
+							</select>
+						</div>
+					</div>
+					<div class="flex">
+						<div class="item_2 item_border" id="horizontal_line_hook">
+
+							<div class="flex_center">
+								<h4>水平线</h4>
+								<button class="btn btn-default btn-xs" @click="hor_addSubmit">新增间隔</button>
+							</div>
+							<div class="item_2_height" flex="box:mean">
+								<div class="flex flex_around">
+									<div class="table-height">
+										<table class="table table-bordered">
+											  <col class="col-xs-4">
+											  <col class="col-xs-4">
+											  <col class="col-xs-4">
+											  <thead>
+											  	<tr>
+											  	<td>名称</td>
+											    <td>间隔</td>
+											    <td>个数</td>
+											  </tr>
+											  </thead>
+										  	<tbody>
+											  	<tr v-for="list in hor_arrObj" v-cloak >
+											  		<td>{{list.Name}}</td>
+												    <td><input  style="width:50px;" v-model="list.Dist" ></td>
+												    <td><input  style="width:50px;"v-model="list.count"></td>
+												</tr>
+										  </tbody>
+										</table>
+									</div>
+									
+
+									<div class="item_radio">
+										<div class="radio">
+										  <label>
+										    <input type="radio" name="optionsRadios" id="optionsRadios1" value="up"  checked=""  checked>
+										   上开
+										  </label>
+										  <label>
+										    <input type="radio" name="optionsRadios" id="optionsRadios2" value="down" >
+										   下开
+										  </label>
+										</div>
+									</div>
+								</div>
+								<div class="flex">
+									<div class="item_2_lists">
+										<select multiple style="width: 100%" v-model="hor_selected"  class="form-control ">
+										    <option v-for="option in hor_options" @click="hor_clickItems" v-cloak>
+										    	{{option.value}}
+										    </option>
+										  
+										  </select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="p-5">
+										<p>输入</p>
+										<textarea name="" id=""  rows="4" class="form-control"  @change="hor_changeArea" v-model="hor_textarea"></textarea>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex">
+						<div class="item_2 item_border" id="vertical_line_hook">
+							<div class="flex_center">
+								<h4>垂直线</h4>
+								<button class="btn btn-default btn-xs" @click="ver_addSubmit">新增间隔</button>
+							</div>
+							<div class="item_2_height" flex="box:mean">
+								<div class="flex flex_around">
+									<div class="table-height">
+										<table class="table table-bordered">
+											  <col class="col-xs-4">
+											  <col class="col-xs-4">
+											  <col class="col-xs-4">
+											  <thead>
+											  	<tr>
+											  	<td>名称</td>
+											    <td>间隔</td>
+											    <td>个数</td>
+											  </tr>
+											  </thead>
+										  	<tbody>
+											  	<tr v-for="list in ver_arrObj" v-cloak >
+											  		<td>{{list.Name}}</td>
+												    <td><input style="width:50px;" v-model="list.Dist" ></td>
+												    <td><input style="width:50px;" v-model="list.count"></td>
+												</tr>
+										  </tbody>
+										</table>
+									</div>
+
+									<div class="item_radio">
+										<div class="radio">
+										  <label>
+										    <input type="radio" name="options" id="options1" value="option1" checked >
+										   左进
+										  </label>
+										  <label>
+										    <input type="radio" name="options" id="options1" value="option1">
+										   右进
+										  </label>
+										</div>
+									</div>
+								</div>
+								<div class="flex">
+									<div class="item_2_lists">
+										<select multiple style="width: 100%" v-model="ver_selected" class="form-control ">
+										    <option v-for="option in ver_options" @click="ver_clickItems" v-cloak >
+										    	{{option.value}}
+										    </option>
+										  </select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="p-5">
+										<p>输入</p>
+										<textarea name="" id=""  rows="4"  class="form-control" @change="ver_changeArea" v-model="ver_textarea"></textarea>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+	         	</div>
+	         	<div class="row box_footer">
+					<div class="col-md-12">
+						<button class="btn btn-default btn-xs btn-bim pull-right ml-30">取消</button>
+						<a href="javascript:void(0);" class="btn btn-primary btn-xs btn-bim pull-right" @click="onClickOk">插入</a>
+						
+					</div>
+				</div>
+	      </div>
+	    </div>
+	</div>
+				
+
+	<script src="/javascripts/vue.js"></script>
+	<script src="/javascripts/vue-resource.min.js"></script>
+	<script>
+
+		new Vue({
+			el:'body',
+			data:{
+				hor_options:[
+					{value:1000},
+					{value:1200},
+					{value:1400},
+					{value:1600}
+				],
+				ver_options:[
+					{value:1000},
+					{value:1200},
+					{value:1400},
+					{value:1600}
+				],
+				hor_selected:'',
+				ver_selected:'',
+
+				hor_arrObj:[],
+				ver_arrObj:[],
+
+				hor_textarea:'',
+				ver_textarea:'',
+				hor_Numb:1,
+				ver_Numb:1
+			},
+			methods:{
+				hor_clickItems(){
+
+				},
+				ver_clickItems(){
+
+				},
+				hor_addSubmit() {
+					if(this.hor_selected != '' && this.hor_selected.length == 1){
+
+						this.hor_arrObj.push({Name:String.fromCharCode(65+this.hor_Numb),Dist:this.hor_selected,count:1});
+						// console.log((this.hor_arrObj).length)
+						this.hor_Numb = (this.hor_arrObj).length+1;
+					}
+					else{
+						alert("请选择一个间隔")
+					}
+				},
+				ver_addSubmit() {
+					if(this.ver_selected != '' && this.ver_selected.length == 1){
+						this.ver_arrObj.push({Name:this.ver_Numb+1,Dist:this.ver_selected,count:1});
+					}
+					else{
+						alert("请选择一个间隔")
+					}
+				},
+
+
+				hor_changeArea(){
+					console.log('change')
+					// console.log(this.hor_arrObj)
+					if(this.hor_textarea == ''){
+						this.hor_textarea = []
+					}
+					else {
+
+						var that = this;
+						var obj = this.hor_textarea.split(' ');
+						// console.log(obj)
+						that.hor_arrObj = [];
+						obj.forEach(function(e,i){
+							that.hor_arrObj.push({Name:e.split('*')[0],Dist:e.split('*')[1],count:e.split('*')[2]});
+
+						})
+						// console.log(that.hor_arrObj)
+
+					}
+				},
+				ver_changeArea(){
+					console.log('change')
+					if(this.ver_textarea == ''){
+						this.ver_textarea = []
+					}
+					else {
+						var that = this;
+						var obj = this.ver_textarea.split(' ');
+						that.ver_arrObj = [];
+						obj.forEach(function(e,i){
+							that.ver_arrObj.push({Name:e.split('*')[0],Dist:e.split('*')[1],count:e.split('*')[2]});
+						})
+					}
+				},
+				onClickOk() {
+					var gridInfos={
+						Hor:[],
+						Ver:[],
+						HorLength:0,
+						VerLength:0
+					};
+					gridInfos.Hor = [];
+					gridInfos.Ver = [];
+				    this.hor_arrObj.forEach(function(e,i) {
+				    	var dist = e.Dist[0];
+				    	var count = e.count;
+				    	// console.log(e)
+				    	gridInfos.HorLength += dist*count;
+				        gridInfos.Hor.push({Name:'A',Dist:e.Dist[0],count:e.count})
+				    })
+				    this.ver_arrObj.forEach(function(e,i) {
+				    	var dist = e.Dist[0];
+				    	var count = e.count;
+				    	// console.log(e)
+				    	gridInfos.VerLength += dist*count;
+				        gridInfos.Ver.push({Name:'A',Dist:e.Dist[0],count:e.count})
+				    })
+				    console.log(gridInfos)
+					// console.log(JSON.stringify(this.ver_arrObj))
+				}
+			},
+			watch:{
+				hor_arrObj:{
+					handler:function(val,oldVal) {
+						// console.log(val)
+						this.hor_textarea = val;
+						var that = this;
+						var hor_obj = [];
+						var hor_obj1= [];
+						// console.log(val)
+						var that = this;
+						this.hor_textarea.forEach(function(e,i){
+							if(e.temp !='' && e.count != '') {
+								console.log(e.Name+e.Dist+e.count)
+								hor_obj.push(e.Dist+'*'+e.count)
+								hor_obj1.push(e.Name+'*'+e.Dist+'*'+e.count)
+
+							}
+						})
+
+						// console.log(hor_obj1)
+						// console.log(hor_obj.join(' '))
+						// this.hor_arrObj = hor_obj1;
+						console.log(this.hor_arrObj)
+						this.hor_textarea = hor_obj1.join(' ');
+					},
+					deep:true
+				},
+				ver_arrObj:{
+					handler:function(val,oldVal) {
+						
+						this.ver_textarea = val;
+						var that = this;
+						var ver_obj =[];
+						this.ver_textarea.forEach(function(e,i){
+							if(e.temp !='' && e.count != '') {
+								ver_obj.push(e.Name+'*'+e.Dist+'*'+e.count)
+							}
+						})
+						this.ver_textarea = ver_obj.join(' ');
+						
+					},
+					deep:true
+				}
+			}
+		
+		})
+
+	</script>
+</body>
+</html>
