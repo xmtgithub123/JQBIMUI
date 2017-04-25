@@ -16,7 +16,8 @@
 					<div class="item_select_2" id="select_zu">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
 						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
-							<option v-for="option in options">
+
+							<option v-for="option in options" :value="option.value">
 								{{option.value}}
 							</option>
 							
@@ -25,7 +26,7 @@
 					<div class="item_select_2" id="select_type_zu">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
 						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
-							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
+							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)" value="">
 								{{item.类型名称}}
 							</option>
 						</select>
@@ -34,8 +35,7 @@
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;布置类型</span>
 						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
-							<option value="">中心</option>
-							<option value="">头部</option>
+							<option v-for="option in type_options" value="">{{option.value}}</option>
 						</select>
 					</div>
 					<div class="item_select_2">
@@ -78,7 +78,6 @@
 		</div>
 	</div>
 	</div>
-	
 
 
 	<script src="../public/javascripts/vue.js"></script>
@@ -88,10 +87,16 @@
 			el:'#win_hook',
 			data:{
 				objs:[],
-				options:[],
+				options:[
+				],
 				lists:[],
 				selected:'',//设置族
+
 				selected_type:'',//设置族类型
+				type_options:[
+					{value:'中心'},
+					{value:'头部'}
+				],
 				selected_bz_type:'',//设置布置类型
 				input_dbg:'', //设置低标高
 
@@ -115,9 +120,11 @@
 						var list= [];
 						for (var j = 0 ;j <symbolData.length; j++) {
 							list.push(data[i].Symbol[j])
-							// console.log(list[j])
 						}
 						that.options.push({value:data[i].Name,items:list})
+						if(that.options.length >0) {
+							that.selected = that.options[0].value
+						}
 					}
 				})
 				.catch(function(error) {

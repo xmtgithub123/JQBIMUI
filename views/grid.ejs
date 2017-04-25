@@ -18,7 +18,7 @@
 						</div>
 						<div class="item_select_1">
 							<span>插入基点&nbsp;</span>
-							<select name="" id=""  class="form-control input-sm">
+							<select name="" id=""  class="form-control input-sm" v-model="selected_add_jd">
 								<option value="">左下</option>
 								<option value="">右下</option>
 							</select>
@@ -196,6 +196,11 @@
 				],
 				hor_selected:'',
 				ver_selected:'',
+
+				add_jd:[
+				{value:'左下'},
+				{value:'右下'}
+				]
 
 				hor_arrObj:[],
 				ver_arrObj:[],
