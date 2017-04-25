@@ -3,14 +3,18 @@
 <head>
 	<meta charset="UTF-8">
 	<title>提交图纸</title>
-	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="./stylesheets/style.css">
 	<style type="text/css">
 		.body-wrap {
 			height: 100%;
     		display: flex;
    			align-items: center;
 		}
+		.checkbox{
+			margin:5px 0;
+		}
+
 	</style>
 </head>
 <body>
@@ -50,7 +54,7 @@
 				        <h3 class="panel-title">项目信息</h3>
 				      </div>
 				      <div class="panel_body">
-				        <table class="table">
+				        <table class="table table-hover" id="project">
 				        	<colgroup>
 				        		<col class="col-xs-1">
 							  	<col class="col-xs-1">
@@ -64,24 +68,14 @@
 					          </tr>
 					        </thead>
 					        <tbody>
-					          <tr>
-					            <th scope="row">1</th>
-					            <td>Mark</td>
-					            <td>Otto</td>
-					          
+					          <tr v-for="(index,item) in tableList" @click="clickItems(item)" v-bind:class="{ info: trItem == item }">
+					          	<td>
+					          		{{index+1}}
+					          	</td>
+					            <td>{{item.TaskID}}</td>
+					            <td>{{item.TaskName}}</td>					          
 					          </tr>
-					          <tr>
-					            <th scope="row">2</th>
-					            <td>Jacob</td>
-					            <td>Thornton</td>
-					          
-					          </tr>
-					          <tr>
-					            <th scope="row">3</th>
-					            <td>Larry</td>
-					            <td>the Bird</td>
-					            
-					          </tr>
+					       
 					        </tbody>
 					      </table>
 				      </div>
@@ -140,13 +134,13 @@
 			</div>
 		</div>
 	</div>
-
 	</div>
 	
 
-	<script src="../public/javascripts/vue.js"></script>
-	<script src="../public/javascripts/vue-resource.min.js"></script>
-	<script src="../public/javascripts/md5.min.js"></script>
+	<script src="./javascripts/vue.js"></script>
+	<script src="./javascripts/vue-resource.min.js"></script>
+	<script src="./javascripts/md5.min.js"></script>
+	<script src="./javascripts/jquery-1.11.1.min.js"></script>
 	<script>
 
 		new Vue({
@@ -154,48 +148,58 @@
 			data:{
 				status:false,
 				isLogin:false,
+				trItem:{},
 				ruleLogin:{
 					username:'',
 					pass:''
+				},
+				tableList:[],
+				isActive:false,
+				result:{
+					url:"http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process",
+					sheets:'',
+					taskInfo:'',
+					empId:''
 				}
 			},
 			methods:{
-				// submitForm(formName) {
-				// 	console.log("ddd")
-				// 	if(this.status) return
-				// 	var that = this;
-				// 	var data = {
-				// 		command:"gettask",
-				// 		a:that.ruleLogin.username,
-				// 		p:md5(that.ruleLogin.pass)
-				// 	}
-				// 	that.$http.post('http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process',data).then(function(res){
-				// 		console.log(res)
-				// 		that.loadProject(JSON.parse(data)); //JSON字符串转为与之对应的JavaScript对象
-				// 		that.loadSheets();
-						
-				// 	})
-				// 	.catch(function(error) {
-				// 		alert(error)
-				// 	})
-				// },
 				submitForm(formName) {
 					console.log("ddd")
 					if(this.status) return
 					var that = this;
-					that.$http({
-						method:'POST',
+					var postData = {
+						command:"gettask",
+						a:that.ruleLogin.username,
+						p:md5(that.ruleLogin.pass)
+					}
+					$.ajax({
 						url:'http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process',
+						type:'POST',
 						data:{
 							command:"gettask",
 							a:that.ruleLogin.username,
 							p:md5(that.ruleLogin.pass)
+						},
+						success:function(res) {
+							var obj = JSON.parse(res)
+							that.isLogin = true
+							// console.log(obj.data)
+							var data = obj.data;
+							data.forEach(function(e,i) {
+								that.tableList.push({TaskEmpID:e.TaskEmpID,TaskID:e.TaskID,TaskName:e.TaskName})
+							})
+							// console.log(that.tableList)
+						},
+						error:function(error){
+							console.log('error')
 						}
-					}).then(function(res) {
-						console.log(res)
-					},function(error) {
-
 					})
+				},
+				clickItems(obj){
+					this.trItem = obj
+					console.log(this.trItem)
+					this.result.taskInfo = JSON.stringify(this.trItem)
+
 				},
 				loadProject(info) {
 					result.taskInfo = JSON.stringify(info.data[0]);
@@ -232,6 +236,19 @@
 			}	
 		})
 
+	</script>
+	<script type="text/javascript">
+		
+		$(document).ready(function(){
+		 $('#project>tbody>tr').click(function() {
+				console.log("adsfdsf")
+				
+				
+			});
+		});
+
+	    	
+	   
 	</script>
 </body>
 </html>

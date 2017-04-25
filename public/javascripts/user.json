@@ -1,3 +1,40 @@
-[{
-	
+{
+	"status": 1,
+	"data": [{
+		"TaskID": "37",
+		"TaskName": "[P2017040602]测试0000102 >施工图 >电气一次 >设计任务001",
+		"TaskEmpName": "陈君",
+		"TaskEmpID": "501"
+	}, {
+		"TaskID": "10",
+		"TaskName": "[P2017030201]阳光工程小区居民用电10kV项目01 >可研 >电气二次 >二卷二册",
+		"TaskEmpName": "陈君",
+		"TaskEmpID": "501"
+	}, {
+		"TaskID": "41",
+		"TaskName": "[P2017033302]阳光工程110kV输变电项目02 >施工图 >电气二次 >设计任务ddd",
+		"TaskEmpName": "陈君",
+		"TaskEmpID": "501"
+	}, {
+		"TaskID": "39",
+		"TaskName": "[P2017060902]西宁海天幼儿园220kV输变电项目02 >初设 >电气一次 >设计任务",
+		"TaskEmpName": "陈君",
+		"TaskEmpID": "501"
+	}],
+	"code": 0,
+	"msg": null,
+	"empid": "501",
+	"types": [{
+		"id": "1",
+		"name": "设计任务"
+	}, {
+		"id": "2",
+		"name": "变更单"
+	}],
+	"columns": [{
+		"field": "TaskName",
+		"name": "任务名称",
+		"width": 90,
+		"align": 0
 	}]
+}
