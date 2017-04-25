@@ -3,9 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>布置窗</title>
-	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="/stylesheets/flex.css">
-	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
 </head>
 <body>
 	<div class="body-wrap">
@@ -53,11 +53,11 @@
 							<input type="text" v-model="input_add_name" class="form-control input-sm">
 						</div>
 						<div class="form-group">
-							<span>长度&nbsp;&nbsp;</span>
+							<span>宽度&nbsp;&nbsp;</span>
 							<input type="text" v-model="input_add_width"  class="form-control input-sm">
 						</div>
 						<div class="form-group">
-							<span>宽度&nbsp;&nbsp;</span>
+							<span>高度&nbsp;&nbsp;</span>
 							<input type="text" v-model="input_add_height"  class="form-control input-sm">
 						</div>
 						<div class="clearfix">
@@ -80,8 +80,8 @@
 	</div>
 	
 
-	<script src="/javascripts/vue.js"></script>
-	<script src="/javascripts/vue-resource.min.js"></script>
+	<script src="../public/javascripts/vue.js"></script>
+	<script src="../public/javascripts/vue-resource.min.js"></script>
 	<script>
 		new Vue ({
 			el:'#win_hook',
@@ -103,36 +103,36 @@
 				status:false
 			},
 			created(){
-				console.log("aaa")
-					var that = this;
+				var that = this;
 
-					that.$http.get('/javascripts/type.json').then(function(res){
-						console.log(res)
-						var data = res.data;
+				that.$http.get('/javascripts/type.json').then(function(res){
+					//console.log(res)
+					var data = res.data;
 						// console.log(data)
-						for (var i =0 ;i < data.length; i++) {
-							var symbolData = data[i].Symbol;
-							var list= [];
-							for (var j = 0 ;j <symbolData.length; j++) {
-								list.push(data[i].Symbol[j])
-								// console.log(list[j])
-							}
-							that.options.push({value:data[i].Name,items:list})
+					for (var i =0 ;i < data.length; i++) {
+						var symbolData = data[i].Symbol;
+						var list= [];
+						for (var j = 0 ;j <symbolData.length; j++) {
+							list.push(data[i].Symbol[j])
+							// console.log(list[j])
 						}
-					})
-					.catch(function(error) {
-						console.log(error)
-					})
-				console.log(that.options)
+						that.options.push({value:data[i].Name,items:list})
+					}
+				})
+				.catch(function(error) {
+					console.log(error)
+				})
+				//console.log(that.options)
 			},
 			methods:{
 				clickItems(obj) {
 					this.status = true;
 					console.log(obj)	
 					var that = this;
-					that.input_add_name = obj.族名称;
-					that.input_add_width = obj.b;
-					that.input_add_height = obj.h;					
+					that.selected_type = obj;
+					that.input_add_name = obj.类型名称;
+					that.input_add_width = obj.宽度;
+					that.input_add_height = obj.高度;					
 				},
 				submitData(obj,status) {
 					var that = this;
@@ -154,7 +154,14 @@
 					}
 				},
 				submit(){
+					var that = this;
 
+					var info = {};
+					info.OffsetX = that.offset_x;
+					info.OffsetY = that.offset_y;
+					info.SymbolId = that.selected_type.Id
+					info.PlaceType = that.selected_bz_type;
+					console.log(info);
 				}
 			},
 			computed:{

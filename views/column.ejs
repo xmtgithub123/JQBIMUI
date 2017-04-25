@@ -3,9 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>布置结构柱</title>
-	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="/stylesheets/flex.css">
-	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
 </head>
 <body>
 	<div class="body-wrap">
@@ -76,8 +76,8 @@
 	</div>
 	
 
-	<script src="/javascripts/vue.js"></script>
-	<script src="/javascripts/vue-resource.min.js"></script>
+	<script src="../public/javascripts/vue.js"></script>
+	<script src="../public/javascripts/vue-resource.min.js"></script>
 	<script>
 		new Vue ({
 			el:'#win_hook',
@@ -87,49 +87,59 @@
 				lists:[],
 				selected:'',//设置族
 				selected_type:'',//设置族类型
-				selected_bz_type:'',//设置布置类型
+				selected_bz_type:'框选轴网',//设置布置类型
 				input_dbg:'', //设置低标高
 
 				input_add_name:'',//新增类型 名字
 				input_add_width:'',//新增类型 长度
 				input_add_height:'',//新增类型 宽度
-				offset_x:'',//偏移 x
-				offset_y:'',//偏移 y
+				offset_x:'0',//偏移 x
+				offset_y:'0',//偏移 y
 				isDanger:false,
 				status:false
 			},
-			created(){
-				console.log("aaa")
-					var that = this;
 
-					that.$http.get('/javascripts/type.json').then(function(res){
-						// console.log(res)
-						var data = res.data;
-						// console.log(data)
-						for (var i =0 ;i < data.length; i++) {
-							var symbolData = data[i].Symbol;
-							var list= [];
-							for (var j = 0 ;j <symbolData.length; j++) {
-								list.push(data[i].Symbol[j])
-								// console.log(list[j])
-							}
-							that.options.push({value:data[i].Name,items:list})
-						}
-					})
+			created() {
+				if (window.JQ) {
+					JQ.getFamilys("结构柱").then(this.loadRes)
 					.catch(function(error) {
 						console.log(error)
 					})
-				// console.log(that.options)
+				} else {
+					this.$http.get('../public/javascripts/type.json').then(this.loadRes)
+					.catch(function(error) {
+						console.log(error)
+					})
+				}
 			},
-			methods:{
+
+			methods: {
+				loadRes(res) {
+					var that = this;
+
+					var data = eval(res);
+
+					for (var i = 0; i < data.length; i++) {
+						var symbolData = data[i].Symbol;
+						var list= [];
+						for (var j = 0 ;j <symbolData.length; j++) {
+							list.push(data[i].Symbol[j])
+							// console.log(list[j])
+						}
+						that.options.push({value:data[i].Name,items:list})
+					}
+				},
+
 				clickItems(obj) {
 					this.status = true;
 					// console.log(obj)	
 					var that = this;
-					that.input_add_name = obj.族名称;
+					that.selected_type = obj;
+					that.input_add_name = obj.类型名称;
 					that.input_add_width = obj.b;
 					that.input_add_height = obj.h;					
 				},
+
 				submitData(obj,status) {
 					var that = this;
 					// console.log(obj)
@@ -149,10 +159,21 @@
 						alert('增加成功')
 					}
 				},
-				submit(){
+				submit() {
+					var that = this;
 
+					var info = {};
+					info.OffsetX = that.offset_x;
+					info.OffsetY = that.offset_y;
+					info.SymbolId = that.selected_type.Id
+					info.PlaceType = that.selected_bz_type;
+					console.log(info);
+					if (window.JQ) {
+						JQ.clickOK(JSON.stringify(info));
+					}
 				}
 			},
+
 			computed:{
 				items() {
 					var items = [] ,selectedValue = this.$data.selected;

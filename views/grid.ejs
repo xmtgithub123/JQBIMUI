@@ -269,29 +269,43 @@
 				},
 				onClickOk() {
 					var gridInfos={
+						OffsetX : -3500.0,
+						OffsetY : -3500.0,
 						Hor:[],
 						Ver:[],
 						HorLength:0,
 						VerLength:0
 					};
 					gridInfos.Hor = [];
+					gridInfos.Hor.push({Name:'A', Dist:0});
 					gridInfos.Ver = [];
-				    this.hor_arrObj.forEach(function(e,i) {
-				    	var dist = e.Dist[0];
+					gridInfos.Ver.push({Name:'1', Dist:0});
+
+					var index = 0;
+				    this.hor_arrObj.forEach(function(e, i) {
+				    	var dist = parseInt(e.Dist[0]);
 				    	var count = e.count;
-				    	// console.log(e)
-				    	gridInfos.HorLength += dist*count;
-				        gridInfos.Hor.push({Dist:e.Dist[0],count:e.count})
+				    	for (var i = 0; i< count; i++) {
+							index += 1;
+				    		gridInfos.VerLength += dist;
+				        	gridInfos.Hor.push({Name:String.fromCharCode(65+index), Dist:dist})
+						}
+						
 				    })
+
+					index = 1;
 				    this.ver_arrObj.forEach(function(e,i) {
-				    	var dist = e.Dist[0];
+				    	var dist = parseInt(e.Dist[0]);
 				    	var count = e.count;
-				    	// console.log(e)
-				    	gridInfos.VerLength += dist*count;
-				        gridInfos.Ver.push({Dist:e.Dist[0],count:e.count})
+				    	for (var i = 0; i < count; i++) {
+							index += 1;
+				    		gridInfos.HorLength += dist;
+				        	gridInfos.Ver.push({Name:index.toString(), Dist:dist})
+						}
 				    })
 				    console.log(gridInfos)
 					// console.log(JSON.stringify(this.ver_arrObj))
+					JQ.clickOK(JSON.stringify(gridInfos));
 				}
 			},
 			watch:{
