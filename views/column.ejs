@@ -34,8 +34,7 @@
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;插入点</span>
 						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
-							<option value="">框选轴网</option>
-							<option value="">多选轴网</option>
+							<option v-for="option in type_options" value="">{{option.value}}</option>
 						</select>
 					</div>
 					
@@ -88,6 +87,10 @@
 				selected:'',//设置族
 				selected_type:'',//设置族类型
 				selected_bz_type:'框选轴网',//设置布置类型
+				type_options:[  //布置类型选项
+					{value:'框选轴网'},
+					{value:'多选轴网'}
+				],
 				input_dbg:'', //设置低标高
 
 				input_add_name:'',//新增类型 名字
