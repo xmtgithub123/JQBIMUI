@@ -169,7 +169,8 @@
 						a:that.ruleLogin.username,
 						p:md5(that.ruleLogin.pass)
 					}
-					that.$http.post('http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process',data).then(function(res){
+					console.log(data);
+					that.$http.post('http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process', data).then(function(res){
 						console.log(res)
 						that.loadProject(JSON.parse(data)); //JSON字符串转为与之对应的JavaScript对象
 						that.loadSheets();

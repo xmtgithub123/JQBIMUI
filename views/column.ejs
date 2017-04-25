@@ -120,7 +120,7 @@
 				loadRes(res) {
 					var that = this;
 
-					var data = eval(res);
+					var data = JSON.parse(res);
 
 					for (var i = 0; i < data.length; i++) {
 						var symbolData = data[i].Symbol;
