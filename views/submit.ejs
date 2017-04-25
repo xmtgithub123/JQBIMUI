@@ -5,6 +5,13 @@
 	<title>提交图纸</title>
 	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<style type="text/css">
+		.body-wrap {
+			height: 100%;
+    		display: flex;
+   			align-items: center;
+		}
+	</style>
 </head>
 <body>
 	<div class="body-wrap">
@@ -127,8 +134,8 @@
 				      </div>
 				    </div>
 				    <div class="button-wrap pull-right">
-				    	<button class="btn btn-primary">确定</button>
-				    	<button class="btn btn-default">取消</button>
+				    	<button class="btn btn-primary" @click="onClickOk">确定</button>
+				    	<button class="btn btn-default" @click="onClickCancel()">取消</button>
 				    </div>
 			</div>
 		</div>
@@ -139,6 +146,7 @@
 
 	<script src="../public/javascripts/vue.js"></script>
 	<script src="../public/javascripts/vue-resource.min.js"></script>
+	<script src="../public/javascripts/md5.min.js"></script>
 	<script>
 
 		new Vue({
@@ -150,22 +158,58 @@
 					username:'',
 					pass:''
 				}
-
 			},
 			methods:{
 				submitForm(formName) {
 					console.log("ddd")
 					if(this.status) return
 					var that = this;
-					if(this.ruleLogin.username == 'hello' && this.ruleLogin.pass == 123456) {
-						that.status = true
-						alert('登录成功')
-						that.isLogin = true
+					var data = {
+						command:"gettask",
+						a:that.ruleLogin.username,
+						p:md5(that.ruleLogin.pass)
 					}
-					else {
-						that.status = false
-						alert('登录失败')
+					that.$http.post('http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process',data).then(function(res){
+						console.log(res)
+						that.loadProject(JSON.parse(data)); //JSON字符串转为与之对应的JavaScript对象
+						that.loadSheets();
+						
+					})
+					.catch(function(error) {
+						alert(error)
+					})
+				},
+				loadProject(info) {
+					result.taskInfo = JSON.stringify(info.data[0]);
+					result.empID = info.empid;
+					var projects = info.data;
+					var i  = 1;
+					var rows = '';
+					for (var key in projects) {
+						var no = projects[key].TaskID;
+						var name = projects[key].TaskName;
+						//var phase = projects[key].PhaseName;
+						//var taskName = projects[key].
+						rows += '<tr><td>' + i + '</td><td>' + no + '</td><td>' + name + '</td><tr>';
+						i++;
 					}
+					$('#project tbody').append(rows);
+
+					$('#project tr').click(function() {
+						$(this).addClass('info').siblings().removeClass("info");
+						
+						var index = $("td:eq(1)", $(this)).text();
+						result.taskInfo = info.data[index];
+					});
+				},
+				loadSheets() {
+
+				},
+				onClickOk(){
+
+				},
+				onClickCancel() {
+
 				}
 			},	
 		})
