@@ -61,12 +61,12 @@
 					var that = this;
 					if(this.ruleLogin.username == 'hello' && this.ruleLogin.pass == 123456) {
 						that.status = true
-						console.log("success")
+						alert('登录成功')
 						window.location.href="/submit"
 					}
 					else {
 						that.status = false
-						console.log("error")
+						alert('登录失败')
 					}
 				}
 			},	
