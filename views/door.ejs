@@ -3,9 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>布置门</title>
-	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="../public/stylesheets/flex.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="./stylesheets/flex.css">
+	<link rel="stylesheet" href="./stylesheets/style.css">
 </head>
 <body>
 	<div class="body-wrap">
@@ -15,9 +15,9 @@
 				<div class="flex">
 					<div class="item_select_2" id="select_zu">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
-						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+						<select name="" id=""  v-model="selected" class="form-control input-sm" v-cloak>
 
-							<option v-for="option in options" :value="option.value">
+							<option v-for="option in options" >
 								{{option.value}}
 							</option>
 							
@@ -26,7 +26,7 @@
 					<div class="item_select_2" id="select_type_zu">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
 						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
-							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)" value="">
+							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
 								{{item.类型名称}}
 							</option>
 						</select>
@@ -80,24 +80,23 @@
 	</div>
 
 
-	<script src="../public/javascripts/vue.js"></script>
-	<script src="../public/javascripts/vue-resource.min.js"></script>
+	<script src="./javascripts/vue.js"></script>
+	<script src="./javascripts/vue-resource.min.js"></script>
 	<script>
 		new Vue ({
 			el:'#win_hook',
 			data:{
-				objs:[],
-				options:[
-				],
+				options:[],
 				lists:[],
 				selected:'',//设置族
 
 				selected_type:'',//设置族类型
-				type_options:[
+				
+				selected_bz_type:'',//设置布置类型
+				type_options:[  //布置类型选项
 					{value:'中心'},
 					{value:'头部'}
 				],
-				selected_bz_type:'',//设置布置类型
 				input_dbg:'', //设置低标高
 
 				input_add_name:'',//新增类型 名字
@@ -122,9 +121,10 @@
 							list.push(data[i].Symbol[j])
 						}
 						that.options.push({value:data[i].Name,items:list})
-						if(that.options.length >0) {
+						if(that.options.length >0 ) {
 							that.selected = that.options[0].value
 						}
+						
 					}
 				})
 				.catch(function(error) {
@@ -135,16 +135,15 @@
 			methods:{
 				clickItems(obj) {
 					this.status = true;
-					console.log(obj)	
+					// console.log(obj)	
 					var that = this;
-					that.selected_type = obj;
-					that.input_add_name = obj.类型名称;
-					that.input_add_width = obj.宽度;
-					that.input_add_height = obj.高度;					
+					that.input_add_name = obj.族名称;
+					that.input_add_width = obj.b;
+					that.input_add_height = obj.h;					
 				},
 				submitData(obj,status) {
 					var that = this;
-					console.log(obj)
+					// console.log(obj)
 					if(status) {
 						console.log("=====获取修改数据api======")
 						that.input_add_name = '';

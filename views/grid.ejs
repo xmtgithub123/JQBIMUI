@@ -3,9 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>布置轴网</title>
-	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="../public/stylesheets/flex.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="./stylesheets/flex.css">
+	<link rel="stylesheet" href="./stylesheets/style.css">
 </head>
 <body>
 	<div class="body-wrap">
@@ -18,16 +18,14 @@
 						</div>
 						<div class="item_select_1">
 							<span>插入基点&nbsp;</span>
-							<select name="" id=""  class="form-control input-sm" v-model="selected_add_jd">
-								<option value="">左下</option>
-								<option value="">右下</option>
+							<select name="" id=""  class="form-control input-sm" v-model="selected_add_jd" v-cloak>
+								<option value="" v-for="item in add_jd" >{{item.value}}</option>
 							</select>
 						</div>
 						<div class="item_select_1">
 							<span>旋转角度&nbsp;</span>
-							<select name="" id="" class="form-control input-sm">
-								<option value="">0</option>
-								<option value="">90</option>
+							<select name="" id="" class="form-control input-sm" v-model="selected_rotation_angle">
+								<option value="" v-for="item in rotation_angle">{{item.value}}</option>
 							</select>
 						</div>
 					</div>
@@ -175,8 +173,8 @@
 	</div>
 				
 
-	<script src="../public/javascripts/vue.js"></script>
-	<script src="../public/javascripts/vue-resource.min.js"></script>
+	<script src="./javascripts/vue.js"></script>
+	<script src="./javascripts/vue-resource.min.js"></script>
 	<script>
 
 		new Vue({
@@ -196,12 +194,16 @@
 				],
 				hor_selected:'',
 				ver_selected:'',
-
+				selected_add_jd:'',
 				add_jd:[
-				{value:'左下'},
-				{value:'右下'}
-				]
-
+					{value:'中心'},
+					{value:'头部'}
+				],
+				selected_rotation_angle:'', //旋转角度
+				rotation_angle:[   
+					{value:'0'},//旋转角度
+					{value:'90'}
+				],
 				hor_arrObj:[],
 				ver_arrObj:[],
 
