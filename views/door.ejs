@@ -89,7 +89,6 @@
 				options:[],
 				lists:[],
 				selected:'',//设置族
-
 				selected_type:'',//设置族类型
 				
 				selected_bz_type:'',//设置布置类型
@@ -98,25 +97,36 @@
 					{value:'头部'}
 				],
 				input_dbg:'', //设置低标高
-
 				input_add_name:'',//新增类型 名字
 				input_add_width:'',//新增类型 长度
 				input_add_height:'',//新增类型 宽度
-				offset_x:'',//偏移 x
-				offset_y:'',//偏移 y
+				offset_x:'0',//偏移 x
+				offset_y:'0',//偏移 y
 				isDanger:false,
 				status:false
 			},
 			created() {
 				var that = this;
 
-				that.$http.get('/javascripts/type.json').then(function(res){
-					console.log(res)
-					var data = res.data;
-					// console.log(data)
-					for (var i =0 ;i < data.length; i++) {
+				if (window.JQ) {
+					JQ.getFamilys("门").then(this.loadRes)
+					.catch(function(error) {
+						console.log(error)
+					})
+				} else {
+					that.$http.get('/javascripts/type.json').then(this.loadRes)
+					.catch(function(error) {
+						console.log(error)
+					})
+				}
+			},
+			methods:{
+				loadRes(res) {
+					var that = this;
+					var data = eval(res);//res.data;
+					for (var i = 0; i < data.length; i++) {
 						var symbolData = data[i].Symbol;
-						var list= [];
+						var list = [];
 						for (var j = 0 ;j <symbolData.length; j++) {
 							list.push(data[i].Symbol[j])
 						}
@@ -126,13 +136,8 @@
 						}
 						
 					}
-				})
-				.catch(function(error) {
-					console.log(error)
-				})
-				//console.log(that.options)
-			},
-			methods:{
+				},
+
 				clickItems(obj) {
 					this.status = true;
 					// console.log(obj)	
@@ -164,11 +169,16 @@
 					var that = this;
 
 					var info = {};
-					info.OffsetX = that.offset_x;
-					info.OffsetY = that.offset_y;
+					info.Dist = that.offset_x;
+					//info.OffsetY = that.offset_y;
+					info.FamilyName = that.selected_type.族名称;
+					info.SymbolName = that.input_add_name;
 					info.SymbolId = that.selected_type.Id
 					info.PlaceType = that.selected_bz_type;
 					console.log(info);
+					if (window.JQ) {
+						JQ.clickOK(JSON.stringify(info));
+					}
 				}
 			},
 			computed:{
