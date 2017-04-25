@@ -5,17 +5,17 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-router.get('/step1', function(req, res, next) {
-  res.render('step1', { title: 'Express' });
+router.get('/column', function(req, res, next) {
+  res.render('column', { title: 'Express' });
 });
-router.get('/step2', function(req, res, next) {
-  res.render('step2', { title: 'Express' });
+router.get('/door', function(req, res, next) {
+  res.render('door', { title: 'Express' });
 });
-router.get('/step3', function(req, res, next) {
-  res.render('step3', { title: 'Express' });
+router.get('/grid', function(req, res, next) {
+  res.render('grid', { title: 'Express' });
 });
-router.get('/step4', function(req, res, next) {
-  res.render('step4', { title: 'Express' });
+router.get('/window', function(req, res, next) {
+  res.render('window', { title: 'Express' });
 });
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Express' });
