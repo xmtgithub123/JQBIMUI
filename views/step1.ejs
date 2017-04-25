@@ -47,14 +47,14 @@
 											  <col class="col-xs-4">
 											  <thead>
 											  	<tr>
-											  	<td>名称</td>
+											 
 											    <td>间隔</td>
 											    <td>个数</td>
 											  </tr>
 											  </thead>
 										  	<tbody>
 											  	<tr v-for="list in hor_arrObj" v-cloak >
-											  		<td>{{list.Name}}</td>
+											  		
 												    <td><input  style="width:50px;" v-model="list.Dist" ></td>
 												    <td><input  style="width:50px;"v-model="list.count"></td>
 												</tr>
@@ -113,14 +113,14 @@
 											  <col class="col-xs-4">
 											  <thead>
 											  	<tr>
-											  	<td>名称</td>
+											  
 											    <td>间隔</td>
 											    <td>个数</td>
 											  </tr>
 											  </thead>
 										  	<tbody>
 											  	<tr v-for="list in ver_arrObj" v-cloak >
-											  		<td>{{list.Name}}</td>
+											  		
 												    <td><input style="width:50px;" v-model="list.Dist" ></td>
 												    <td><input style="width:50px;" v-model="list.count"></td>
 												</tr>
@@ -215,7 +215,7 @@
 				hor_addSubmit() {
 					if(this.hor_selected != '' && this.hor_selected.length == 1){
 
-						this.hor_arrObj.push({Name:String.fromCharCode(65+this.hor_Numb),Dist:this.hor_selected,count:1});
+						this.hor_arrObj.push({Dist:this.hor_selected,count:1});
 						// console.log((this.hor_arrObj).length)
 						this.hor_Numb = (this.hor_arrObj).length+1;
 					}
@@ -225,7 +225,7 @@
 				},
 				ver_addSubmit() {
 					if(this.ver_selected != '' && this.ver_selected.length == 1){
-						this.ver_arrObj.push({Name:this.ver_Numb+1,Dist:this.ver_selected,count:1});
+						this.ver_arrObj.push({Dist:this.ver_selected,count:1});
 					}
 					else{
 						alert("请选择一个间隔")
@@ -246,7 +246,7 @@
 						// console.log(obj)
 						that.hor_arrObj = [];
 						obj.forEach(function(e,i){
-							that.hor_arrObj.push({Name:e.split('*')[0],Dist:e.split('*')[1],count:e.split('*')[2]});
+							that.hor_arrObj.push({Dist:e.split('*')[0],count:e.split('*')[1]});
 
 						})
 						// console.log(that.hor_arrObj)
@@ -263,7 +263,7 @@
 						var obj = this.ver_textarea.split(' ');
 						that.ver_arrObj = [];
 						obj.forEach(function(e,i){
-							that.ver_arrObj.push({Name:e.split('*')[0],Dist:e.split('*')[1],count:e.split('*')[2]});
+							that.ver_arrObj.push({Dist:e.split('*')[0],count:e.split('*')[1]});
 						})
 					}
 				},
@@ -281,14 +281,14 @@
 				    	var count = e.count;
 				    	// console.log(e)
 				    	gridInfos.HorLength += dist*count;
-				        gridInfos.Hor.push({Name:'A',Dist:e.Dist[0],count:e.count})
+				        gridInfos.Hor.push({Dist:e.Dist[0],count:e.count})
 				    })
 				    this.ver_arrObj.forEach(function(e,i) {
 				    	var dist = e.Dist[0];
 				    	var count = e.count;
 				    	// console.log(e)
 				    	gridInfos.VerLength += dist*count;
-				        gridInfos.Ver.push({Name:'A',Dist:e.Dist[0],count:e.count})
+				        gridInfos.Ver.push({Dist:e.Dist[0],count:e.count})
 				    })
 				    console.log(gridInfos)
 					// console.log(JSON.stringify(this.ver_arrObj))
@@ -306,9 +306,9 @@
 						var that = this;
 						this.hor_textarea.forEach(function(e,i){
 							if(e.temp !='' && e.count != '') {
-								console.log(e.Name+e.Dist+e.count)
+								console.log(e.Dist+e.count)
 								hor_obj.push(e.Dist+'*'+e.count)
-								hor_obj1.push(e.Name+'*'+e.Dist+'*'+e.count)
+								// hor_obj1.push(e.Dist+'*'+e.count)
 
 							}
 						})
@@ -317,7 +317,7 @@
 						// console.log(hor_obj.join(' '))
 						// this.hor_arrObj = hor_obj1;
 						console.log(this.hor_arrObj)
-						this.hor_textarea = hor_obj1.join(' ');
+						this.hor_textarea = hor_obj.join(' ');
 					},
 					deep:true
 				},
@@ -329,7 +329,7 @@
 						var ver_obj =[];
 						this.ver_textarea.forEach(function(e,i){
 							if(e.temp !='' && e.count != '') {
-								ver_obj.push(e.Name+'*'+e.Dist+'*'+e.count)
+								ver_obj.push(e.Dist+'*'+e.count)
 							}
 						})
 						this.ver_textarea = ver_obj.join(' ');
