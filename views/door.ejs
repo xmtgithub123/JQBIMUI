@@ -65,8 +65,7 @@
 						</div>
 					</div>
 					<div style="margin-top:10px;">
-						偏移 x : <input type="text" style="width:50px;" placeholder="0.0" v-model="offset_x">
-							 y : <input type="text" style="width:50px;" placeholder="0.0" v-model="offset_y">
+						偏移 : <input type="text" style="width:50px;" placeholder="0.0" v-model="offset">
 					</div>
 				</div>
 			</div>
@@ -98,8 +97,8 @@
 				input_add_name:'',//新增类型 名字
 				input_add_width:'',//新增类型 长度
 				input_add_height:'',//新增类型 宽度
-				offset_x:'0',//偏移 x
-				offset_y:'0',//偏移 y
+				offset:'0',//偏移 x
+				//offset_y:'0',//偏移 y
 				isDanger:false,
 				status:false
 			},
@@ -168,7 +167,7 @@
 					var that = this;
 
 					var info = {};
-					info.Dist = that.offset_x;
+					info.Dist = that.offset;
 					//info.OffsetY = that.offset_y;
 					info.FamilyName = that.selected_type.族名称;
 					info.SymbolName = that.input_add_name;
