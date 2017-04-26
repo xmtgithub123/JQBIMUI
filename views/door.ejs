@@ -35,12 +35,12 @@
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;布置类型</span>
 						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
-							<option v-for="option in type_options" value="">{{option.value}}</option>
+							<option v-for="option in type_options" v-bind:value="option.value">{{option.value}}</option>
 						</select>
 					</div>
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底标高</span>
-						<input type="text" class="form-control input-sm">
+						<input type="text" class="form-control input-sm" v-model='input_dbg'>
 					</div>
 					
 				</div>
@@ -93,7 +93,7 @@
 					{value:'中心'},
 					{value:'头部'}
 				],
-				input_dbg:'', //设置低标高
+				input_dbg:'0', //设置低标高
 				input_add_name:'',//新增类型 名字
 				input_add_width:'',//新增类型 长度
 				input_add_height:'',//新增类型 宽度
@@ -102,6 +102,7 @@
 				isDanger:false,
 				status:false
 			},
+
 			created() {
 				var that = this;
 
@@ -116,7 +117,10 @@
 						console.log(error)
 					})
 				}
+
+				that.selected_bz_type = that.type_options[0].value;
 			},
+
 			methods:{
 				loadRes(res) {
 					var that = this;
@@ -128,10 +132,10 @@
 							list.push(data[i].Symbol[j])
 						}
 						that.options.push({value:data[i].Name,items:list})
-						if(that.options.length >0 ) {
-							that.selected = that.options[0].value
-						}
-						
+					}
+
+					if (that.options.length > 0) {
+						that.selected = that.options[0].value
 					}
 				},
 
@@ -144,6 +148,7 @@
 					that.input_add_width = obj.宽度;
 					that.input_add_height = obj.高度;					
 				},
+
 				submitData(obj,status) {
 					var that = this;
 					// console.log(obj)

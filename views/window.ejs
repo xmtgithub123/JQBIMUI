@@ -34,13 +34,12 @@
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;布置类型</span>
 						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
-							<option value="">中心</option>
-							<option value="">头部</option>
+							<option v-for="option in type_options" v-bind:value="option.value">{{option.value}}</option>
 						</select>
 					</div>
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底标高</span>
-						<input type="text" class="form-control input-sm">
+						<input type="text" class="form-control input-sm" v-model='input_dbg'>
 					</div>
 					
 				</div>
@@ -90,7 +89,14 @@
 				lists:[],
 				selected:'',//设置族
 				selected_type:'',//设置族类型
+
 				selected_bz_type:'中心',//设置布置类型
+				selected_bz_type:'中心',//设置布置类型
+				type_options:[  //布置类型选项
+					{value:'中心'},
+					{value:'头部'}
+				],
+
 				input_dbg:'0', //设置低标高
 
 				input_add_name:'',//新增类型 名字
@@ -130,6 +136,10 @@
 						}
 						that.options.push({value:data[i].Name,items:list})
 					}
+
+					if (that.options.length > 0) {
+						that.selected = that.options[0].value
+					}
 				}, 
 
 				clickItems(obj) {
@@ -141,6 +151,7 @@
 					that.input_add_width = obj.宽度;
 					that.input_add_height = obj.高度;					
 				},
+
 				submitData(obj,status) {
 					var that = this;
 					console.log(obj)
