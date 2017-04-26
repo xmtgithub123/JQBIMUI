@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>提交图纸</title>
-	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="./stylesheets/style.css">
 	<style type="text/css">
 		.body-wrap {
 			height: 100%;
@@ -100,7 +100,7 @@
 					        </thead>
 					        <tbody>
 					          <tr v-for="item in sheetsList">
-					            <td><input type="checkbox" name="" v-model="checkedNames" value="{{item.name}}"></td>
+					            <td><input type="checkbox" name="" v-model="checkedNames" value="{{item.name}}" checked=""></td>
 					            <td>{{item.name}}</td>
 					          </tr>
 					        </tbody>
@@ -117,10 +117,10 @@
 	</div>
 	
 
-	<script src="../public/javascripts/vue.js"></script>
-	<script src="../public/javascripts/vue-resource.min.js"></script>
-	<script src="../public/javascripts/md5.min.js"></script>
-	<script src="../public/javascripts/jquery-1.11.1.min.js"></script>
+	<script src="./javascripts/vue.js"></script>
+	<script src="./javascripts/vue-resource.min.js"></script>
+	<script src="./javascripts/md5.min.js"></script>
+	<script src="./javascripts/jquery-1.11.1.min.js"></script>
 	<script>
 
 		new Vue({
@@ -142,8 +142,7 @@
 				},
 				sheetsList:[], //图纸列表
 				checkedNames:[], //复选框
-				checkAll:false, //全选
-				resData:[]
+				checkAll:false
 			},
 			methods:{
 				submitForm(formName) {
@@ -181,6 +180,7 @@
 				},
 				clickItems(obj){
 					var that = this;
+					this.trItem = obj
 					// console.log(obj)
 					// console.log(this.resData)
 					for(var i = 0 ;i<that.resData.length;i++) {
@@ -189,12 +189,10 @@
 							that.result.taskInfo = JSON.stringify(that.resData[i])
 						}
 					}
-					// this.trItem = obj
-					// this.result.taskInfo = JSON.stringify(this.trItem)
-
 				},
 				checkedAll() { //全选 或 反选
 					var that = this;
+
 					var checkedNames = [];
 					if(!this.checkAll) {
 						that.sheetsList.forEach(function(e,i) {
