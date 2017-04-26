@@ -87,6 +87,7 @@
 				lists:[],
 				selected:'',//设置族
 				selected_type:'',//设置族类型
+				selected_symbol: {},  //选中的族类型对象
 				
 				selected_bz_type:'中心',//设置布置类型
 				type_options:[  //布置类型选项
@@ -143,7 +144,7 @@
 					this.status = true;
 					// console.log(obj)	
 					var that = this;
-					that.selected_type = obj;
+					that.selected_symbol = obj;
 					that.input_add_name = obj.类型名称;
 					that.input_add_width = obj.宽度;
 					that.input_add_height = obj.高度;					
@@ -174,9 +175,9 @@
 					var info = {};
 					info.Dist = that.offset;
 					//info.OffsetY = that.offset_y;
-					info.FamilyName = that.selected_type.族名称;
+					info.FamilyName = that.selected_symbol.族名称;
 					info.SymbolName = that.input_add_name;
-					info.SymbolId = that.selected_type.Id
+					info.SymbolId = that.selected_symbol.Id
 					info.PlaceType = that.selected_bz_type;
 					console.log(info);
 					if (window.JQ) {
