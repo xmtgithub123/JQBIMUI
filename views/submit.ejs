@@ -78,6 +78,7 @@
 					       
 					        </tbody>
 					      </table>
+					      <!-- <span>checked name :{{checkedNames[0]}}</span> -->
 				      </div>
 				    </div>
 				    <div class="panel-wrap panel panel-primary">
@@ -93,19 +94,15 @@
 							 </colgroup>
 					        <thead>
 					          <tr>
-					            <th><input type="checkbox" name="" checked="true"></th>
+					            <th><input type="checkbox" name="" v-model="checkAll" value="" @click='checkedAll()'></th>
 					            <th>图纸名称</th>
 					          </tr>
 					        </thead>
 					        <tbody>
 					          <tr v-for="item in sheetsList">
-					            <td><input type="checkbox" name="" checked="true"></td>
-					            <td>
-												{{item.name}}
-											</td>
-					           
+					            <td><input type="checkbox" name="" v-model="checkedNames" value="{{item.name}}"></td>
+					            <td>{{item.name}}</td>
 					          </tr>
-					          
 					        </tbody>
 					      </table>
 				      </div>
@@ -129,26 +126,26 @@
 		new Vue({
 			el:'body',
 			data:{
-				status:false,
-				isLogin:false,
-				trItem:{},
-				ruleLogin:{
+				status:false, //登录按钮状态
+				isLogin:false,  // 判断是否登录，若登录，则登录表单隐藏
+				trItem:{}, //项目信息表格行数据
+				ruleLogin:{  //登录表单双向绑定
 					username:'',
 					pass:''
 				},
-				tableList:[],
-				isActive:false,
+				tableList:[], //项目信息列表
 				result:{
 					url:"http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process",
 					sheets:'',
 					taskInfo:'',
 					empId:''
 				},
-				sheetsList:[]
+				sheetsList:[], //图纸列表
+				checkedNames:[], //复选框
+				checkAll:false //全选
 			},
 			methods:{
 				submitForm(formName) {
-					console.log("ddd")
 					if(this.status) return
 					var that = this;
 					var postData = {
@@ -167,13 +164,10 @@
 						success:function(res) {
 							var obj = JSON.parse(res)
 							that.isLogin = true
-							// console.log(obj.data)
 							var data = obj.data;
 							data.forEach(function(e,i) {
 								that.tableList.push({TaskEmpID:e.TaskEmpID,TaskID:e.TaskID,TaskName:e.TaskName})
 							})
-							//console.log(that.tableList)
-							console.log(obj);
 							that.result.empId = obj.empid;
 							that.loadSheets();
 						},
@@ -184,53 +178,55 @@
 				},
 				clickItems(obj){
 					this.trItem = obj
-					console.log(this.trItem)
 					this.result.taskInfo = JSON.stringify(this.trItem)
 
 				},
-				/*loadProject(info) {
-					result.taskInfo = JSON.stringify(info.data[0]);
-					result.empID = info.empid;
-					var projects = info.data;
-					var i  = 1;
-					var rows = '';
-					for (var key in projects) {
-						var no = projects[key].TaskID;
-						var name = projects[key].TaskName;
-						//var phase = projects[key].PhaseName;
-						//var taskName = projects[key].
-						rows += '<tr><td>' + i + '</td><td>' + no + '</td><td>' + name + '</td><tr>';
-						i++;
+				checkedAll() { //全选 或 反选
+					var that = this;
+					var checkedNames = [];
+					if(!this.checkAll) {
+						that.sheetsList.forEach(function(e,i) {
+							checkedNames.push(e.name)
+						})
 					}
-					$('#project tbody').append(rows);
+					that.checkedNames = checkedNames;
 
-					$('#project tr').click(function() {
-						$(this).addClass('info').siblings().removeClass("info");
-						
-						var index = $("td:eq(1)", $(this)).text();
-						result.taskInfo = info.data[index];
-					});
-				},*/
+				},
 				loadSheets() {
-						var that = this;
-						JQ.getSheets().then(function(res) {
-							console.log(res);
-							var sheets = eval(res);
-							sheets.forEach(function(e,i){
-								console.log(e)
-								that.result.sheets += e;
-								that.sheetsList.push({name:e})
-							})
-						});
+					var that = this;
+					JQ.getSheets().then(function(res) {
+						console.log(res);
+						var sheets = eval(res);
+						sheets.forEach(function(e,i){
+							console.log(e)
+							that.result.sheets += e;
+							that.sheetsList.push({name:e})
+						})
+					});
 				},
 
 				onClickOk(){
-						if (window.JQ) {
-								JQ.clickOK(JSON.stringify(this.result));
-						}
+					console.log(this.checkedNames.toString()) //打印出选中的行并转为字符串
+					if (window.JQ) {
+						JQ.clickOK(JSON.stringify(this.result));
+					}
 				},
 				onClickCancel() {
 
+				}
+			},
+			watch:{
+				'checkedNames':function(){
+					var that = this;
+					if(this.sheetsList.length === this.checkedNames.length) {
+						that.checkAll = true;
+					}
+					else{
+						that.checkAll = false;
+					}
+				},
+				checkAll(yes) {
+					this.checkAll = yes;
 				}
 			}	
 		})
