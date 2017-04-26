@@ -194,7 +194,7 @@
 					var that = this;
 
 					var checkedNames = [];
-					if(!this.checkAll) {
+					if (!this.checkAll) {
 						that.sheetsList.forEach(function(e,i) {
 							checkedNames.push(e.name)
 						})
@@ -205,18 +205,23 @@
 				loadSheets() {
 					var that = this;
 					JQ.getSheets().then(function(res) {
-						console.log(res);
-						var sheets = eval(res);
+						//console.log(res);
+						var sheets = JSON.parse(res);
 						sheets.forEach(function(e,i){
-							console.log(e)
-							that.result.sheets += e;
+							//console.log(e)
+							//that.result.sheets += e;
 							that.sheetsList.push({name:e})
 						})
 					});
 				},
 
 				onClickOk(){
-					console.log(this.checkedNames.toString()) //打印出选中的行并转为字符串
+					//console.log(this.checkedNames.toString()) //打印出选中的行并转为字符串
+					var that = this;
+					this.checkedNames.forEach(function(name) {
+						that.result.sheets += name;
+					})
+					//console.log(JSON.stringify(this.result))
 					if (window.JQ) {
 						JQ.clickOK(JSON.stringify(this.result));
 					}
