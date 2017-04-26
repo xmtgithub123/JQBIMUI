@@ -34,7 +34,7 @@
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;插入点</span>
 						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
-							<option v-for="option in type_options" value="">{{option.value}}</option>
+							<option v-for="option in type_options" v-bind:value="option.value">{{option.value}}</option>
 						</select>
 					</div>
 					
@@ -130,6 +130,10 @@
 							// console.log(list[j])
 						}
 						that.options.push({value:data[i].Name,items:list})
+					}
+
+					if (that.options.length > 0) {
+							that.selected = that.options[0].value
 					}
 				},
 
