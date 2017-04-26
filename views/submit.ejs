@@ -142,7 +142,8 @@
 				},
 				sheetsList:[], //图纸列表
 				checkedNames:[], //复选框
-				checkAll:false //全选
+				checkAll:false, //全选
+				resData:[]
 			},
 			methods:{
 				submitForm(formName) {
@@ -163,8 +164,10 @@
 						},
 						success:function(res) {
 							var obj = JSON.parse(res)
-							that.isLogin = true
+							that.isLogin = true;
+							console.log(obj)
 							var data = obj.data;
+							that.resData = data;
 							data.forEach(function(e,i) {
 								that.tableList.push({TaskEmpID:e.TaskEmpID,TaskID:e.TaskID,TaskName:e.TaskName})
 							})
@@ -177,8 +180,17 @@
 					})
 				},
 				clickItems(obj){
-					this.trItem = obj
-					this.result.taskInfo = JSON.stringify(this.trItem)
+					var that = this;
+					// console.log(obj)
+					// console.log(this.resData)
+					for(var i = 0 ;i<that.resData.length;i++) {
+						if(that.resData[i].TaskID == obj.TaskID) {
+							console.log(JSON.stringify(that.resData[i]))
+							that.result.taskInfo = JSON.stringify(that.resData[i])
+						}
+					}
+					// this.trItem = obj
+					// this.result.taskInfo = JSON.stringify(this.trItem)
 
 				},
 				checkedAll() { //全选 或 反选
