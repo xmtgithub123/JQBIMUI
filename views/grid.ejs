@@ -14,7 +14,7 @@
 	         	<div flex="box:mean">
 	         		<div class="flex">
 						<div class="item_1 item_border">
-							轴网预览
+							<canvas id='grid' />
 						</div>
 						<div class="item_select_1">
 							<span>插入基点&nbsp;</span>
@@ -210,21 +210,42 @@
 				hor_textarea:'',
 				ver_textarea:'',
 				hor_Numb:1,
-				ver_Numb:1
+				ver_Numb:1,
+
+				gridInfos: {  //轴网对象，用于预览和发送给revit
+					OffsetX : -3500.0,
+					OffsetY : -3500.0,
+					Hor:[],
+					Ver:[],
+					HorLength:0,
+					VerLength:0
+				}  
 			},
+
+			/*created() {
+				var c = document.getElementById("grid");
+				var cxt = c.getContext("2d");
+				cxt.fillStyle = "#FF0000";
+				cxt.fillRect(0, 0, c.width, c.height);
+			},*/
+
 			methods:{
 				hor_clickItems(){
 
 				},
+
 				ver_clickItems(){
 
 				},
+
 				hor_addSubmit() {
 					if(this.hor_selected != '' && this.hor_selected.length == 1){
 
 						this.hor_arrObj.push({Dist:this.hor_selected,count:1});
 						// console.log((this.hor_arrObj).length)
 						this.hor_Numb = (this.hor_arrObj).length+1;
+
+						this.updateGridInfos()
 					}
 					else{
 						alert("请选择一个间隔")
@@ -233,17 +254,18 @@
 				ver_addSubmit() {
 					if(this.ver_selected != '' && this.ver_selected.length == 1){
 						this.ver_arrObj.push({Dist:this.ver_selected,count:1});
+
+						this.updateGridInfos()
 					}
 					else{
 						alert("请选择一个间隔")
 					}
 				},
 
-
 				hor_changeArea(){
-					console.log('change')
+					console.log('hor change')
 					// console.log(this.hor_arrObj)
-					if(this.hor_textarea == ''){
+					if (this.hor_textarea == ''){
 						this.hor_textarea = []
 					}
 					else {
@@ -257,11 +279,13 @@
 
 						})
 						// console.log(that.hor_arrObj)
-
 					}
+
+					this.updateGridInfos()
 				},
+
 				ver_changeArea(){
-					console.log('change')
+					console.log('ver change')
 					if(this.ver_textarea == ''){
 						this.ver_textarea = []
 					}
@@ -273,9 +297,79 @@
 							that.ver_arrObj.push({Dist:e.split('*')[0],count:e.split('*')[1]});
 						})
 					}
+					this.updateGridInfos()
 				},
+
+				//更新轴网对象
+				updateGridInfos() {
+					var that = this;
+					that.gridInfos.Hor.length = 0;
+					that.gridInfos.Ver.length = 0;
+					that.gridInfos.Hor.push({Name:'A', Dist:0});
+					that.gridInfos.Ver.push({Name:'1', Dist:0});
+					that.gridInfos.HorLength = 0;
+					that.gridInfos.VerLength = 0;
+
+					var index = 0;
+				    this.hor_arrObj.forEach(function(e, iter) {
+				    	var dist = parseInt(e.Dist[0]);
+				    	var count = e.count;
+				    	for (var i = 0; i < count; i++) {
+							index += 1;
+				    		that.gridInfos.VerLength += dist;
+				        	that.gridInfos.Hor.push({Name:String.fromCharCode(65+index), Dist:dist})
+						}
+						
+				    })
+
+					index = 1;
+				    this.ver_arrObj.forEach(function(e, iter) {
+				    	var dist = parseInt(e.Dist[0]);
+				    	var count = e.count;
+				    	for (var i = 0; i < count; i++) {
+							index += 1;
+				    		that.gridInfos.HorLength += dist;
+				        	that.gridInfos.Ver.push({Name:index.toString(), Dist:dist})
+						}
+				    })
+
+					that.drawGrid()
+				},
+
+				drawGrid() {
+					var that = this;
+					var canvas = document.getElementById("grid");
+					var cxt = canvas.getContext("2d");
+					cxt.clearRect(0, 0, canvas.width, canvas.height)
+					cxt.strokeStyle = "#FF0000";
+
+					var gridWidth = that.gridInfos.HorLength - that.gridInfos.OffsetX * 2;
+					var gridHeight = that.gridInfos.VerLength - that.gridInfos.OffsetY * 2;
+					var scale = Math.min(canvas.width / gridWidth, canvas.height / gridHeight);
+
+					var dist = 0
+					cxt.beginPath()
+					that.gridInfos.Hor.forEach(function(line) {
+						dist += line.Dist;
+						var y = (dist - that.gridInfos.OffsetY)
+						cxt.moveTo(0, y * scale)
+						cxt.lineTo(gridWidth * scale, y * scale)
+					})
+
+					dist = 0
+					that.gridInfos.Ver.forEach(function(line) {
+						dist += line.Dist
+						var x = (dist - that.gridInfos.OffsetX)
+						cxt.moveTo(x * scale, 0)
+						cxt.lineTo(x * scale, gridHeight * scale)
+					})
+
+					cxt.stroke();
+					cxt.closePath()
+				},
+
 				onClickOk() {
-					var gridInfos={
+					/*var gridInfos = {
 						OffsetX : -3500.0,
 						OffsetY : -3500.0,
 						Hor:[],
@@ -310,9 +404,10 @@
 				        	gridInfos.Ver.push({Name:index.toString(), Dist:dist})
 						}
 				    })
-				    console.log(gridInfos)
+				    console.log(gridInfos)*/
 					// console.log(JSON.stringify(this.ver_arrObj))
-					JQ.clickOK(JSON.stringify(gridInfos));
+					//console.log(this.gridInfos);
+					JQ.clickOK(JSON.stringify(this.gridInfos));
 				}
 			},
 			watch:{
