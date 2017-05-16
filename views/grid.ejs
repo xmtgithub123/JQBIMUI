@@ -173,42 +173,42 @@
 	</div>
 				
 
-	<script src="../public/javascripts/vue.js"></script>
-	<script src="../public/javascripts/vue-resource.min.js"></script>
+	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
 	<script>
 
-		new Vue({
-			el:'body',
+		new Vue({  //注册vue实例
+			el:'body', //挂载点
 			data:{
-				hor_options:[
+				hor_options:[     //水平间隔 - 选择框 - options
 					{value:1000},
 					{value:1200},
 					{value:1400},
 					{value:1600}
 				],
-				ver_options:[
+				ver_options:[    //垂直间隔 - 选择框 - options
 					{value:1000},
 					{value:1200},
 					{value:1400},
 					{value:1600}
 				],
-				hor_selected:'',
-				ver_selected:'',
-				selected_add_jd:'',
+				hor_selected:'',  //水平 - 选择框 - 选中值
+				ver_selected:'',  //垂直 - 选择框 - 选中值
+				selected_add_jd:'', //插入基点 - 选择框 - 选中值
 				add_jd:[
-					{value:'中心'},
+					{value:'中心'},  //插入基点 - 选择框 - 值列表
 					{value:'头部'}
 				],
-				selected_rotation_angle:'', //旋转角度
+				selected_rotation_angle:'', //旋转角度 -选择框 -选中值
 				rotation_angle:[   
-					{value:'0'},//旋转角度
+					{value:'0'},	//旋转角度 - 选择框 - 值列表
 					{value:'90'}
 				],
-				hor_arrObj:[],
-				ver_arrObj:[],
+				hor_arrObj:[],  //经过hor_addSubmit 点击事件后，将选中的选项push到该数组中 数组结构：hor_arrObj[Dist:xxx,count:xxx]
+				ver_arrObj:[],  //经过ver_addSubmit 点击事件后，将选中的选项push到该数组中 数组结构：ver_arrObj[Dist:xxx,count:xxx]
 
-				hor_textarea:'',
-				ver_textarea:'',
+				hor_textarea:'', //水平textarea框内容
+				ver_textarea:'',//垂直textarea框内容
 				hor_Numb:1,
 				ver_Numb:1
 			},
@@ -219,10 +219,10 @@
 				ver_clickItems(){
 
 				},
-				hor_addSubmit() {
-					if(this.hor_selected != '' && this.hor_selected.length == 1){
+				hor_addSubmit() { //选中某一间隔 - 点击新增选中间隔事件
+					if(this.hor_selected != '' && this.hor_selected.length == 1){ //判断是否选则了一个
 
-						this.hor_arrObj.push({Dist:this.hor_selected,count:1});
+						this.hor_arrObj.push({Dist:this.hor_selected,count:1});  //将选中的push到指定数组
 						// console.log((this.hor_arrObj).length)
 						this.hor_Numb = (this.hor_arrObj).length+1;
 					}
@@ -240,7 +240,7 @@
 				},
 
 
-				hor_changeArea(){
+				hor_changeArea(){       // 监听水平textarea的变化
 					console.log('change')
 					// console.log(this.hor_arrObj)
 					if(this.hor_textarea == ''){
@@ -248,19 +248,19 @@
 					}
 					else {
 
-						var that = this;
-						var obj = this.hor_textarea.split(' ');
+						var that = this;  //防止this指向问题
+						var obj = this.hor_textarea.split(' '); //将hor_textarea中的数值通过空格分隔
 						// console.log(obj)
-						that.hor_arrObj = [];
+						that.hor_arrObj = []; // 初始化hor_arrObj数组
 						obj.forEach(function(e,i){
-							that.hor_arrObj.push({Dist:e.split('*')[0],count:e.split('*')[1]});
+							that.hor_arrObj.push({Dist:e.split('*')[0],count:e.split('*')[1]});   //得到以*分隔的数值
 
 						})
 						// console.log(that.hor_arrObj)
 
 					}
 				},
-				ver_changeArea(){
+				ver_changeArea(){ // 监听垂直textarea的变化
 					console.log('change')
 					if(this.ver_textarea == ''){
 						this.ver_textarea = []
@@ -274,7 +274,7 @@
 						})
 					}
 				},
-				onClickOk() {
+				onClickOk() { //点击确定铵钮的事件
 					var gridInfos={
 						OffsetX : -3500.0,
 						OffsetY : -3500.0,
@@ -315,8 +315,8 @@
 					JQ.clickOK(JSON.stringify(gridInfos));
 				}
 			},
-			watch:{
-				hor_arrObj:{
+			watch:{			
+				hor_arrObj:{  //增加监听事件
 					handler:function(val,oldVal) {
 						// console.log(val)
 						this.hor_textarea = val;
@@ -333,10 +333,6 @@
 
 							}
 						})
-
-						// console.log(hor_obj1)
-						// console.log(hor_obj.join(' '))
-						// this.hor_arrObj = hor_obj1;
 						console.log(this.hor_arrObj)
 						this.hor_textarea = hor_obj.join(' ');
 					},

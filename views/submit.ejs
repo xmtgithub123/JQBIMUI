@@ -19,7 +19,7 @@
 </head>
 <body>
 	<div class="body-wrap">
-		<div class="container" v-if="!isLogin">
+		<div class="container" v-if="!isLogin">	<!--如果已登录,则登录模块消失,反之消失-->
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
 				<div class="form-horizontal form-wrap">
@@ -48,7 +48,6 @@
 	<div class="container" v-else>
 		<div class="row">
 			<div class="col-md-12">
-
 					<div class="panel-wrap panel panel-primary">
 				      <div class="panel-heading">
 				        <h3 class="panel-title">项目信息</h3>
@@ -70,15 +69,13 @@
 					        <tbody>
 					          <tr v-for="(index,item) in tableList" @click="clickItems(item)" v-bind:class="{ info: trItem == item }">
 					          	<td>
-					          		{{index+1}}
+					          		{{index+1}} <!--索引号从1开始-->
 					          	</td>
 					            <td>{{item.TaskID}}</td>
 					            <td>{{item.TaskName}}</td>					          
 					          </tr>
-					       
 					        </tbody>
 					      </table>
-					      <!-- <span>checked name :{{checkedNames[0]}}</span> -->
 				      </div>
 				    </div>
 				    <div class="panel-wrap panel panel-primary">
@@ -94,7 +91,7 @@
 							 </colgroup>
 					        <thead>
 					          <tr>
-					            <th><input type="checkbox" name="" v-model="checkAll" value="" @click='checkedAll()'></th>
+					            <th><input type="checkbox" name="" v-model="checkAll" value="" @click='checkedAll()'></th>  <!--全选与全不选-->
 					            <th>图纸名称</th>
 					          </tr>
 					        </thead>
@@ -151,7 +148,7 @@
 					var postData = {
 						command:"gettask",
 						a:that.ruleLogin.username,
-						p:md5(that.ruleLogin.pass)
+						p:md5(that.ruleLogin.pass) //md5密码加密
 					}
 					$.ajax({
 						url:'http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process',
@@ -163,12 +160,12 @@
 						},
 						success:function(res) {
 							var obj = JSON.parse(res)
-							that.isLogin = true;
+							that.isLogin = true;  //如果登录验证成功，则登录模块消失
 							console.log(obj)
 							var data = obj.data;
 							that.resData = data;
 							data.forEach(function(e,i) {
-								that.tableList.push({TaskEmpID:e.TaskEmpID,TaskID:e.TaskID,TaskName:e.TaskName})
+								that.tableList.push({TaskEmpID:e.TaskEmpID,TaskID:e.TaskID,TaskName:e.TaskName}) //渲染提交图纸页
 							})
 							that.result.empId = obj.empid;
 							that.loadSheets();
@@ -181,8 +178,6 @@
 				clickItems(obj){
 					var that = this;
 					this.trItem = obj
-					// console.log(obj)
-					// console.log(this.resData)
 					for(var i = 0 ;i<that.resData.length;i++) {
 						if(that.resData[i].TaskID == obj.TaskID) {
 							console.log(JSON.stringify(that.resData[i]))
@@ -192,7 +187,6 @@
 				},
 				checkedAll() { //全选 或 反选
 					var that = this;
-
 					var checkedNames = [];
 					if (!this.checkAll) {
 						that.sheetsList.forEach(function(e,i) {
@@ -226,18 +220,16 @@
 						JQ.clickOK(JSON.stringify(this.result));
 					}
 				},
-				onClickCancel() {
-
-				}
+				onClickCancel() {}
 			},
 			watch:{
-				'checkedNames':function(){
+				'checkedNames':function(){  //监听复选框
 					var that = this;
-					if(this.sheetsList.length === this.checkedNames.length) {
+					if(this.sheetsList.length === this.checkedNames.length) { //如果复选框选中个数 == 图纸列表的个数 则全选
 						that.checkAll = true;
 					}
 					else{
-						that.checkAll = false;
+						that.checkAll = false; //否则返选
 					}
 				},
 				checkAll(yes) {
