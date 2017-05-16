@@ -150,6 +150,36 @@
 					that.input_add_height = obj.高度;					
 				},
 
+				addSymbol(symbolJSON) {
+					//console.log('addSymbol:')
+					//console.log(symbolJSON)
+					var symbol = JSON.parse(symbolJSON)
+					var that = this;
+					for (var i = 0; i < that.options.length; i++) {
+						console.log(that.options[i].id + '==' + symbol.FamilyId)
+						if (that.options[i].id == symbol.FamilyId) {
+							that.options[i].items.push(symbol)
+							that.selected_type = symbol.类型名称
+							break;
+						}
+					}
+				},
+
+				modifySymbol(symbolJSON) {
+					var symbol = JOSN.parse(symbolJSON)
+					var that = this;
+					for (var i = 0; i < that.options.length; i++) {
+						var famiy = that.options[i];
+						if (family.id == symbol.FamilyId) {
+							for (var j = 0; j < family.items.length; j++)
+								if (famiy.items[j].Id == symbol.Id) {
+									family.items[j] = symbol;
+									return
+								}
+						}
+					}
+				},
+
 				submitData(obj,status) {
 					var that = this;
 					// console.log(obj)
@@ -169,6 +199,7 @@
 						alert('增加成功')
 					}
 				},
+
 				submit() {
 					var that = this;
 
@@ -185,6 +216,7 @@
 					}
 				}
 			},
+			
 			computed:{
 				items() {
 					var items = [] ,selectedValue = this.$data.selected;

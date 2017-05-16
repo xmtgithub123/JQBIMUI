@@ -15,7 +15,7 @@
 				<div class="flex">
 					<div class="item_select_2" id="select_zu">
 						<span>结构柱族&nbsp;</span>
-						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+						<select name="" id=""  v-model="selectedFamilyName" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
 							<option v-for="option in options">
 								{{option.value}}
 							</option>
@@ -45,18 +45,19 @@
 						<p>新增族类型</p>
 						<div class="form-group">
 							<span>名字&nbsp;&nbsp;</span>
-							<input type="text" v-model="input_add_name" class="form-control input-sm">
+							<input type="text" v-model="inputSymbolName" class="form-control input-sm">
 						</div>
 						<div class="form-group">
-							<span>长度&nbsp;&nbsp;</span>
-							<input type="text" v-model="input_add_width"  class="form-control input-sm">
+							<span>b&nbsp;&nbsp;</span>
+							<input type="text" v-model="inputB"  class="form-control input-sm">
 						</div>
 						<div class="form-group">
-							<span>宽度&nbsp;&nbsp;</span>
-							<input type="text" v-model="input_add_height"  class="form-control input-sm">
+							<span>h&nbsp;&nbsp;</span>
+							<input type="text" v-model="inputH"  class="form-control input-sm">
 						</div>
 						<div class="clearfix">
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="modifySymbol" v-cloak>修改</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="addSymbol" v-cloak>增加</button>
 						</div>
 					</div>
 					<div style="margin-top:10px;">
@@ -67,7 +68,7 @@
 			</div>
 			<div class="row box_footer">
 				<div class="col-md-12">
-					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="submit" >确定</button>
+					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="place" >确定</button>
 				</div>
 			</div>
 		</div>
@@ -78,25 +79,26 @@
 	<script src="../public/javascripts/vue.js"></script>
 	<script src="../public/javascripts/vue-resource.min.js"></script>
 	<script>
-		new Vue ({
+		var vue = new Vue ({
 			el:'#win_hook',
 			data:{
 				objs:[],
 				options:[],
 				lists:[],
-				selected:'',//设置族
+				//selectedFamilyId:0,
+				selectedFamilyName:'',//设置族
 				selected_type:'',//设置族类型
 				selected_symbol: {},  //选中的族类型对象
-				selected_bz_type:'框选轴网',//设置布置类型
-				type_options:[  //布置类型选项
+				selected_bz_type: '框选轴网',//设置布置类型
+				type_options: [  //布置类型选项
 					{value:'框选轴网'},
 					{value:'多选轴网'}
 				],
 				input_dbg:'', //设置低标高
 
-				input_add_name:'',//新增类型 名字
-				input_add_width:'',//新增类型 长度
-				input_add_height:'',//新增类型 宽度
+				inputSymbolName:'', //族类型
+				inputB:'', //柱子的b
+				inputH:'', //柱子的h
 				offset_x:'0',//偏移 x
 				offset_y:'0',//偏移 y
 				isDanger:false,
@@ -120,6 +122,7 @@
 			},
 
 			methods: {
+				//加载族，族类型信息
 				loadRes(res) {
 					var that = this;
 
@@ -129,72 +132,136 @@
 						var symbolData = data[i].Symbol;
 						var list = [];
 						for (var j = 0 ;j < symbolData.length; j++) {
-							list.push(data[i].Symbol[j])
+							var symbol = symbolData[j];
+							symbol.FamilyId = data[i].Id;
+							list.push(symbol)
 							// console.log(list[j])
 						}
-						that.options.push({value:data[i].Name,items:list})
+						that.options.push({id:data[i].Id, value:data[i].Name, items:list})
 					}
 
 					if (that.options.length > 0) {
-						that.selected = that.options[0].value
+						that.selectedFamilyName = that.options[0].value
 					}
 				},
 
+				//添加族类型回调，用于刷新界面
+				addSymbolCallback(symbolJSON) {
+					//console.log('addSymbol:')
+					//console.log(symbolJSON)
+					var symbol = JSON.parse(symbolJSON)
+					var that = this;
+					for (var i = 0; i < that.options.length; i++) {
+						console.log(that.options[i].id + '==' + symbol.FamilyId)
+						if (that.options[i].id == symbol.FamilyId) {
+							that.options[i].items.push(symbol)
+							that.selected_type = symbol.类型名称
+							that.selected_symbol = symbol;
+							that.inputSymbolName = symbol.类型名称;
+							that.inputB = symbol.b;
+							that.inputH = symbol.h;
+							break;
+						}
+					}
+				},
+
+				//添加族类型
+				addSymbol() {
+					var that = this;
+					if (window.JQ) {
+						var info = {
+							EventName: "JQFamily",
+							Operation: "add",
+							Name: that.inputSymbolName,
+							b: that.inputB,
+							h: that.inputH,
+							SymbolId: that.selected_symbol.Id,
+							Callback: "vue.addSymbolCallback"
+						}
+						console.log(info)
+						JQ.raiseEvent(JSON.stringify(info));
+					}
+				},
+
+				//修改族类型回调，用于刷新界面
+				modifySymbolCallback(symbolJSON) {
+					var symbol = JOSN.parse(symbolJSON)
+					var that = this;
+					for (var i = 0; i < that.options.length; i++) {
+						var famiy = that.options[i];
+						if (family.id == symbol.FamilyId) {
+							for (var j = 0; j < family.items.length; j++)
+								if (famiy.items[j].Id == symbol.Id) {
+									family.items[j] = symbol;
+									return
+								}
+						}
+					}
+				},
+
+				//修改族类型
+				modifySymbol() {
+					var that = this;
+					if (window.JQ) {
+						var info = {
+							EventName: "JQFamily",
+							Name: that.inputSymbolName,
+							b: that.inputB,
+							h: that.inputH,
+							SymbolId: that.selected_symbol.Id,
+							Callback: "vue.modifySymbolCallback"
+						}
+						console.log(info)
+						JQ.raiseEvent(JSON.stringify(info));
+					}
+				},
+
+				//选中族类型
 				clickItems(obj) {
 					this.status = true;
 					// console.log(obj)	
 					var that = this;
 					that.selected_symbol = obj;
-					that.input_add_name = obj.类型名称;
-					that.input_add_width = obj.b;
-					that.input_add_height = obj.h;					
+					that.inputSymbolName = obj.类型名称;
+					that.inputB = obj.b;
+					that.inputH = obj.h;
 				},
 
-				submitData(obj,status) {
-					var that = this;
-					// console.log(obj)
-					if(status) {
-						console.log("=====获取修改数据api======")
-						that.input_add_name = '';
-						that.input_add_width = '';
-						that.input_add_height ='';
-						alert('修改成功')
-					}
-					else{
-						console.log('======调用增加族类型api======')
-						that.$data.options.push({value:that.input_add_name,items:[that.input_add_width + '*'+ that.input_add_height]})
-						that.input_add_name = '';
-						that.input_add_width = '';
-						that.input_add_height ='';
-						alert('增加成功')
-					}
-				},
-				submit() {
+				//布置构件
+				place() {
 					var that = this;
 
-					var info = {};
-					info.OffsetX = that.offset_x;
-					info.OffsetY = that.offset_y;
-					info.FamilyName = that.selected_symbol.族名称
-					info.SymbolName = that.input_add_name;
-					info.SymbolId = that.selected_symbol.Id
-					info.PlaceType = that.selected_bz_type;
+					var info = {
+						EventName: "PlaceColumn",
+						OffsetX: that.offset_x,
+						OffsetY: that.offset_y,
+						FamilyName: that.selected_symbol.族名称,
+						SymbolName: that.selected_symbol.类型名称,
+						SymbolId: that.selected_symbol.Id,
+						PlaceType: that.selected_bz_type
+					};
+					
 					console.log(info);
 					if (window.JQ) {
-						JQ.clickOK(JSON.stringify(info));
+						//JQ.clickOK(JSON.stringify(info));
+						JQ.raiseEvent(JSON.stringify(info));
 					}
 				}
 			},
 
 			computed:{
+				//获取族类型
 				items() {
-					var items = [] ,selectedValue = this.$data.selected;
-					this.$data.options.forEach(function(e){
-						if(e.value == selectedValue) {
-							items = e.items;
+					var data = this.$data;
+					var selectedFamilyName = data.selectedFamilyName;
+					for (var i = 0; i < data.options.length; i++) {
+						//console.log(data.options[i])
+						if (data.options[i].value == selectedFamilyName) {
+							return data.options[i].items
 						}
-					});
-					return items;
+					}
+
+					return []
 				}
 			}	
 		})
