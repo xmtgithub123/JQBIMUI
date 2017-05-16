@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>编辑标高</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="bg-box">
+      			<div class="table-height">
+					<table class="table table-bordered text-center">
+						  <col class="col-xs-4">
+						  <col class="col-xs-4">
+						  <col class="col-xs-4">
+						  <thead>
+						  	<tr>
+						 	<td>高度（M）</td>
+						    <td>名称</td>
+						    <td></td>
+						  </tr>
+						  </thead>
+					  	<tbody>
+						  	<tr v-for="list in trList">
+							    <td>{{list.height}}</td>
+							    <td>{{list.name}}</td>
+							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)">x</button></td>
+							</tr>
+							<tr  @change="tr_changeEvent()">
+								<td><input style="height:25px;text-align: center" v-model="input_height"></td>
+							    <td><input style="height:25px;text-align: center" v-model="input_height"></td>
+							    <td></td>
+							</tr>
+					  </tbody>
+					</table>
+				</div>
+				<div class="bg-footer">
+					<button class="btn btn-default btn-bim btn-sm" @click="changeAll">统一偏移</button>
+					<input type="text" placeholder="0.0" v-model="changeValue"> M
+					<br>
+					<button class="btn btn-primary btn-bim btn-sm">确定</button>
+				</div>
+      		</div>
+	    </div>
+	</div>
+				
+
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+				input_height:'',  //input框双向绑定
+				trList:[], //tr 循环遍历
+				changeValue:'', // input 统一偏移
+
+			},
+			methods:{
+				//input框如果发生改变则向trList[]添加数组
+				tr_changeEvent() {
+					if(/^[0-9]+.?[0-9]*$/.test(this.input_height) == false) {
+						alert('请输入数字')
+						this.input_height = ''
+					}
+					else {
+						var x = this.input_height;
+						this.trList.push({height:this.toDecimal(x),name:this.toDecimal(x)+'M'})
+						this.input_height = ''
+					}
+				},
+				toDecimal(x) {
+					var f = parseFloat(x)
+					var f = Math.round(x*100)/100;
+					var s = f.toString();
+					var rs = s.indexOf('.');
+					if(rs < 0) {
+						rs = s.length;
+						s+= '.'
+					}
+					while(s.length <= rs+2) {
+						s +='0'
+					}
+					return s;
+				},
+				//点击删除按钮，删除指定一行
+				removeTr(e) {
+					// console.log(e)
+					var index = e.$index;
+					this.trList.splice(index,1)
+				},
+				//统一偏移
+				changeAll() {
+					this.changeValue = this.toDecimal(this.changeValue)
+
+					if (this.trList.length == 0) {
+						alert("请先增加标高")
+					}
+					else if(this.changeValue==''){
+						alert('请输入偏移值')
+					}
+					else {
+						var that = this;
+						this.trList.forEach(function(e,i) {
+							e.height = that.toDecimal(parseFloat(e.height) + parseFloat(that.changeValue))
+							e.name = that.toDecimal(e.height)+'M'
+						})
+						this.changeValue = ''
+					}
+				}
+			}
+		})
+	</script>
+</body>
+</html>

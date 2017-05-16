@@ -183,3 +183,53 @@ h4 {
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
   vertical-align: middle;
 }
+
+
+/*编辑标高*/
+.bg-box {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  width:600px;
+  border:1px solid #dbdbdb;
+  padding:15px;
+  height: 500px;
+}
+.bg-box .bg-footer {
+  text-align: right;
+}
+.bg-box .bg-footer input {
+  margin-left:15px;
+  width:100px;
+  height:30px;
+  
+}
+
+
+/*创建图纸*/
+.tz-box {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  width:900px;
+  border:1px solid #dbdbdb;
+  padding:15px;
+  height: 500px;
+}
+
+select.input-xs {
+  height:25px;
+  line-height:25px;
+  padding:2px 10px;
+}
+.input-border {
+  border:initial; 
+}
+.input-noborder {
+  border:none;
+}
+.tz-footer {
+  text-align: right;
+}

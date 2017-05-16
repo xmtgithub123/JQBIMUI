@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>创建图纸</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="tz-box">
+      			<div class="table-wrap">
+					<table class="table table-bordered">
+						  <col class="col-xs-2">
+						  <col class="col-xs-6">
+						  <col class="col-xs-3">
+						  <col class="col-xs-1">
+						  <thead>
+						  	<tr>
+						 	<th>图框</th>
+						    <th>视图</th>
+						    <th>图名</th>
+						    <th></th>
+						  </tr>
+						  </thead>
+					  	<tbody>
+						  	<tr>
+							    <td>
+							    	<select name="" id="" class="form-control input-sm">
+										<option>1</option>
+										<option>2</option>
+									</select>
+							    </td>
+							    <td>
+							    	<table class="table table-bordered text-center">
+										  <col class="col-xs-4">
+										  <col class="col-xs-4">
+										  <col class="col-xs-4">
+										  <thead>
+										  	<tr>
+										 	<td>名称</td>
+										    <td>比例</td>
+										    <td></td>
+										  </tr>
+										  </thead>
+									  	<tbody>
+										  	<tr>
+											    <td>0.0M建筑平面</td>
+											    <td>1：
+												    <select name="" id="" class="input-xs">
+														<option>1</option>
+														<option>2</option>
+													</select>
+												</td>
+											    <td><button class="btn btn-default btn-sm" style="width:80px;"> X </button></td>
+											</tr>
+											<tr>
+												<td><input class="input-noborder" style="height:25px;width:100%;"></td>
+											    <td><input class="input-noborder"  style="height:25px;width:100%;"></td>
+											    <td><input class="input-noborder"  style="height:25px;width:100%;"></td>
+											</tr>
+									  </tbody>
+									</table>
+							    </td>
+							    <td>
+							    	<input type="text" class="form-control input-sm" placeholder="0.0M建筑平面">
+							    </td>
+							    <td><button class="btn btn-default btn-sm" style="width:80px;"> X </button></td>
+							</tr>
+							
+					  </tbody>
+					</table>
+					<button class="btn btn-success btn-bim btn-sm pull-right">新增图纸</button>
+				</div>
+				<div class="tz-footer">
+					
+					<button class="btn btn-primary btn-bim btn-sm">确定</button>
+				</div>
+      		</div>
+	    </div>
+	</div>
+				
+
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	
+</body>
+</html>
