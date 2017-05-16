@@ -38,7 +38,7 @@
 				  	</div>
 				  	<div class="form-group">
 				    	<div class="col-sm-offset-3 col-sm-9">
-				      	<button  class="btn btn-primary" @click="submitForm('ruleLogin')">{{ status ? '正在登录中...' : '登录'}}</button>
+				      	<button  class="btn btn-primary" @click="login()">{{ status ? '正在登录中...' : '登录'}}</button>
 				    	</div>
 				  	</div>
 					</div>
@@ -57,8 +57,8 @@
 				        <table class="table table-hover" id="project">
 				        	<colgroup>
 				        		<col class="col-xs-1">
-							  	<col class="col-xs-1">
-							  	<col class="col-xs-10">
+							  	<col class="col-xs-2">
+							  	<col class="col-xs-9">
 							 </colgroup>
 					        <thead>
 					          <tr>
@@ -142,15 +142,26 @@
 				checkedNames:[], //复选框
 				checkAll:false
 			},
+
+			created() {
+				//自动登陆
+				this.ruleLogin.username = localStorage.getItem('JQUser');
+				this.ruleLogin.pass = localStorage.getItem('JQPassword');
+				if (this.ruleLogin.username != null && this.ruleLogin.username != ''
+				    && this.ruleLogin.pass != null && this.ruleLogin.pass != '') {
+					this.login()
+				}
+			},
+
 			methods:{
-				submitForm(formName) {
+				login() {
 					if(this.status) return
 					var that = this;
-					var postData = {
+					/*var postData = {
 						command:"gettask",
 						a:that.ruleLogin.username,
 						p:md5(that.ruleLogin.pass) //md5密码加密
-					}
+					}*/
 					$.ajax({
 						url:'http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process',
 						type:'POST',
@@ -160,6 +171,10 @@
 							p:md5(that.ruleLogin.pass)
 						},
 						success:function(res) {
+							//保存用户名密码
+							localStorage.setItem('JQUser', that.ruleLogin.username)
+							localStorage.setItem('JQPassword', that.ruleLogin.pass)
+
 							var obj = JSON.parse(res)
 							that.isLogin = true;  //如果登录验证成功，则登录模块消失
 							console.log(obj)
@@ -176,6 +191,7 @@
 						}
 					})
 				},
+
 				clickItems(obj){
 					var that = this;
 					this.trItem = obj
@@ -186,6 +202,7 @@
 						}
 					}
 				},
+
 				checkedAll() { //全选 或 反选
 					var that = this;
 					var checkedNames = [];
@@ -197,6 +214,7 @@
 					that.checkedNames = checkedNames;
 
 				},
+
 				loadSheets() {
 					var that = this;
 					JQ.getSheets().then(function(res) {
