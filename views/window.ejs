@@ -181,7 +181,11 @@
 					//info.OffsetY = that.offset_y;
 					info.FamilyName = that.selected_symbol.族名称
 					info.SymbolName = that.input_add_name;
+// <<<<<<< HEAD
+// 					info.SymbolId = that.selected_type.Id;
+// =======
 					info.SymbolId = that.selected_symbol.Id
+// >>>>>>> 9c6fe453bef7ecf46c0ff8f820e1ea9a360724ce
 					info.PlaceType = that.selected_bz_type;
 					console.log(info);
 					if (window.JQ) {
@@ -189,15 +193,15 @@
 					}
 				}
 			},
-			computed:{
+			computed:{   //vue 的计算属性
 				items() {
-					var items = [] ,selectedValue = this.$data.selected;
-					this.$data.options.forEach(function(e){
-						if(e.value == selectedValue) {
-							items = e.items;
+					var items = [] ,selectedValue = this.$data.selected; //将选中 族 赋值
+					this.$data.options.forEach(function(e){  //族 选择框 中的 数值 遍历
+						if(e.value == selectedValue) {  //如果 选中选择框中的某值 == 前选中的 族的 值
+							items = e.items; //将选中的 items 赋值给新的items
 						}
 					});
-					return items;
+					return items;	//返回 items
 				}
 			}	
 		})
