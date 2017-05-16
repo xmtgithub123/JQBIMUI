@@ -14,7 +14,7 @@
 	         	<div flex="box:mean">
 	         		<div class="flex">
 						<div class="item_1 item_border">
-							<canvas id='grid' />
+							<canvas id='grid'  width='270' height='270' />
 						</div>
 						<div class="item_select_1">
 							<span>插入基点&nbsp;</span>
@@ -336,6 +336,7 @@
 					that.drawGrid()
 				},
 
+				//轴网预览
 				drawGrid() {
 					var that = this;
 					var canvas = document.getElementById("grid");
@@ -346,12 +347,16 @@
 					var gridWidth = that.gridInfos.HorLength - that.gridInfos.OffsetX * 2;
 					var gridHeight = that.gridInfos.VerLength - that.gridInfos.OffsetY * 2;
 					var scale = Math.min(canvas.width / gridWidth, canvas.height / gridHeight);
+					//console.log('grid width=' + gridWidth + ' height=' + gridHeight + ' scale=' + scale
+					//            + ' canvas width=' + canvas.width + ' height=' + canvas.height)
+					cxt.save()
+					cxt.translate((canvas.width - gridWidth * scale) / 2, (canvas.height - gridHeight * scale) / 2)
 
 					var dist = 0
 					cxt.beginPath()
 					that.gridInfos.Hor.forEach(function(line) {
 						dist += line.Dist;
-						var y = (dist - that.gridInfos.OffsetY)
+						var y = gridHeight - (dist - that.gridInfos.OffsetY)
 						cxt.moveTo(0, y * scale)
 						cxt.lineTo(gridWidth * scale, y * scale)
 					})
@@ -364,8 +369,10 @@
 						cxt.lineTo(x * scale, gridHeight * scale)
 					})
 
-					cxt.stroke();
 					cxt.closePath()
+					cxt.stroke();
+					
+					cxt.restore()
 				},
 
 				onClickOk() {

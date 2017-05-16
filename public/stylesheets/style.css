@@ -18,7 +18,7 @@ body {
 
 }
 .body-wrap {
-  padding:15px;
+  padding:0;
   position: relative;
 }
 [v-cloak] {
@@ -165,7 +165,7 @@ h4 {
   padding:0 5px;
 }
 .panel-wrap {
-  min-width:760px !important;
+  min-width:400px !important;
   overflow-x:auto !important;
   border:1px solid #ccc;
 }
@@ -176,7 +176,6 @@ h4 {
 
 /*项目信息、图纸列表 设定 高度*/
 .panel_body {
-    max-height: 150px;
     overflow-y: auto;
 }
 

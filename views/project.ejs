@@ -2,30 +2,35 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>提交图纸</title>
+	<title>设置项目信息</title>
 	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
 	<style type="text/css">
 		.body-wrap {
+			margin: 0;
+			padding: 0;
 			height: 100%;
+		}
+
+		#loginPanal {
+			height: 100%;
+			width: 100%;
     		display: flex;
    			align-items: center;
-		}
-		.checkbox{
-			margin:5px 0;
+			justify-content: center;
 		}
 
 	</style>
 </head>
 <body>
 	<div class="body-wrap">
-		<div class="container" v-if="!isLogin">
+		<div class="container"  id="loginPanal" v-if="!isLogin">
 			<div class="row">
-				<div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
+				<div class="col-sm-12">
 					<div class="form-horizontal form-wrap">
 						<h2 class="text-center">登 录</h2>
 				  	<div class="form-group">
-				    	<label for="inputEmail3" class="col-sm-3 control-label">用户名</label>
+				    	<label for="inputEmail3" class="col-sm-3 control-label">用户</label>
 				    	<div class="col-sm-7">
 				      	<input type="text" class="form-control" id="inputEmail3" placeholder="用户名" v-model="ruleLogin.username" >
 				    	</div>
@@ -38,7 +43,7 @@
 				  	</div>
 				  	<div class="form-group">
 				    	<div class="col-sm-offset-3 col-sm-9">
-				      	<button  class="btn btn-primary" @click="submitForm('ruleLogin')">{{ status ? '正在登录中...' : '登录'}}</button>
+				      	<button  class="btn btn-primary" @click="login()">{{ status ? '正在登录中...' : '登录'}}</button>
 				    	</div>
 				  	</div>
 					</div>
@@ -46,20 +51,20 @@
 			</div>
 		</div>
 
-		<div class="container" v-else>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="panel-wrap panel panel-primary">
+		<div class="container" style="height:100%;" v-else>
+			<div class="row" style="height:100%;">
+				<div class="col-md-12" style="height:100%;">
+					<div class="panel-wrap panel panel-primary" style="height:90%;">
 				      <div class="panel-heading">
 				        <h3 class="panel-title">项目信息</h3>
 				      </div>
-				      <div class="panel_body">
+				      <div class="panel_body" style="max-height:90%">
 				        <table class="table table-hover" id="project">
 				        	<colgroup>
 				        		<col class="col-xs-1">
-							  	<col class="col-xs-1">
-							  	<col class="col-xs-10">
-							 </colgroup>
+							  		<col class="col-xs-2">
+							  		<col class="col-xs-10">
+							 		</colgroup>
 					        <thead>
 					          <tr>
 					            <th>序号</th>
@@ -81,32 +86,7 @@
 					      <!-- <span>checked name :{{checkedNames[0]}}</span> -->
 				      </div>
 				    </div>
-				    <div class="panel-wrap panel panel-primary">
-				      <div class="panel-heading">
-				        <h3 class="panel-title">图纸列表</h3>
-				      </div>
-				      <div class="panel_body">
-				        <table class="table">
-				        	<colgroup>
-				        		<col class="col-xs-1">
-							  	<col class="col-xs-10">
-							
-							 </colgroup>
-					        <thead>
-					          <tr>
-					            <th><input type="checkbox" name="" v-model="checkAll" value="" @click='checkedAll()'></th>
-					            <th>图纸名称</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-					          <tr v-for="item in sheetsList">
-					            <td><input type="checkbox" name="" v-model="checkedNames" value="{{item.name}}" checked=""></td>
-					            <td>{{item.name}}</td>
-					          </tr>
-					        </tbody>
-					      </table>
-				      </div>
-				    </div>
+
 				    <div class="button-wrap pull-right">
 				    	<button class="btn btn-primary" @click="onClickOk">确定</button>
 				    	<button class="btn btn-default" @click="onClickCancel">取消</button>
@@ -134,25 +114,34 @@
 					pass:''
 				},
 				tableList:[], //项目信息列表
-				result:{
+				/*result:{
 					url:"http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process",
 					sheets:'',
-					taskInfo:'',
+					taskInfo:,
 					empId:''
-				},
-				sheetsList:[], //图纸列表
-				checkedNames:[], //复选框
-				checkAll:false
+				},*/
+				//sheetsList:[], //图纸列表
+				//checkedNames:[], //复选框
+				//checkAll:false
+				projectInfo:{}
 			},
+
+			created() {
+				//自动登陆
+				this.ruleLogin.username = localStorage.getItem('JQUser');
+				this.ruleLogin.pass = localStorage.getItem('JQPassword');
+				if (this.ruleLogin.username != null && this.ruleLogin.username != ''
+				    && this.ruleLogin.pass != null && this.ruleLogin.pass != '') {
+					this.login()
+				}
+			},
+
 			methods:{
-				submitForm(formName) {
-					if(this.status) return
-					var that = this;
-					var postData = {
-						command:"gettask",
-						a:that.ruleLogin.username,
-						p:md5(that.ruleLogin.pass)
+				login() {
+					if (this.status) {
+						return
 					}
+					var that = this;
 					$.ajax({
 						url:'http://192.168.0.11/JQWebMVC/Design/GCADAPI/Process',
 						type:'POST',
@@ -162,23 +151,28 @@
 							p:md5(that.ruleLogin.pass)
 						},
 						success:function(res) {
+							//保存用户名密码
+							localStorage.setItem('JQUser', that.ruleLogin.username)
+							localStorage.setItem('JQPassword', that.ruleLogin.pass)
+
 							var obj = JSON.parse(res)
 							that.isLogin = true;
 							console.log(obj)
 							var data = obj.data;
 							that.resData = data;
 							data.forEach(function(e,i) {
-								that.tableList.push({TaskEmpID:e.TaskEmpID,TaskID:e.TaskID,TaskName:e.TaskName})
+								that.tableList.push({TaskEmpID:e.TaskEmpID, TaskID:e.TaskID, TaskName:e.TaskName})
 							})
-							that.result.empId = obj.empid;
-							that.loadSheets();
+							//that.result.empId = obj.empid;
+							//that.loadSheets();
 						},
-						error:function(error){
+						error:function(error) {
 							console.log('error')
 						}
 					})
 				},
-				clickItems(obj){
+
+				clickItems(obj) {
 					var that = this;
 					this.trItem = obj
 					// console.log(obj)
@@ -186,11 +180,18 @@
 					for(var i = 0 ;i<that.resData.length;i++) {
 						if(that.resData[i].TaskID == obj.TaskID) {
 							console.log(JSON.stringify(that.resData[i]))
-							that.result.taskInfo = JSON.stringify(that.resData[i])
+							//that.result.taskInfo = JSON.stringify(that.resData[i])
+							var taskInfo = that.resData[i].TaskName
+							var start = taskInfo.indexOf("[")
+							var mid = taskInfo.indexOf("]")
+							var end = taskInfo.indexOf(" >")
+							that.projectInfo.项目编号 = taskInfo.substring(start + 1, mid)
+							that.projectInfo.项目名称 = taskInfo.substring(mid + 1, end)
+							console.log(that.projectInfo)
 						}
 					}
 				},
-				checkedAll() { //全选 或 反选
+				/*checkedAll() { //全选 或 反选
 					var that = this;
 
 					var checkedNames = [];
@@ -213,39 +214,35 @@
 							that.sheetsList.push({name:e})
 						})
 					});
-				},
+				},*/
 
-				onClickOk(){
-					//console.log(this.checkedNames.toString()) //打印出选中的行并转为字符串
-					var that = this;
-					this.checkedNames.forEach(function(name) {
-						that.result.sheets += name;
-					})
-					//console.log(JSON.stringify(this.result))
+				onClickOk() {
 					if (window.JQ) {
-						JQ.clickOK(JSON.stringify(this.result));
+						JQ.clickOK(JSON.stringify(this.projectInfo));
 					}
 				},
+
 				onClickCancel() {
 					if (window.JQ) {
 						JQ.clickCancel();
-					}	
-				}
-			},
-			watch:{
-				'checkedNames':function(){
-					var that = this;
-					if(this.sheetsList.length === this.checkedNames.length) {
-						that.checkAll = true;
 					}
-					else{
+				}
+			}
+
+			/*watch:{
+				'checkedNames':function() {
+					var that = this;
+					if (this.sheetsList.length === this.checkedNames.length) {
+						that.checkAll = true;
+					} else {
 						that.checkAll = false;
 					}
 				},
+
 				checkAll(yes) {
 					this.checkAll = yes;
 				}
-			}	
+			}	*/
 		})
 
 	</script>
