@@ -41,7 +41,7 @@
 					<button class="btn btn-default btn-bim btn-sm" @click="changeAll">统一偏移</button>
 					<input type="text" placeholder="0.0" v-model="changeValue"> M
 					<br>
-					<button class="btn btn-primary btn-bim btn-sm">确定</button>
+					<button class="btn btn-primary btn-bim btn-sm" @click="onOK">确定</button>
 				</div>
       		</div>
 	    </div>
@@ -57,7 +57,6 @@
 				input_height:'',  //input框双向绑定
 				trList:[], //tr 循环遍历
 				changeValue:'', // input 统一偏移
-
 			},
 
 			created() {
@@ -74,7 +73,7 @@
 					var that = this;
 					var levels = JSON.parse(infos);
 					levels.forEach((e, i) => {
-						that.trList.push({height:e.Elevation, name:e.Name})
+						that.trList.push({height:e.Elevation / 1000, name:e.Name})
 					})
 				},
 
@@ -86,50 +85,64 @@
 					}
 					else {
 						var x = this.input_height;
-						this.trList.push({height:this.toDecimal(x),name:this.toDecimal(x)+'M'})
+						this.trList.push({height:x, name:x+'M'})
 						this.input_height = ''
 					}
 				},
 
-				toDecimal(x) {
+				/*toDecimal(x) {
 					var f = parseFloat(x)
-					var f = Math.round(x*100)/100;
+					var f = Math.round(x*100) / 100;
 					var s = f.toString();
 					var rs = s.indexOf('.');
-					if(rs < 0) {
+					if (rs < 0) {
 						rs = s.length;
-						s+= '.'
+						s += '.'
 					}
-					while(s.length <= rs+2) {
+					while (s.length <= rs+2) {
 						s +='0'
 					}
 					return s;
-				},
+				},*/
 
 				//点击删除按钮，删除指定一行
 				removeTr(e) {
 					// console.log(e)
 					var index = e.$index;
-					this.trList.splice(index,1)
+					this.trList.splice(index, 1)
 				},
 
 				//统一偏移
 				changeAll() {
-					this.changeValue = this.toDecimal(this.changeValue)
-
 					if (this.trList.length == 0) {
 						alert("请先增加标高")
 					}
-					else if(this.changeValue==''){
-						alert('请输入偏移值')
-					}
-					else {
+
+					if (/^[0-9]+.?[0-9]*$/.test(this.changeValue) == false) {
+						alert('请输入数字')
+						this.changeValue = ''
+					} else {
 						var that = this;
-						this.trList.forEach(function(e,i) {
-							e.height = that.toDecimal(parseFloat(e.height) + parseFloat(that.changeValue))
-							e.name = that.toDecimal(e.height)+'M'
+						this.trList.forEach(function(e, i) {
+							e.height = parseFloat(e.height) + parseFloat(that.changeValue)
+							e.name = e.height + 'M'
 						})
 						this.changeValue = ''
+					}
+				},
+
+				onOK() {
+					var infos = [];
+					var that = this;
+					this.trList.forEach(function(element) {
+						var info = {
+							Elevation: element.height * 1000,
+							Name: element.name
+						}
+						infos.push(info)
+					});
+					if (window.JQ) {
+						JQ.clickOK(JSON.stringify(infos))
 					}
 				}
 			}
