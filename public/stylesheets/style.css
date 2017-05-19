@@ -17,6 +17,15 @@ body {
   -webkit-box-sizing: border-box;
 
 }
+a{
+  color:#474747;
+}
+a,a:hover,a:link{
+  text-decoration: none;
+}
+.dl {
+  display: inline-block;
+}
 .body-wrap {
   padding:0;
   position: relative;
@@ -29,6 +38,12 @@ h4 {
 }
 .m-0 {
   margin:0 !important;
+}
+.mt-15 {
+  margin-top:15px;
+}
+.mt-30 {
+  margin-top:30px;
 }
 .p-5 {
   padding:5px;
@@ -215,7 +230,7 @@ h4 {
   width:900px;
   border:1px solid #dbdbdb;
   padding:15px;
-  height: 500px;
+  /*height: 500px;*/
 }
 
 select.input-xs {
@@ -231,4 +246,104 @@ select.input-xs {
 }
 .tz-footer {
   text-align: right;
+}
+
+
+.modal li {
+  list-style: none;
+  text-align: left;
+}
+.modal-body label {
+  font-size:16px;
+}
+
+
+.proportion-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.proportion-box .input-group {
+  width:60%;
+}
+.proportion-box .input-group .dropdown-menu {
+  min-width: 0;
+}
+
+
+/*项目信息*/
+.case-well {
+  margin-left:20px;
+}
+
+
+
+/*校审意见*/
+.modal-body-title{
+  display: flex;
+  justify-content: space-between;
+  border:1px solid #dbdbdb;
+}
+.modal-body-title-l,.modal-body-title-r{
+  width:50%
+}
+.modal-body-title-l {
+  padding:15px;
+}
+.modal-body-title-r img {
+  width:100%;
+}
+.modal-body-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:15px 10px;
+}
+
+.tizi-checkbox label {
+  margin-left: 15px;
+}
+
+
+/*插入电气柜*/
+.bg-box-0 {
+  
+  width:600px;
+  border:1px solid #dbdbdb;
+  padding:15px;
+  height: 500px;
+}
+.bg-box-b {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.form-box-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.form-box-group .group-item .checkbox {
+  display: inline-block;
+}
+.form-box-group .group-item select {
+  margin-left:15px;
+}
+.panel-body-wrap {
+      max-height: 230px;
+    overflow: auto;
+}
+.panel-body-wrap .table {
+  margin-bottom:0;
+}
+
+.modal-flex {
+  display: flex;
+  justify-content: space-between;
+}
+.span-flex {
+  display: flex;
+  align-items: center;
+  width:80px;
 }

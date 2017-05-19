@@ -24,7 +24,7 @@
 						  </tr>
 						  </thead>
 					  	<tbody>
-						  	<tr v-for="list in trList">
+						  	<tr v-for="list in trList" v-cloak>
 							    <td>{{list.height}}</td>
 							    <td>{{list.name}}</td>
 							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)">x</button></td>

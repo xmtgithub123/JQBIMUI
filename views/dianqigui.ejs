@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>插入电气柜</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <script src="/javascripts/jquery.treegrid.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.tree').treegrid();
+      });
+    </script>
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="bg-box-0">
+      			<h4>插入电气柜</h4>
+				<div class="bg-box-b">
+					<div class="form-box-group">
+	      				<div class="group-item">
+	      					<p>
+	      					<label class="radio-inline">
+							  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 横排
+							</label>
+		      				</p>
+		      				<p>
+		      					<label class="radio-inline">
+								  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 竖排
+								</label>
+		      				</p>
+	      				</div>
+	      				<div class="group-item">
+	      					朝向<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;">
+											<option>人员一</option>
+										  	<option>人员二</option>
+								      </select>
+	      				</div>
+	      				<div class="group-item">
+	      					<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value=""> 双排
+							  </label>
+							</div>
+							间距 <input type="text" class="form-control input-sm dl" style="width:100px;"> MM
+	      				</div>
+      				</div>
+	      			<div class="row mt-30" style="min-height:300px;">
+	      				<div class="col-sm-6 form-box-group-l">
+		      				<div class="panel panel-primary">
+  								<div class="panel-heading">第一排</div>
+  								<div class="panel-body-wrap">
+  									<table class="table table-bordered tree text-center">
+				      					<col class="col-xs-4">
+									  	<col class="col-xs-4">
+									  	<col class="col-xs-4">
+									  <thead>
+									  	<tr>
+										 	<td>柜子</td>
+										    <td>长</td>
+										    <td>宽</td>
+									  </tr>
+									  </thead>
+								  	<tbody>
+										<tr>
+											<td>
+												<select name="" id=""  class="form-control input-sm" v-cloak>
+													<option>出线柜</option>
+											  		<option>人员二</option>
+										        </select>
+											</td>
+											<td>1500</td>
+											<td>800</td>
+										</tr>
+										<tr>
+											<td>
+												<select name="" id=""  class="form-control input-sm" v-cloak>
+													<option>出线柜</option>
+											  		<option>人员二</option>
+										        </select>
+											</td>
+											<td>1500</td>
+											<td>800</td>
+										</tr>
+										<tr>
+											<td>
+												<select name="" id=""  class="form-control input-sm" v-cloak>
+													<option>出线柜</option>
+											  		<option>人员二</option>
+										        </select>
+											</td>
+											<td>1500</td>
+											<td>800</td>
+										</tr>
+								  </tbody>
+								</table>
+  								</div>
+		      			</div>
+		      			</div>
+		      			<div class="col-sm-6 form-box-group-l">
+		      				<div class="panel panel-primary">
+  								<div class="panel-heading">第二排</div>
+								<div class="panel-body-wrap">
+									<table class="table table-bordered tree text-center">
+				      					<col class="col-xs-4">
+									  	<col class="col-xs-4">
+									  	<col class="col-xs-4">
+										<thead>
+										  	<tr>
+											 	<td>柜子</td>
+											    <td>长</td>
+											    <td>宽</td>
+										  </tr>
+										</thead>
+								  	    <tbody>
+											<tr>
+												<td>
+													<select name="" id=""  class="form-control input-sm" v-cloak>
+														<option>出线柜</option>
+												  		<option>人员二</option>
+											        </select>
+												</td>
+												<td>1500</td>
+												<td>800</td>
+											</tr>
+											<tr>
+												<td>
+													<select name="" id=""  class="form-control input-sm" v-cloak>
+														<option>出线柜</option>
+												  		<option>人员二</option>
+											        </select>
+												</td>
+												<td>1500</td>
+												<td>800</td>
+											</tr>
+								  		</tbody>
+									</table>
+								</div>
+								</div>
+				      				
+	      				</div>
+      				</div>
+	      			<div class="form-box-group">
+	      				<div>
+	      					布置点：<select class="form-control input-sm dl" name="" id=""  style="width:200px;">
+									<option>出线柜</option>
+							  		<option>人员二</option>
+						        </select>
+	      				</div>
+						<button class="btn btn-primary ">确定</button>
+	      			</div>
+				</div>
+      			
+      		</div>
+	    </div>
+	</div>
+
+	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+
+	</script>
+	
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+				isToNext:true
+			},
+			methods:{
+
+			}
+		})
+	</script>
+</body>
+</html>

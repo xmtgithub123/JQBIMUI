@@ -26,65 +26,196 @@
 						  </tr>
 						  </thead>
 					  	<tbody>
-						  	<tr>
+						  	<tr v-for="(index,list) in FatherTrList">
 							    <td>
-							    	<select name="" id="" class="form-control input-sm">
-										<option>1</option>
-										<option>2</option>
+							    	<select name="" id="" class="form-control input-sm" v-model="list.picFrame" v-cloak>
+										<option value="" v-for="option in options">{{option.Name}}</option>
 									</select>
 							    </td>
 							    <td>
-							    	<table class="table table-bordered text-center">
+							    	<table class="table table-bordered" style="margin-bottom:0;">
 										  <col class="col-xs-4">
 										  <col class="col-xs-4">
 										  <col class="col-xs-4">
 										  <thead>
 										  	<tr>
-										 	<td>名称</td>
-										    <td>比例</td>
-										    <td></td>
+											 	<td>名称</td>
+											    <td>比例</td>
+											    <td></td>
 										  </tr>
 										  </thead>
 									  	<tbody>
-										  	<tr>
-											    <td>0.0M建筑平面</td>
-											    <td>1：
-												    <select name="" id="" class="input-xs">
-														<option>1</option>
-														<option>2</option>
-													</select>
-												</td>
-											    <td><button class="btn btn-default btn-sm" style="width:80px;"> X </button></td>
+										  	<tr v-for="(i,item) in list.view">
+
+											    <td>{{item.name}}</td>
+											    <td  class="text-center">
+											    	<div class="proportion-box">
+											    		<span>1：</span>
+												    	<div class="input-group">
+													      <input type="text" class="form-control input-sm" aria-label="..." v-model="item.proportion">
+													      <div class="input-group-btn">
+													        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+													        <ul class="dropdown-menu dropdown-menu-right">
+													          <li v-for="list in proportionList" @click="listConfirm(this)">
+													          	<a href="#">{{list}}</a>
+													          </li>
+													         
+													        </ul>
+													      </div><!-- /btn-group -->
+													    </div>
+											    	</div>
+											    </td>
+											    <td class="text-center"><button class="btn btn-default btn-xs" style="width:80px;" @click="removeView(this)">删除</button></td>
 											</tr>
-											<tr>
-												<td><input class="input-noborder" style="height:25px;width:100%;"></td>
-											    <td><input class="input-noborder"  style="height:25px;width:100%;"></td>
-											    <td><input class="input-noborder"  style="height:25px;width:100%;"></td>
+											<tr >
+												<td>
+													<input style="height:25px;" class="input-noborder text-center" data-toggle="modal" data-target="#myModal_{{$index}}">
+													<div class="modal fade" id="myModal_{{$index}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+													  <div class="modal-dialog modal-sm" role="document">
+													    <div class="modal-content">
+													      <div class="modal-header">
+													        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													        <h4 class="modal-title" id="myModalLabel">选择视图名称{{$index}}</h4>
+													      </div>
+													      <div class="modal-body">
+													         <ul>
+													         	<li v-for="list in name_options">
+													         		<div class="radio">
+													         			<label>
+													         				<input type="radio" :id="list.Id" :value="list.Name" v-model="picked">
+													         				{{list.Name}}
+													         			</label>
+													         		</div>  				
+													         	</li>
+													         </ul>
+													      </div>
+													      <div class="modal-footer">
+													        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+													        <button type="button" class="btn btn-primary" data-dismiss="modal"  @click="modelSubmit(list)">确定</button>
+													      </div>
+													    </div>
+													  </div>
+													</div>
+												</td>
+											    <td>
+												</td> 
+												<td>
+												</td> 
 											</tr>
 									  </tbody>
 									</table>
 							    </td>
 							    <td>
-							    	<input type="text" class="form-control input-sm" placeholder="0.0M建筑平面">
+							    	<input type="text" class="form-control input-sm" placeholder="0.0M建筑平面" v-model="list.tm">
 							    </td>
-							    <td><button class="btn btn-default btn-sm" style="width:80px;"> X </button></td>
+							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)"> X </button></td>
 							</tr>
 							
 					  </tbody>
 					</table>
-					<button class="btn btn-success btn-bim btn-sm pull-right">新增图纸</button>
+					<button class="btn btn-success btn-bim btn-sm pull-right" @click="addNewDrawings">新增图纸</button>
 				</div>
 				<div class="tz-footer">
 					
-					<button class="btn btn-primary btn-bim btn-sm">确定</button>
+					<button class="btn btn-primary btn-bim btn-sm" @click="submit">确定</button>
 				</div>
       		</div>
 	    </div>
 	</div>
-				
-
+			
+	<script src="/javascripts/jquery-1.11.1.min.js"></script>
 	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
-	
+	<script src="/javascripts/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+				FatherTrList:[
+					// {
+					// 	picFrame:'', 图框
+					// 	view:[{		  视图
+					// 		name:'',    名称
+					// 		proportion:'' 比例
+					// 	}],
+					// 	picName:'' //图名
+					// }
+				], //最外层tr循环
+				pic_selected:'' ,//图框selected
+				options:[], //图框selected options
+				name_selected:'',
+				name_options:[],
+				trList:[], //里层tr循环
+				per_selected:[] ,//比例selected
+				picked:'', //单选选择值
+				proportionList:['1','10','100'], //比例列表
+
+			},
+			created() {
+				var that = this;
+				that.$http.get('/javascripts/tz.json').then(function(res) {
+					var data = res.body
+					data.forEach(function(e,i) {
+						that.name_options.push({Name:data[i].Name})
+						that.FatherTrList.push({picFrame:'',view:[{name:data[i].Name,proportion:''}],picName:data[i].Name})
+					})
+				})
+
+				that.$http.get('/javascripts/type.json').then(function(res) {
+					var data = res.body
+					for(var i =0;i<data.length;i++) {
+						that.options.push({Name:data[i].Name})
+					}
+				})
+			},
+			methods:{
+				modelSubmit(e) { //视图名称点击Model框确认铵钮点击事件
+					console.log(e)
+					var that = this;
+					console.log(that.FatherTrList)
+					for(var i = 0;i<that.FatherTrList.length;i++) {
+						var view = that.FatherTrList[i].view
+						for(var j =0;j<view.length;j++) {
+							if(view[j].name == that.picked) {
+								view.splice(j,1)
+							}
+							// else{
+							// 	 break;
+							// }
+						}
+					}
+					e.view.push({name:this.picked,proportion:''})
+				},
+				listConfirm(e) { //比例选择事件
+					console.log(e)
+					e.item.proportion = e.list
+				},
+				removeView(e) { //删除视图
+					console.log(e)
+					var index = e.$index;
+					var arrobj = e.list.view
+					arrobj.splice(index,1)
+				},
+				removeTr(e) {  //删除事件
+					// console.log(e)
+					var index = e.$index;
+					this.FatherTrList.splice(index,1)
+				},
+				addNewDrawings() { //新增加图纸
+					this.FatherTrList.push({picName:'',view:[{name:'',proportion:''}],picName:''})
+					for(var i = this.FatherTrList.length-1;i<this.FatherTrList.length;i++) {
+						var view = this.FatherTrList[i].view;
+						for(var j = 0;j<view.length;j++) {
+							view.splice(j,1)
+						}
+					}
+				},
+				submit() { //确定提交事件
+					console.log("submit")
+					console.log(this.FatherTrList)
+				}
+			}
+		})
+	</script>
 </body>
 </html>

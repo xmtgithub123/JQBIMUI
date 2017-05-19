@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>项目信息</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <script src="/javascripts/jquery.treegrid.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.tree').treegrid({
+        	initialState:'collapsed'
+        });
+      });
+    </script>
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="bg-box">
+				 
+      			<div class="table-height-0">
+      			<h4>项目信息</h4>
+      			
+					<table class="table table-bordered tree">
+						  <col class="col-xs-4">
+						  <col class="col-xs-4">
+						  <col class="col-xs-4">
+						  <thead>
+						  	<tr>
+							 	<td>任务编号</td>
+							    <td>任务名称</td>
+							    <td>操作</td>
+						  </tr>
+						  </thead>
+					  	<tbody>
+							<tr class="treegrid-1">
+								<td>2345</td>
+								<td>测试工程</td>
+								<td>
+									<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModalNewAdd"><i class="glyphicon glyphicon-plus"></i> 新建</button>
+									<button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-log-in"></i> 导入</button>
+								</td> 
+							</tr>
+							<tr class="treegrid-2 treegrid-parent-1">
+								<td>建筑.rvt</td>
+								<td></td>
+								<td><button class="btn btn-default btn-sm" style="width:100px;">打开</button></td>
+							</tr>
+							<!-- <tr class="treegrid-3 treegrid-parent-1">
+								<td>Node 1-2</td><td>Additional info</td><td></td>
+							</tr>
+							<tr class="treegrid-4 treegrid-parent-3">
+								<td>Node 1-2-1</td><td>Additional info</td><td></td>
+							</tr> -->
+					  </tbody>
+					</table>
+				</div>
+      		</div>
+	    </div>
+	</div>
+	<div class="modal fade" id="myModalNewAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-sm" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">样板文件</h4>
+	      </div>
+	      <div class="modal-body">
+	         <select class="form-control">
+				  <option>建筑样板1</option>
+				  <option>建筑样板2</option>
+				  <option>建筑样板3</option>
+				  <option>建筑样板4</option>
+				  <option>建筑样板5</option>
+				</select>
+	      </div>
+	      <div class="modal-footer">
+	        
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+
+	</script>
+	
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+			},
+			methods:{
+				
+			}
+		})
+	</script>
+</body>
+</html>

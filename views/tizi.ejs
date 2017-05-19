@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>提资</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="bg-box">
+				 
+      			<div class="table-height-0">
+					<table class="table table-bordered tree mt-15">
+					  	<tbody>
+							<tr>
+								<td class="text-center">
+									提醒专业
+								</td>
+								<td>
+									<div class="checkbox tizi-checkbox">
+									  <label>
+									    <input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+									    建筑
+									  </label>
+									  <label>
+									    <input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+									    结构
+									  </label>
+									  <label>
+									    <input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+									    水暖
+									  </label>
+									  <label>
+									    <input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+									    电气一次
+									  </label>
+									  <label>
+									    <input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+									    电气二次
+									  </label>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="text-center">
+									关联计划
+								</td>
+								<td>
+									<select name="" id="" class="form-control input-sm dl" v-cloak style="width:200px;">
+										<option>人员一</option>
+									  	<option>人员二</option>
+							      </select>
+								</td>
+							</tr>
+					  </tbody>
+					</table>
+
+					<h4>资料</h4>
+					<div class="table-height">
+						<table class="table table-bordered tree mt-15 text-center">
+						  <col class="col-xs-11">
+						  <col class="col-xs-1">
+
+						<thead>
+							<tr>
+								<td>名称</td>
+								<td>操作</td>
+							</tr>
+						</thead>
+					  	<tbody>
+							<tr>
+								<td class="text-center">
+									建筑.rvt
+								</td>
+								<td>
+									<button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+								</td>
+							</tr>
+							<tr>
+								<td class="text-center">
+									地形图.jpg
+								</td>
+								<td>
+									<button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+								</td>
+							</tr>
+					  </tbody>
+					</table>
+					</div>
+					<div class="mt-30">
+						<button class="btn btn-primary pull-right">提交</button>
+					</div>
+					
+				</div>
+      		</div>
+	    </div>
+	</div>
+
+	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+
+	</script>
+	
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+				isToNext:true
+			},
+			methods:{
+
+			}
+		})
+	</script>
+</body>
+</html>
