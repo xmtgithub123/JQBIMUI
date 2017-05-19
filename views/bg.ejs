@@ -24,7 +24,7 @@
 						  </tr>
 						  </thead>
 					  	<tbody>
-						  	<tr v-for="list in trList">
+						  	<tr v-for="list in trList" v-cloak>
 							    <td>{{list.height}}</td>
 							    <td>{{list.name}}</td>
 							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)">x</button></td>
@@ -41,7 +41,7 @@
 					<button class="btn btn-default btn-bim btn-sm" @click="changeAll">统一偏移</button>
 					<input type="text" placeholder="0.0" v-model="changeValue"> M
 					<br>
-					<button class="btn btn-primary btn-bim btn-sm">确定</button>
+					<button class="btn btn-primary btn-bim btn-sm" @click="submit">确定</button>
 				</div>
       		</div>
 	    </div>
@@ -110,6 +110,9 @@
 						})
 						this.changeValue = ''
 					}
+				},
+				submit() {
+					
 				}
 			}
 		})

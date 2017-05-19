@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>文件更新</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <script src="/javascripts/jquery.treegrid.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.tree').treegrid({
+        	initialState:'collapsed'
+        });
+      });
+    </script>
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="bg-box">
+				 
+      			<div class="table-height-0">
+      			<h4>文件更新
+      				<button class="btn btn-default btn-sm pull-right">更新</button>
+      			</h4>
+      			
+					<table class="table table-bordered tree mt-15">
+					  	<tbody>
+							<tr class="treegrid-1">
+								<td>2345</td>
+							</tr>
+							<tr class="treegrid-2 treegrid-parent-1">
+								<td>建筑.rvt</td>
+							</tr>
+							<tr class="treegrid-2 treegrid-parent-1">
+								<td>结构.rvt</td>
+							</tr>
+							<tr class="treegrid-2 treegrid-parent-1">
+								<td>水暖.rvt</td>
+							</tr>
+							<!-- <tr class="treegrid-3 treegrid-parent-1">
+								<td>Node 1-2</td><td>Additional info</td><td></td>
+							</tr>
+							<tr class="treegrid-4 treegrid-parent-3">
+								<td>Node 1-2-1</td><td>Additional info</td><td></td>
+							</tr> -->
+					  </tbody>
+					</table>
+				</div>
+      		</div>
+	    </div>
+	</div>
+	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+
+	</script>
+	
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+			},
+			methods:{
+				
+			}
+		})
+	</script>
+</body>
+</html>
