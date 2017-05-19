@@ -334,7 +334,9 @@ select.input-xs {
       max-height: 230px;
     overflow: auto;
 }
-
+.panel-body-wrap .table {
+  margin-bottom:0;
+}
 
 .modal-flex {
   display: flex;
