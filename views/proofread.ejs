@@ -84,8 +84,8 @@
 				  	<option>建筑样板3</option>
 			    </select>
 				<div class="modal-body-footer">
-					<div>
-					    状态：<select name="" id=""  v-cloak>
+					<div class="modal-flex">
+					    <span class="span-flex">状态：</span><select name="" id="" class="form-control input-sm dl" v-cloak>
 								<option>已修改</option>
 							  	<option>进行中</option>
 							  	<option>未修改</option>
@@ -98,14 +98,14 @@
 	      </div>
 	      <div class="modal-body" v-show="!isToNext">
 				<div class="modal-body-title">
-					<div class="modal-body-title-l">
-						操作：<select name="" id=""  v-cloak>
+					<div class="modal-flex modal-body-title-l">
+						<span class="span-flex">操作：</span><select name="" id="" class="form-control input-sm" v-cloak>
 								<option>上一步</option>
 							  	<option>下一步</option>
 						      </select>
 					</div>
-					<div class="modal-body-title-r" style="padding:15px 10px;">
-						人员：<select name="" id=""  v-cloak>
+					<div class="modal-flex modal-body-title-r" style="padding:15px 10px;">
+						<span class="span-flex">人员：</span><select name="" id="" class="form-control input-sm" v-cloak>
 								<option>人员一</option>
 							  	<option>人员二</option>
 						      </select>

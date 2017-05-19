@@ -23,6 +23,9 @@ a{
 a,a:hover,a:link{
   text-decoration: none;
 }
+.dl {
+  display: inline-block;
+}
 .body-wrap {
   padding:0;
   position: relative;
@@ -330,4 +333,15 @@ select.input-xs {
 .panel-body-wrap {
       max-height: 230px;
     overflow: auto;
+}
+
+
+.modal-flex {
+  display: flex;
+  justify-content: space-between;
+}
+.span-flex {
+  display: flex;
+  align-items: center;
+  width:80px;
 }
