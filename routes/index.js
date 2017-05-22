@@ -38,6 +38,12 @@ router.get('/fileUpdate', function(req, res, next) {
 router.get('/proofread', function(req, res, next) {
   res.render('proofread', { title: '校审' });
 });
+router.get('/jsyj', function(req, res, next) {
+  res.render('jsyj', { title: '校审意见' });
+});
+router.get('/tjjs', function(req, res, next) {
+  res.render('tjjs', { title: '提交校审' });
+});
 router.get('/tizi', function(req, res, next) {
   res.render('tizi', { title: '提资' });
 });

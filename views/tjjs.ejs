@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>提交校审</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="bg-box">
+      			<div class="table-height-0">
+	      			<div class="modal-body-title">
+						<div class="modal-flex modal-body-title-l">
+							<span class="span-flex">操作：</span><select name="" id="" class="form-control input-sm" v-cloak>
+									<option>上一步</option>
+								  	<option>下一步</option>
+							      </select>
+						</div>
+						<div class="modal-flex modal-body-title-r" style="padding:15px 10px;">
+							<span class="span-flex">人员：</span><select name="" id="" class="form-control input-sm" v-cloak>
+									<option>人员一</option>
+								  	<option>人员二</option>
+							      </select>
+						</div>
+					</div>
+					<div class="modal-body-middle" style="min-height:300px;">
+						<h4>图纸列表</h4>
+						<table class="table table-bordered tree text-center">
+							  <thead>
+							  	<tr>
+								 	<td>选择</td>
+								    <td>图名</td>
+							  </tr>
+							  </thead>
+						  	<tbody>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td>[B34-D02-01]0M平面图</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td>[B34-D02-01]0M平面图</td>
+								</tr>
+								<!-- <tr class="treegrid-3 treegrid-parent-1">
+									<td>Node 1-2</td><td>Additional info</td><td></td>
+								</tr>
+								<tr class="treegrid-4 treegrid-parent-3">
+									<td>Node 1-2-1</td><td>Additional info</td><td></td>
+								</tr> -->
+						  </tbody>
+						</table>
+					</div>
+					<div class="modal-body-foot">
+						    <button class="btn btn-primary  pull-right" data-dismiss="modal" >确定</button>
+					    <div class="clearfix"></div>
+					</div>
+				</div>
+      		</div>
+	    </div>
+	</div>
+	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+
+	</script>
+	
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+			},
+			methods:{
+			}
+		})
+	</script>
+</body>
+</html>
