@@ -35,23 +35,23 @@ router.get('/case', function(req, res, next) {
 router.get('/fileUpdate', function(req, res, next) {
   res.render('fileUpdate', { title: '文件更新提醒' });
 });
-router.get('/proofread', function(req, res, next) {
-  res.render('proofread', { title: '校审' });
+router.get('/review', function(req, res, next) {
+  res.render('review', { title: '校审' });
 });
-router.get('/jsyj', function(req, res, next) {
-  res.render('jsyj', { title: '校审意见' });
+router.get('/editReview', function(req, res, next) {
+  res.render('editReview', { title: '校审意见' });
 });
-router.get('/tjjs', function(req, res, next) {
-  res.render('tjjs', { title: '提交校审' });
+router.get('/submitReview', function(req, res, next) {
+  res.render('submitReview', { title: '提交校审' });
 });
-router.get('/tizi', function(req, res, next) {
-  res.render('tizi', { title: '提资' });
+router.get('/submitData', function(req, res, next) {
+  res.render('submitData', { title: '提资' });
 });
-router.get('/zuku', function(req, res, next) {
-  res.render('zuku', { title: '族库' });
+router.get('/family', function(req, res, next) {
+  res.render('family', { title: '族库' });
 });
-router.get('/dianqigui', function(req, res, next) {
-  res.render('dianqigui', { title: '插入电气柜' });
+router.get('/cabinet', function(req, res, next) {
+  res.render('cabinet', { title: '插入电气柜' });
 });
 
 
