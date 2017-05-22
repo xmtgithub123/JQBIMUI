@@ -347,3 +347,10 @@ select.input-xs {
   align-items: center;
   width:80px;
 }
+
+.table-height-0 {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
