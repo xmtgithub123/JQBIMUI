@@ -2,14 +2,21 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>校审</title>
-	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="/stylesheets/flex.css">
-	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
-	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
-	<link rel="stylesheet" href="/stylesheets/style.css">
-	<script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
-   
+	<title>校审意见</title>
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/jquery.treegrid.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.tree').treegrid({
+        	initialState:'collapsed'
+        });
+      });
+    </script>
 </head>
 <body>
 	<div class="body-wrap">
@@ -23,7 +30,7 @@
 					  	<tbody>
 							<tr>
 								<td>
-									<a href="#">1.xxxxxxxx</a>
+									<a href="#" data-toggle="modal" data-target="#myModalProofread_1">1.xxxxxxxx</a>
 								</td>
 							</tr>
 							<tr>
@@ -146,9 +153,9 @@
 	    </div>
 	  </div>
 	</div>
-	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
-	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
-	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
 	<script type="text/javascript">
 
 	</script>

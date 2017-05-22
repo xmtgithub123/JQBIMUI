@@ -177,9 +177,9 @@
 					this.trItem = obj
 					// console.log(obj)
 					// console.log(this.resData)
-					for(var i = 0 ;i<that.resData.length;i++) {
-						if(that.resData[i].TaskID == obj.TaskID) {
-							console.log(JSON.stringify(that.resData[i]))
+					for (var i = 0 ; i < that.resData.length; i++) {
+						if (that.resData[i].TaskID == obj.TaskID) {
+							//console.log(JSON.stringify(that.resData[i]))
 							//that.result.taskInfo = JSON.stringify(that.resData[i])
 							var taskInfo = that.resData[i].TaskName
 							var start = taskInfo.indexOf("[")
@@ -187,7 +187,7 @@
 							var end = taskInfo.indexOf(" >")
 							that.projectInfo.项目编号 = taskInfo.substring(start + 1, mid)
 							that.projectInfo.项目名称 = taskInfo.substring(mid + 1, end)
-							console.log(that.projectInfo)
+							//console.log(that.projectInfo)
 						}
 					}
 				},
