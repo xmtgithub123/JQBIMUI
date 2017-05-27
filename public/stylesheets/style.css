@@ -159,7 +159,7 @@ h4 {
   border:1px solid red;
 }
 .table-height {
-    max-height: 200px;
+    max-height: 400px;
     overflow-y: auto;
 }
 .table-height table{

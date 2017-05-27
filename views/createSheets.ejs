@@ -106,7 +106,7 @@
 									</table>
 							    </td>
 							    <td>
-							    	<input type="text" class="form-control input-sm" placeholder="0.0M建筑平面" v-model="list.tm">
+							    	<input type="text" class="form-control input-sm"  v-model="list.tm">
 							    </td>
 							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)"> X </button></td>
 							</tr>
@@ -153,21 +153,39 @@
 			},
 			created() {
 				var that = this;
-				that.$http.get('/javascripts/tz.json').then(function(res) {
-					var data = res.body
-					data.forEach(function(e,i) {
-						that.name_options.push({Name:data[i].Name})
-						that.FatherTrList.push({picFrame:'',view:[{name:data[i].Name,proportion:''}],picName:data[i].Name})
+				if (window.JQ) {
+					JQ.getViews().then(function(res) {
+						var data = JSON.parse(res);
+						data.forEach(function(e, i) {
+							that.name_options.push({Name:data[i]})
+							that.FatherTrList.push({picFrame:'', view:[{name:data[i], proportion:''}], picName:data[i]})
+						})
 					})
-				})
 
-				that.$http.get('/javascripts/type.json').then(function(res) {
-					var data = res.body
-					for(var i =0;i<data.length;i++) {
-						that.options.push({Name:data[i].Name})
-					}
-				})
+					JQ.getFrames().then(function(res) {
+						var data = JSON.parse(res)
+						data.forEach(function(e, i) {
+							that.options.push({Name:data[i]})
+						})
+					})
+				} else {
+					that.$http.get('../public/javascripts/tz.json').then(function(res) {
+						var data = res.body
+						data.forEach(function(e,i) {
+							that.name_options.push({Name:data[i].Name})
+							that.FatherTrList.push({picFrame:'',view:[{name:data[i].Name,proportion:''}],picName:data[i].Name})
+						})
+					})
+
+					that.$http.get('../public/javascripts/type.json').then(function(res) {
+						var data = res.body
+						for(var i =0;i<data.length;i++) {
+							that.options.push({Name:data[i].Name})
+						}
+					})
+				}
 			},
+
 			methods:{
 				modelSubmit(e) { //视图名称点击Model框确认铵钮点击事件
 					console.log(e)
