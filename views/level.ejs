@@ -6,6 +6,11 @@
 	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="../public/stylesheets/flex.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<style>
+		table tr td input {
+			text-align: center;
+		}
+	</style>
 </head>
 <body>
 	<div class="body-wrap">
@@ -13,9 +18,9 @@
       		<div class="bg-box">
       			<div class="table-height">
 					<table class="table table-bordered text-center">
-						  <col class="col-xs-4">
-						  <col class="col-xs-4">
-						  <col class="col-xs-4">
+						  <col class="col-xs-5">
+						  <col class="col-xs-5">
+						  <col class="col-xs-2">
 						  <thead>
 						  	<tr>
 						 	<td>高度（M）</td>
@@ -27,7 +32,7 @@
 						  	<tr v-for="list in trList"   v-cloak>
 							    <td><input type="text" v-model="list.height" @change="changeHeight()"></td>
 							    <td><input type="text" v-model="list.name"></td>
-							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)">x</button></td>
+							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)"><i class="glyphicon glyphicon-trash"></i></button></td>
 							</tr>
 							<tr  @change="tr_changeEvent()">
 								<td><input style="height:25px;text-align: center" v-model="input_height"></td>
@@ -41,7 +46,7 @@
 					<button class="btn btn-default btn-bim btn-sm" @click="changeAll">统一偏移</button>
 					<input type="text" placeholder="0.0" v-model="changeValue"> M
 					<br>
-					<button class="btn btn-primary btn-bim btn-sm" @click="onOK">确定</button>
+					<button class="btn btn-primary btn-bim btn-sm mb-0" @click="onOK">确定</button>
 				</div>
       		</div>
 	    </div>

@@ -39,6 +39,9 @@ h4 {
 .m-0 {
   margin:0 !important;
 }
+.mb-0 {
+  margin-bottom:0 !important;
+}
 .mt-15 {
   margin-top:15px;
 }
