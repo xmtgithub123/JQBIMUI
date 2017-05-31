@@ -24,9 +24,9 @@
 						  </tr>
 						  </thead>
 					  	<tbody>
-						  	<tr v-for="list in trList" v-cloak>
-							    <td>{{list.height}}</td>
-							    <td>{{list.name}}</td>
+						  	<tr v-for="list in trList"   v-cloak>
+							    <td><input type="text" v-model="list.height" @change="changeHeight()"></td>
+							    <td><input type="text" v-model="list.name"></td>
 							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)">x</button></td>
 							</tr>
 							<tr  @change="tr_changeEvent()">
@@ -85,6 +85,7 @@
 					}
 					else {
 						var x = this.input_height;
+
 						this.trList.push({height:x, name:x+'M'})
 						this.input_height = ''
 					}
@@ -144,6 +145,19 @@
 					if (window.JQ) {
 						JQ.clickOK(JSON.stringify(infos))
 					}
+				},
+				changeHeight(){ //改变高度，名称相应改变，改变名称，高度不用改变
+					var that  = this;
+					this.trList.forEach(function(e,i){
+						if (/^[0-9]+.?[0-9]*$/.test(e.height) == false) {
+							alert('请输入数字')
+							e.height = ''
+						}
+						else{
+							e.name = e.height+'M'
+						}
+						
+					})
 				}
 			}
 		})

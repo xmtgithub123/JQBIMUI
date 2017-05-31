@@ -23,8 +23,8 @@ router.get('/login', function(req, res, next) {
 router.get('/submit', function(req, res, next) {
   res.render('submit', { title: 'Express' });
 });
-router.get('/bg', function(req, res, next) {
-  res.render('bg', { title: '编辑标高' });
+router.get('/level', function(req, res, next) {
+  res.render('level', { title: '编辑标高' });
 });
 router.get('/tz', function(req, res, next) {
   res.render('tz', { title: '创建图纸' });
