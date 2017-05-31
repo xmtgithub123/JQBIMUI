@@ -26,8 +26,8 @@ router.get('/submit', function(req, res, next) {
 router.get('/level', function(req, res, next) {
   res.render('level', { title: '编辑标高' });
 });
-router.get('/tz', function(req, res, next) {
-  res.render('tz', { title: '创建图纸' });
+router.get('/createSheets', function(req, res, next) {
+  res.render('createSheets', { title: '创建图纸' });
 });
 router.get('/case', function(req, res, next) {
   res.render('case', { title: '我的项目' });
