@@ -107,6 +107,9 @@
 				 </div>
       		</div>
 	    </div>
+		<div class="bg-footer">
+			<button class="btn btn-primary btn-bim btn-sm mb-0" @click="onOK">确定</button>
+		</div>
 	</div>
 
 	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
@@ -123,7 +126,17 @@
 				isToNext:true
 			},
 			methods:{
-
+				onOK() {
+					var info = {
+						EventName: "PlaceEquipment",
+						FamilyName:'主变设备',
+						FamilyFile:"E:\\work\\ACADTools\\trunk\\Revit\\GRevitTools\\bin\\x64\\Debug\\FamilyLib\\电气一次\\变压器\\110kV\\主变设备.rfa"
+						//FamilyFile:"主变设备.rfa"
+					}
+					if (window.JQ) {
+						JQ.raiseEvent(JSON.stringify(info));
+					}
+				}
 			}
 		})
 	</script>
