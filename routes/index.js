@@ -53,8 +53,9 @@ router.get('/family', function(req, res, next) {
 router.get('/cabinet', function(req, res, next) {
   res.render('cabinet', { title: '插入电气柜' });
 });
-
-
+router.get('/decoratePost', function(req, res, next) {
+  res.render('decoratePost', { title: '布置支吊架' });
+});
 
 
 module.exports = router;

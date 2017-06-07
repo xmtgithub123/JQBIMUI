@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>布置支吊架</title>
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="bg-box-0">
+				<div class="bg-box-b">
+					<div class="group-item">
+      					支吊架&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;">
+								<option>支架1</option>
+					 			<option>支架2</option>
+							</select>
+
+						预埋件&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:150px;margin-right:15px;">
+							<option>预埋件1</option>
+				 			<option>预埋件2</option>
+						</select>
+						<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button>
+      				</div>
+      				<div class="group-item mt-15">
+      					<div class="panel panel-info penel-fix">
+							<div class="panel-heading">立柱</div>
+							<div class="panel-body-wrap ptb-5">
+								<table class="table table-flex">
+			      					<col class="col-xs-3">
+								  	<col class="col-xs-5">
+								  	<col class="col-xs-4">
+							  	    <tbody>
+										<tr>
+											
+											<td>
+												<div class="form-box-group">
+													&nbsp;高度：<input type="text" class="form-control input-sm dl" style="width:100px"> mm
+												</div>
+												
+											</td>
+											<td>
+												<div class="form-box-group">
+													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:80%">
+															<option>出线柜</option>
+													  		<option>电容器柜</option>
+															<option>分段断路器柜</option>
+															<option>分段隔离柜</option>
+															<option>分段母设柜</option>
+															<option>接地变柜</option>
+															<option>主变进线柜</option>
+												        </select>
+												</div>
+											</td>
+											<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
+										</tr>
+							  		</tbody>
+								</table>
+							</div>
+						</div>
+      				</div>
+      				<div class="group-item mt-15">
+      					<div class="panel panel-info penel-fix">
+							<div class="panel-heading">横担</div>
+							<div class="panel-body-wrap ptb-5">
+								<table class="table table-flex">
+			      					<col class="col-xs-4">
+								  	<col class="col-xs-4">
+								  	<col class="col-xs-4">
+							  	    <tbody>
+										<tr>
+											
+											<td>
+												<div class="form-box-group">
+													长度：<input type="text" class="form-control input-sm dl" style="width:100px"> mm
+												</div>
+												
+											</td>
+											<td>
+												<div class="form-box-group">
+													间隔：<input type="text" class="form-control input-sm dl" style="width:100px"> mm
+												</div>
+											</td>
+											<td>
+												<div class="form-box-group">
+													数量：<input type="text" class="form-control input-sm dl" style="width:100px"> 
+												</div></td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<div class="form-box-group">
+													&nbsp;位置：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;">
+															<option>居中</option>
+													  		<option>居左</option>
+															<option>居右</option>
+												        </select>
+												        <input type="text" class="form-control input-sm dl" style="width:120px;">mm
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<div class="form-box-group">
+													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;">
+															<option>居中</option>
+													  		<option>居左</option>
+															<option>居右</option>
+												        </select>
+												        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button>
+												</div>
+											</td>
+										</tr>
+							  		</tbody>
+								</table>
+							</div>
+						</div>
+      				</div>
+      				<div class="group-item mt-15">
+      					<div class="panel panel-info penel-fix">
+							<div class="panel-heading">支吊架排布</div>
+							<div class="panel-body-wrap p-5">
+								<div class="row">
+									<div class="col-sm-6 col-md-6">
+										<table class="table table-bordered table-flex">
+											<thead>
+											  	<tr>
+												 	<td>间隔</td>
+												    <td>个数</td>
+												    <td>角度</td>
+											  </tr>
+											</thead>
+									  	    <tbody>
+												<tr v-for="list in trList" v-cloak>
+													<td>
+														{{list.interval}}
+													</td>
+													<td>
+														{{list.number}}
+													</td>
+													<td>
+														{{list.angle}}
+													</td>
+												</tr>
+												<tr @change="changeTR(this)">
+													<td>
+														<input type="text" class="input-noborder" style="width:120px;" v-model="input_interval">
+													</td>
+													<td>
+														<input type="text" class="input-noborder"  style="width:120px;" v-model="input_number">
+													</td>
+													<td>
+														<input type="text" class="input-noborder"  style="width:120px;" v-model="input_angle">
+													</td>
+												</tr>
+									  		</tbody>
+										</table>
+									</div>
+									<div class="col-sm-6 col-md-6">
+										<div class="preview-window">
+											<span>预览窗口</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+      				</div>
+      				
+      				<div class="bg-footer ">
+						
+						<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" >布置</button>
+					</div>
+      				
+      				
+				</div>
+      		</div>
+	    </div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="NewAddTypeModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">新增类型</h4>
+	      </div>
+	      <div class="modal-body">
+	        	<div flex="box:mean">
+				<div class="flex">
+					<div class="item_select_2" id="select_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
+						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+							<option v-for="option in options">
+								{{option.value}}
+							</option>
+							
+						</select>
+					</div>
+					<div class="item_select_2" id="select_type_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
+						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
+							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
+								{{item.类型名称}}
+							</option>
+						</select>
+						<!-- <p>选择：{{selected_type}}</p> -->
+					</div>
+				</div>
+				<div class="flex">
+					<button class="btn btn-primary btn-sm btn-bim btn-xs">加载族</button>
+					<div class="add_new_type_box">
+						<p>新增族类型</p>
+						<div class="form-group">
+							<span>名字&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_name" class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>长度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_width"  class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>宽度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_height"  class="form-control input-sm">
+						</div>
+						<div class="clearfix">
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+
+	</script>
+	
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+				isToNext:true,
+				trList:[
+					// {
+					// 	interval:'',
+					// 	number:'',
+					// 	angle:''
+					// }
+				],
+				input_interval:'',
+				input_number:'',
+				input_angle:'',
+				objs:[],
+				options:[], 
+				lists:[],
+				selected:'',//设置族
+				selected_type:'',//设置族类型
+				input_add_name:'',//新增类型 名字
+				input_add_width:'',//新增类型 长度
+				input_add_height:'',//新增类型 宽度
+				status:false,
+			},
+			created(){
+					var that = this;
+					that.$http.get('/javascripts/type.json').then(function(res){
+						console.log(res)
+						var data = res.data;
+						for (var i =0 ;i < data.length; i++) {
+							var symbolData = data[i].Symbol;
+							var list= [];
+							for (var j = 0 ;j <symbolData.length; j++) {
+								list.push(data[i].Symbol[j])
+							}
+							that.options.push({value:data[i].Name,items:list})
+						}
+					})
+					.catch(function(error) {
+						console.log(error)
+					})
+				console.log(that.options)
+			},
+			methods:{
+				clickItems(obj) {
+					this.status = true;
+					console.log(obj)	
+					var that = this;
+					that.input_add_name = obj.族名称;
+					that.input_add_width = obj.b;
+					that.input_add_height = obj.h;					
+				},
+				submitData(obj,status) {
+					var that = this;
+					console.log(obj)
+					if(status) {
+						console.log("=====获取修改数据api======")
+						that.input_add_name = '';
+						that.input_add_width = '';
+						that.input_add_height ='';
+						alert('修改成功')
+						that.status = false;
+
+					}
+					else{
+						console.log('======调用增加族类型api======')
+						that.$data.options.push({value:that.input_add_name,items:[that.input_add_width + 'x'+ that.input_add_height]})
+						that.input_add_name = '';
+						that.input_add_width = '';
+						that.input_add_height ='';
+						alert('增加成功')
+					}
+				},
+				submit(){
+
+				},
+				changeTR(e){
+					var that = this;
+					if(this.input_angle && this.input_interval && this.input_number != '') {
+						that.trList.push({interval:that.input_interval,number:that.input_number,angle:that.input_angle})
+						that.input_interval = ''
+						that.input_number = '',
+						that.input_angle = ''
+					}
+					else {
+						alert("请输入完整")
+					}
+				}
+			},
+			computed:{
+				items() {
+					var items = [] ,selectedValue = this.$data.selected;
+					this.$data.options.forEach(function(e){
+						if(e.value == selectedValue) {
+							items = e.items;
+						}
+					});
+					return items;
+				}
+			}	
+		})
+	</script>
+</body>
+</html>

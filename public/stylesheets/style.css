@@ -51,6 +51,10 @@ h4 {
 .p-5 {
   padding:5px;
 }
+.ptb-5 {
+  padding-top:5px;
+  padding-bottom: 5px;
+}
 .box-wrap {
   /*padding: 10px 10px 0 10px;
   border:1px solid #8e8e8e;
@@ -311,10 +315,10 @@ select.input-xs {
 /*插入电气柜*/
 .bg-box-0 {
   
-  width:600px;
+  width:800px;
   border:1px solid #dbdbdb;
   padding:15px;
-  height: 500px;
+  min-height: 500px;
 }
 .bg-box-b {
   display: flex;
@@ -325,8 +329,13 @@ select.input-xs {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
+.table-flex .form-box-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .form-box-group .group-item .checkbox {
   display: inline-block;
 }
@@ -336,6 +345,7 @@ select.input-xs {
 .panel-body-wrap {
       max-height: 230px;
     overflow: auto;
+    overflow-x:hidden;
 }
 .panel-body-wrap .table {
   margin-bottom:0;
@@ -356,4 +366,19 @@ select.input-xs {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.penel-fix {
+  margin-bottom: 0;
+}
+.preview-window {
+  width:300px;
+  height:200px;
+  border:1px solid #dbdbdb;
+  line-height: 200px;
+  text-align:center;
+}
+
+.disabled {
+  pointer-events: none;
 }
