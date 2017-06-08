@@ -16,12 +16,12 @@
       		<div class="bg-box-0">
 				<div class="bg-box-b">
 					<div class="group-item">
-      					支吊架&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;">
+      					支吊架&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;" v-model="hanger">
 								<option>支架1</option>
 					 			<option>支架2</option>
 							</select>
 
-						预埋件&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:150px;margin-right:15px;">
+						预埋件&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:150px;margin-right:15px;" v-model="embeddedPart">
 							<option>预埋件1</option>
 				 			<option>预埋件2</option>
 						</select>
@@ -40,13 +40,13 @@
 											
 											<td>
 												<div class="form-box-group">
-													&nbsp;高度：<input type="text" class="form-control input-sm dl" style="width:100px"> mm
+													&nbsp;高度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="post_Height"> mm
 												</div>
 												
 											</td>
 											<td>
 												<div class="form-box-group">
-													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:80%">
+													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:80%" v-model="post_Type">
 															<option>出线柜</option>
 													  		<option>电容器柜</option>
 															<option>分段断路器柜</option>
@@ -77,36 +77,36 @@
 											
 											<td>
 												<div class="form-box-group">
-													长度：<input type="text" class="form-control input-sm dl" style="width:100px"> mm
+													长度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_width"> mm
 												</div>
 												
 											</td>
 											<td>
 												<div class="form-box-group">
-													间隔：<input type="text" class="form-control input-sm dl" style="width:100px"> mm
+													间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_interval"> mm
 												</div>
 											</td>
 											<td>
 												<div class="form-box-group">
-													数量：<input type="text" class="form-control input-sm dl" style="width:100px"> 
+													数量：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_numb"> 
 												</div></td>
 										</tr>
 										<tr>
 											<td colspan="3">
 												<div class="form-box-group">
-													&nbsp;位置：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;">
+													&nbsp;位置：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_place">
 															<option>居中</option>
 													  		<option>居左</option>
 															<option>居右</option>
 												        </select>
-												        <input type="text" class="form-control input-sm dl" style="width:120px;">mm
+												        <input type="text" class="form-control input-sm dl" style="width:120px;" v-model="crossArm_unit">mm
 												</div>
 											</td>
 										</tr>
 										<tr>
 											<td colspan="3">
 												<div class="form-box-group">
-													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;">
+													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_type">
 															<option>居中</option>
 													  		<option>居左</option>
 															<option>居右</option>
@@ -171,11 +171,8 @@
       				</div>
       				
       				<div class="bg-footer ">
-						
 						<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" >布置</button>
 					</div>
-      				
-      				
 				</div>
       		</div>
 	    </div>
@@ -241,9 +238,9 @@
 	    </div>
 	  </div>
 	</div>
-	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
-	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
-	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
 	<script type="text/javascript">
 
 	</script>
@@ -260,9 +257,18 @@
 					// 	angle:''
 					// }
 				],
-				input_interval:'',
-				input_number:'',
-				input_angle:'',
+				input_interval:'', //支吊架排布间隔
+				input_number:'', //支吊架排布个数
+				input_angle:'', //支吊架排布角度 
+				hanger:'',//支吊架
+				embeddedPart:'',//预埋件
+				post_Height:'',//立柱高度
+				post_Type:'',//立柱类型
+				crossArm_width:'',//横担长度
+				crossArm_interval:'',//横担长度
+				crossArm_place:'', //横但位置
+				crossArm_unit:'',//横担位置单位
+				crossArm_type:'',//横担类型
 				objs:[],
 				options:[], 
 				lists:[],
@@ -275,7 +281,7 @@
 			},
 			created(){
 					var that = this;
-					that.$http.get('/javascripts/type.json').then(function(res){
+					that.$http.get('../public/javascripts/type.json').then(function(res){
 						console.log(res)
 						var data = res.data;
 						for (var i =0 ;i < data.length; i++) {
@@ -332,9 +338,6 @@
 						that.input_interval = ''
 						that.input_number = '',
 						that.input_angle = ''
-					}
-					else {
-						alert("请输入完整")
 					}
 				}
 			},

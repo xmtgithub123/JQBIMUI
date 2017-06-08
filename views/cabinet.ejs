@@ -7,13 +7,13 @@
 	<link rel="stylesheet" href="../public/stylesheets/flex.css">
 	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
 	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
 	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 </head>
 <body>
 	<div class="body-wrap">
 	    <div class="panel-body box-wrap">
-      		<div class="bg-box-0">
+      		<div class="bg-box-0" flex="dir:top main:justify">
 				<div class="bg-box-b">
 					<table class="table table-bordered">
       					<col class="col-xs-6">
@@ -22,7 +22,7 @@
 							<tr>
 								<td>
 									<div class="group-item">
-				      					&nbsp;&nbsp;&nbsp;&nbsp;朝向&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;">
+				      					&nbsp;&nbsp;&nbsp;&nbsp;朝向&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="orientation">
 												<option>上</option>
 									 			<option>下</option>
 												<option>左</option>
@@ -38,7 +38,7 @@
 										    &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" v-model="checkboxed"> 双排
 										  </label>
 										</div>
-										间距 <input type="text" class="form-control input-sm dl"  :class="{disabled:isDisabled}" style="width:100px;"> MM
+										间距 <input type="text" class="form-control input-sm dl"  :class="{disabled:isDisabled}" style="width:100px;" v-model="interval"> MM
 				      				</div>
 								</td>
 							</tr>
@@ -102,14 +102,22 @@
 													  </tr>
 													</thead>
 											  	    <tbody>
-														<tr>
+											  	    	<tr v-for="list in trList_t" :id="key" v-cloak>
+															<td>
+																{{list.gz}}
+															</td>
+															<td>{{list.ztype}}</td>
+															<td>{{list.numb}}</td>
+															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
+														</tr>
+														<tr @change="tr_changeEvent_t">
 															<td>
 																<select name="" id=""  class="form-control input-sm" :class="{disabled:isDisabled}" v-cloak v-model="selected_second">
 																	<option v-for="option in optionListSecond" >{{option.value}}</option>
 														        </select>
 															</td>
-															<td><input class="input-noborder" style="height:25px;text-align: center;width:100px;" v-model="input_type" :class="{disabled:isDisabled}"></td>
-															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb" :class="{disabled:isDisabled}"></td>
+															<td><input class="input-noborder" style="height:25px;text-align: center;width:100px;" v-model="input_type_t" :class="{disabled:isDisabled}"></td>
+															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb_t" :class="{disabled:isDisabled}"></td>
 															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel" :class="{disabled:isDisabled}">新增类型</button></td>
 														</tr>
 														
@@ -123,18 +131,18 @@
 						</tbody>
 					</table>					
 
-	      			<div class="form-box-group">
+	      			
+				</div>
+      			<div class="form-box-group">
 	      				<div>
-	      					布置点：<select class="form-control input-sm dl" name="" id=""  style="width:140px;margin-right:15px;">
+	      					布置点：<select class="form-control input-sm dl" name="" id=""  style="width:140px;margin-right:15px;" v-model="decoratePoint">
 										<option>左上</option>
 								  		<option>左下</option>
 							        </select>
-							偏移X：<input type="text" class="form-control input-sm dl" style="width:140px;margin-right:15px;">Y：<input type="text" class="form-control input-sm dl" style="width:140px;">
+							偏移X：<input type="text" class="form-control input-sm dl" style="width:140px;margin-right:15px;" v-model="offsetX">Y：<input type="text" class="form-control input-sm dl" style="width:140px;" v-model="offsetY">
 	      				</div>
-						<button class="btn btn-primary ">确定</button>
+						<button class="btn btn-primary" @click="cabinetSubmit">确定</button>
 	      			</div>
-				</div>
-      			
       		</div>
 	    </div>
 	</div>
@@ -211,7 +219,7 @@
 			el:'body',
 			data:{
 				isToNext:true,
-				optionList:[
+				optionList:[ //第一排
 					{value:'出线柜'},
 					{value:'电容器柜'},
 					{value:'分段断路器柜'},
@@ -220,7 +228,7 @@
 					{value:'接地变柜'},
 					{value:'主变进线柜'}
 				],
-				optionListSecond:[
+				optionListSecond:[ //第二排
 					{value:'出线柜'},
 					{value:'电容器柜'},
 					{value:'分段断路器柜'},
@@ -229,10 +237,12 @@
 					{value:'接地变柜'},
 					{value:'主变进线柜'}
 				],
-				selected_g:'',//柜子选择框
-				selected_second:'',//柜子选择框
+				selected_g:'',//第一排柜子选择框
+				selected_second:'',//第二排柜子选择框
 				input_type:'', //族类型
 				input_numb:'', //个数
+				input_type_t:'',//第一排族类型
+				input_numb_t:'',//第二排族类型
 				trList:[
 					// {
 				    //  gz:'',
@@ -240,8 +250,14 @@
 					// 	numb:;''
 					// }
 				], //第一排tr数组循环
+				trList_t:[],
+				offsetX:'', //偏移X
+				offsetY:'',//偏移Y
 				checkboxed:'',
 				isDisabled:true, //是否禁用状态
+				orientation:'', //朝向
+				interval:'', //间隔
+				decoratePoint:'',//布置点
 				objs:[],
 				options:[], 
 				lists:[],
@@ -255,7 +271,7 @@
 			created(){
 				console.log("aaa")
 					var that = this;
-					that.$http.get('/javascripts/type.json').then(function(res){
+					that.$http.get('../public/javascripts/type.json').then(function(res){
 						console.log(res)
 						var data = res.data;
 						for (var i =0 ;i < data.length; i++) {
@@ -305,7 +321,7 @@
 				submit(){
 
 				},
-				//
+				//第一排表格一行编辑都完成后，自动添加下一行
 				tr_changeEvent(){
 					var that = this;
 					if(this.selected_g && this.input_type && this.input_numb != '') {
@@ -313,11 +329,21 @@
 						that.input_type = '';
 						that.input_numb='';
 						that.selected_g=''
+					}					
+				},
+				//第二排表格一行编辑都完成后，自动添加下一行
+				tr_changeEvent_t(){
+					var that = this;
+					if(this.selected_second && this.input_type_t && this.input_numb_t != '') {
+						that.trList_t.push({gz:this.selected_second,ztype:this.input_type_t,numb:this.input_numb_t})
+						that.input_type_t = '';
+						that.input_numb_t='';
+						that.selected_second='';
 					}
-					else {
-						alert("请输入完整")
-					}
-					
+				},
+				//点击确定事件
+				cabinetSubmit(){
+
 				}
 			},
 			computed:{
@@ -332,12 +358,9 @@
 				}
 			},
 			watch:{
-				// checkboxed:function(val,oldVal) {
-
-				// }
 				checkboxed:{
+					//监听双排复选框，默认第二排不可编辑，选中则显示可编辑状态
 					handler:function(val,oldVal){
-						console.log(val)
 						if(val) {
 							this.isDisabled = false
 						}
