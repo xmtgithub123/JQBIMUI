@@ -25,6 +25,10 @@
 							<option>预埋件1</option>
 				 			<option>预埋件2</option>
 						</select>
+						&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:150px;margin-right:15px;" v-model="embeddedPart_2">
+							<option>预埋件1</option>
+				 			<option>预埋件2</option>
+						</select>
 						<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button>
       				</div>
       				<div class="group-item mt-15">
@@ -46,7 +50,16 @@
 											</td>
 											<td>
 												<div class="form-box-group">
-													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:80%" v-model="post_Type">
+													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:40%" v-model="post_Type">
+															<option>出线柜</option>
+													  		<option>电容器柜</option>
+															<option>分段断路器柜</option>
+															<option>分段隔离柜</option>
+															<option>分段母设柜</option>
+															<option>接地变柜</option>
+															<option>主变进线柜</option>
+												        </select>
+												        &nbsp;<select name="" id=""  class="form-control input-sm" v-cloak style="width:40%" v-model="post_Type_2">
 															<option>出线柜</option>
 													  		<option>电容器柜</option>
 															<option>分段断路器柜</option>
@@ -83,6 +96,7 @@
 											</td>
 											<td>
 												<div class="form-box-group">
+
 													间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_interval"> mm
 												</div>
 											</td>
@@ -94,12 +108,13 @@
 										<tr>
 											<td colspan="3">
 												<div class="form-box-group">
+													立柱底偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="crossArm_offset">mm&nbsp;&nbsp;
 													&nbsp;位置：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_place">
 															<option>居中</option>
 													  		<option>居左</option>
 															<option>居右</option>
 												        </select>
-												        <input type="text" class="form-control input-sm dl" style="width:120px;" v-model="crossArm_unit">mm
+												        偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="crossArm_unit">mm
 												</div>
 											</td>
 										</tr>
@@ -107,6 +122,11 @@
 											<td colspan="3">
 												<div class="form-box-group">
 													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_type">
+															<option>居中</option>
+													  		<option>居左</option>
+															<option>居右</option>
+												        </select>
+												        &nbsp;<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_type_2">
 															<option>居中</option>
 													  		<option>居左</option>
 															<option>居右</option>
@@ -262,13 +282,18 @@
 				input_angle:'', //支吊架排布角度 
 				hanger:'',//支吊架
 				embeddedPart:'',//预埋件
+				embeddedPart_2:'', //预埋件2
 				post_Height:'',//立柱高度
 				post_Type:'',//立柱类型
+				post_Type_2:'',//立柱类型2
+				crossArm_offset:'',//横担立柱底偏移
+
 				crossArm_width:'',//横担长度
 				crossArm_interval:'',//横担长度
 				crossArm_place:'', //横但位置
 				crossArm_unit:'',//横担位置单位
 				crossArm_type:'',//横担类型
+				crossArm_type_2:'',//横担类型2
 				objs:[],
 				options:[], 
 				lists:[],
@@ -333,12 +358,21 @@
 				},
 				changeTR(e){
 					var that = this;
-					if(this.input_angle && this.input_interval && this.input_number != '') {
-						that.trList.push({interval:that.input_interval,number:that.input_number,angle:that.input_angle})
-						that.input_interval = ''
-						that.input_number = '',
-						that.input_angle = ''
+
+					if ( (/^[0-9]+.?[0-9]*$/.test(this.input_number) == false) && (/^[0-9]+.?[0-9]*$/.test(this.input_angle) == false)) {
+						alert('请输入数字')
+						this.input_number = ''
+						this.input_angle = ''
 					}
+					else {
+						if(this.input_angle && this.input_interval && this.input_number != '') {
+							that.trList.push({interval:that.input_interval,number:that.input_number,angle:that.input_angle})
+							that.input_interval = ''
+							that.input_number = '',
+							that.input_angle = ''
+						}
+					}
+					
 				}
 			},
 			computed:{
