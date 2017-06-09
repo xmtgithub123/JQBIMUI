@@ -3,17 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>族库</title>
-	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="../public/stylesheets/flex.css">
-	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
-	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">
-	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
-    <script src="../public/javascripts/jquery.treegrid.min.js"></script>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <script src="/javascripts/jquery.treegrid.min.js"></script>
     <script type="text/javascript">
-      $(document).ready(function() {
-        $('.tree').treegrid();
-      });
+      // $(document).ready(function() {
+      //   $('.tree').treegrid();
+      // });
     </script>
 </head>
 <body>
@@ -22,42 +22,46 @@
       		<div class="bg-box">
 				 <div class="row">
 				 	<div class="col-sm-4">
-				 		<table class="tree mt-15">
-					  	<tbody>
-							<tr class="treegrid-1">
-								<td>电气一次</td>
-							</tr>
-							<tr class="treegrid-2 treegrid-parent-1">
-								<td>
-									GIS
-								</td>
-							</tr>
-							<tr class="treegrid-3 treegrid-parent-2">
-								<td><a href="#">50KV</a></td>
-							</tr>
-							<tr class="treegrid-3 treegrid-parent-2">
-								<td><a href="#">110KV</a></td>
-							</tr>
-							<tr class="treegrid-4 treegrid-parent-1">
-								<td>变压器</td>
-							</tr>
-							<tr class="treegrid-5 treegrid-parent-4">
-								<td><a href="#">50KV</a></td>
-							</tr>
-							<tr class="treegrid-5 treegrid-parent-4">
-								<td><a href="#">110KV</a></td>
-							</tr>
-							<tr class="treegrid-6 treegrid-parent-1">
-								<td>电气柜</td>
-							</tr>
-							<tr class="treegrid-7 treegrid-parent-6">
-								<td><a href="#">110KV</a></td>
-							</tr>
-							<tr class="treegrid-7 treegrid-parent-6">
-								<td><a href="#">110KV</a></td>
-							</tr>
-					  </tbody>
-					</table>
+				 		<div id="tree"></div>
+				 		<table  class="tree mt-15">
+						  	<tbody>
+								<!-- <tr class="treegrid-1">
+									<td>电气一次</td>
+								</tr>
+								<tr class="treegrid-2 treegrid-parent-1">
+									<td>
+										GIS
+									</td>
+								</tr>
+								<tr class="treegrid-3 treegrid-parent-2">
+									<td><a href="#">50KV</a></td>
+								</tr>
+								<tr class="treegrid-3 treegrid-parent-2">
+									<td><a href="#">110KV</a></td>
+								</tr>
+								<tr class="treegrid-4 treegrid-parent-1">
+									<td>变压器</td>
+								</tr>
+								<tr class="treegrid-5 treegrid-parent-4">
+									<td><a href="#">50KV</a></td>
+								</tr>
+								<tr class="treegrid-5 treegrid-parent-4">
+									<td><a href="#">110KV</a></td>
+								</tr>
+								<tr class="treegrid-6 treegrid-parent-1">
+									<td>电气柜</td>
+								</tr>
+								<tr class="treegrid-7 treegrid-parent-6">
+									<td><a href="#">110KV</a></td>
+								</tr>
+								<tr class="treegrid-7 treegrid-parent-6">
+									<td><a href="#">110KV</a></td>
+								</tr> -->
+								<tr v-for="(index,item) in treeData" class="treegrid-{{index+1}}">
+									<td>{{item.name}}</td>
+								</tr>
+						  </tbody>
+						</table>
 				 	</div>
 				 	<div class="col-sm-8">
 				 		<div class="row">
@@ -100,9 +104,10 @@
 	    </div>
 	</div>
 
-	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
-	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
-	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script src="/javascripts/bootstrap.min.js"></script> <!--引入bootstrap.js-->
+	<script src="/javascripts/bootstrap-treeview.js"></script> <!--引入bootstrap-treeview.js-->
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
 	<script type="text/javascript">
 
 	</script>
@@ -111,10 +116,48 @@
 		new Vue({
 			el:'body',
 			data:{
-				isToNext:true
+				isToNext:true,
+
+				tree:[
+				  {
+				    text: "Parent 1",
+				    nodes: [
+				      {
+				        text: "Child 1",
+				        nodes: [
+				          {text: "Grandchild"},
+				          {text: "Grandchild"}
+				        ]
+				      },
+				      {
+				        text: "Child 2"
+				      }
+				    ]
+				  },
+				  {
+				    text: "Parent 2"
+				  },
+				  {
+				    text: "Parent 3"
+				  },
+				  {
+				    text: "Parent 4"
+				  },
+				  {
+				    text: "Parent 5"
+				  }
+				]
+			},
+			created(){
+				this.initTree()
 			},
 			methods:{
-
+				initTree() {
+					$('#tree').treeview({
+						data:this.tree,
+						enabledLinks:true
+					})
+				}
 			}
 		})
 	</script>

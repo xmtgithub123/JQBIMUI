@@ -382,3 +382,14 @@ select.input-xs {
 .disabled {
   pointer-events: none;
 }
+
+
+
+
+/*
+  bootstrap treeview
+*/
+.list-group-item {
+  border:0;
+  padding:5px 15px;
+}
