@@ -26,22 +26,22 @@
 						  </tr>
 						  </thead>
 					  	<tbody>
-						  	<tr v-for="(index,list) in FatherTrList">
+						  	<tr v-for="(index, list) in FatherTrList">
 							    <td>
 							    	<select name="" id="" class="form-control input-sm" v-model="list.picFrame" v-cloak>
-										<option value="" v-for="option in options">{{option.Name}}</option>
+										<option v-for="option in options">{{option.Name}}</option>
 									</select>
 							    </td>
 							    <td>
 							    	<table class="table table-bordered" style="margin-bottom:0;">
+										  <col class="col-xs-6">
 										  <col class="col-xs-4">
-										  <col class="col-xs-4">
-										  <col class="col-xs-4">
+										  <col class="col-xs-2">
 										  <thead>
 										  	<tr>
 											 	<td>名称</td>
 											    <td>比例</td>
-											    <td></td>
+											    <td>操作</td>
 										  </tr>
 										  </thead>
 									  	<tbody>
@@ -52,7 +52,7 @@
 											    	<div class="proportion-box">
 											    		<span>1：</span>
 												    	<div class="input-group">
-													      <input type="text" class="form-control input-sm" aria-label="..." v-model="item.proportion">
+													      <input type="text" class="form-control input-sm" aria-label="..." v-model="item.proportion" :value="1">
 													      <div class="input-group-btn">
 													        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
 													        <ul class="dropdown-menu dropdown-menu-right">
@@ -126,7 +126,7 @@
 	<script src="../public/javascripts/jquery-1.11.1.min.js"></script>
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
-	<script src="../publicjavascripts/bootstrap.min.js"></script>
+	<script src="../public/javascripts/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		new Vue({
 			el:'body',
@@ -154,20 +154,23 @@
 			created() {
 				var that = this;
 				if (window.JQ) {
-					JQ.getViews().then(function(res) {
-						var data = JSON.parse(res);
-						data.forEach(function(e, i) {
-							that.name_options.push({Name:data[i]})
-							that.FatherTrList.push({picFrame:'', view:[{name:data[i], proportion:''}], picName:data[i]})
-						})
-					})
-
 					JQ.getFrames().then(function(res) {
 						var data = JSON.parse(res)
+						that.pic_selected = data[0]
 						data.forEach(function(e, i) {
 							that.options.push({Name:data[i]})
 						})
 					})
+
+					JQ.getViews().then(function(res) {
+						var data = JSON.parse(res);
+						data.forEach(function(e, i) {
+							that.name_options.push({Name:data[i]})
+							that.FatherTrList.push({picFrame:that.pic_selected, view:[{name:data[i], proportion:''}], picName:data[i]})
+						})
+					})
+
+					
 				} else {
 					that.$http.get('../public/javascripts/tz.json').then(function(res) {
 						var data = res.body
