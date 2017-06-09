@@ -231,6 +231,24 @@
 				submit() { //确定提交事件
 					console.log("submit")
 					console.log(this.FatherTrList)
+					var infos = []
+					this.FatherTrList.forEach(function(e) {
+						var info = {
+							Frame: e.picFrame,
+							Name: e.picName,
+							Views: []
+						}
+						var len = e.view.length;
+						for (var i = 0; i < len; i++) {
+							info.Views.push({
+								Name: e.view[i].name,
+								Scale: e.view[i].proportion
+							})
+						}
+						infos.push(info)
+					})
+					console.log(JSON.stringify(infos))
+					//JQ.clickOK(JSON.stringify(infos))
 				}
 			}
 		})
