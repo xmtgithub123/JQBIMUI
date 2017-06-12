@@ -8,35 +8,6 @@
 	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
 	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
-	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
-    <script src="../public/javascripts/jquery.treegrid.min.js"></script>
-    <script type="text/javascript">
-    	$(document).ready(function() {
-			var type = getQueryString('Type');
-			if (type == 'transformer') {
-				var typeData = [
-					{name:"变压器", children:[
-						{name:"500kV"},
-						{name:'220kV'},
-						{name:'110kV'}
-					]}
-				]
-			}
-			var config = {
-				data:typeData
-			}
-    		$('.tree').treegrid(config);
-      	});
-		
-		function getQueryString(name) {
-     		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-     		var r = window.location.search.substr(1).match(reg);
-     		if (r != null) {
-				 return  unescape(r[2]);
-			}
-			return null;
-		}
-    </script>
 </head>
 <body>
 	<div class="body-wrap">
@@ -44,42 +15,40 @@
       		<div class="bg-box">
 				 <div class="row">
 				 	<div class="col-sm-4">
-				 		<table class="tree mt-15">
-					  	
-						</table>
+				 		<div id="tree"></div>
 				 	</div>
 				 	<div class="col-sm-8">
 				 		<div class="row">
 				 			<div class="col-sm-4 mt-15">
-				 				<img src="file:///E:/work/bim/主变设备-分体式.png" height="50px" width="50px" alt="">
+				 				<img src=""  alt="">
 				 				<p>一体式</p>
 				 			</div>
 				 			<div class="col-sm-4 mt-15">
-				 				<img src="file:///E:/work/bim/主变设备-分体式.png" height="50px" width="50px" alt="">
+				 				<img src=""  alt="">
 				 				<p>变压器主体</p>
 				 			</div>
 				 			<div class="col-sm-4 mt-15">
-				 				<img src="file:///E:/work/bim/主变分体式-散热器.png" height="50" width="50" alt="">
+				 				<img src=""  alt="">
 				 				<p>散热片</p>
 				 			</div>
 				 			<div class="col-sm-4 mt-15">
-				 				<img src="file:///E:/work/bim/中性点设备.png" height="50" width="50" alt="">
+				 				<img src=""  alt="">
 				 				<p>中性点设备</p>
 				 			</div>
 				 			<div class="col-sm-4 mt-15">
-				 				<img src="file:///E:/work/bim/电缆终端设备.png" height="50" width="50" alt="">
+				 				<img src=""  alt="">
 				 				<p>电缆终端设备</p>
 				 			</div>
 				 			<div class="col-sm-4 mt-15">
-				 				<img src="file:///E:/work/bim/全绝缘母线固定器-地面支撑式.png" height="50" width="50" alt="">
+				 				<img src=""  alt="">
 				 				<p>全绝缘母线固定器-地面支撑式</p>
 				 			</div>
 				 			<div class="col-sm-4 mt-15">
-				 				<img src="file:///E:/work/bim/全绝缘母线固定器-墙内支撑式.png" height="50" width="50" alt="">
+				 				<img src=""  alt="">
 				 				<p>全绝缘母线固定器-墙内支撑式</p>
 				 			</div>
 				 			<div class="col-sm-4 mt-15">
-				 				<img src="file:///E:/work/bim/全绝缘母线固定器-壁挂式.png" height="50" width="50" alt="">
+				 				<img src=""  alt="">
 				 				<p>全绝缘母线固定器-壁挂式</p>
 				 			</div>
 				 		</div>
@@ -91,26 +60,53 @@
 			<button class="btn btn-primary btn-bim btn-sm mb-0" @click="onOK">确定</button>
 		</div>
 	</div>
-
+	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/bootstrap-treeview.js"></script>
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
-	<script type="text/javascript">
-
-	</script>
 	
 	<script type="text/javascript">
 		new Vue({
 			el:'body',
 			data:{
-				isToNext:true
+				type:"",
+				tree:[]
 			},
 			created() {
+				//this.type = this.getQueryString('Type');
+				//if (this.type == 'transformer') {
+					this.tree = [
+						{text:"变压器", nodes:[
+							{text:"500kV"},
+							{text:'220kV'},
+							{text:'110kV'}
+						]}
+					]
+				//}
 				
-
+    			$('#tree').treeview({
+					data:this.tree,
+					enabledLinks:true,
+					onNodeSelected: this.nodeSelected
+				})
 			},
 
 			methods:{
+				getQueryString(name) {
+     				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     				var r = window.location.search.substr(1).match(reg);
+     				if (r != null) {
+				 		return  unescape(r[2]);
+					}
+					return null;
+				},
+
+				//选中节点
+				nodeSelected(event, node) {
+					alert(node.text)
+				},
+
 				onOK() {
 					var info = {
 						EventName: "PlaceEquipment",
