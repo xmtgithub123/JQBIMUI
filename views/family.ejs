@@ -12,6 +12,15 @@
 		.row-list.active{
 			background-color:#dbdbdb;
 		}
+		.row-list p {
+			height:38px;
+			overflow:hidden;
+			display: -webkit-box;
+			-webkit-line-clamp:2;
+			-webkit-box-orient:vertical;
+			word-break:break-all;
+
+		}
 	</style>
 </head>
 <body>
@@ -24,8 +33,8 @@
 		 			</div>
 		 			<div class="col-sm-8">
 		 				<div class="row">
-		 					<div class="col-sm-4 mt-15 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)">
-		 						<img :src=list.url alt="" class="img-responsive text-center" >
+		 					<div class="col-sm-4 mt-15 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)" style="height:100px;">
+		 						<img :src=list.url alt="" class="img-responsive text-center" style="height:70px;">
 		 						<p class="text-center">{{list.name}}</p>
 		 					</div>
 		 				</div>
@@ -81,7 +90,10 @@
 				],
 				lists:[
 					{id:1,name:'一体式',url:'/img/img.png'},
-					{id:2,name:'变压器主体',url:'/img/img.png'}
+					{id:2,name:'变压器主体变压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'变压器',url:'/img/img.png'},
+					{id:2,name:'压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'压器主体',url:'/img/img.png'}
 				],
 				chooseList:{},
 				isActive:false
