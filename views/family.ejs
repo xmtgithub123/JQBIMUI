@@ -9,8 +9,14 @@
 	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">  
 	<style type="text/css">
+		.row-list {
+			border:2px solid transparent;
+			border-radius: 6px;
+			transition: all .2s;
+		}
 		.row-list.active{
-			background-color:#dbdbdb;
+			border:2px solid #169bd5;
+
 		}
 		.row-list p {
 			height:38px;
@@ -32,12 +38,12 @@
 		 				<div id="tree"></div>
 		 			</div>
 		 			<div class="col-sm-8">
-		 				<div class="row">
-		 					<div class="col-sm-4 mt-15 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)" style="height:100px;">
-		 						<img :src=list.url alt="" class="img-responsive text-center" style="height:70px;">
+		 				
+		 					<div class="col-sm-4 mt-15 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)" style="height:135px;">
+		 						<img :src=list.url alt="" class="img-responsive center" style="height:70px;">
 		 						<p class="text-center">{{list.name}}</p>
 		 					</div>
-		 				</div>
+		 				
 		 			</div>
 		 		</div>
       		</div>
