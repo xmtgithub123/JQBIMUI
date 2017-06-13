@@ -50,50 +50,53 @@
 			},
 
 			created() {
+				//var path = '电气一次\\'
 				this.type = this.getQueryString('Type');
-				if (this.type == 'transformer') {
+				if (this.type == 'Transformer') {
 					this.tree = [
 						{text:"变压器", nodes:[
-							{text:"接地变"},
+							{text:"接地变", state:{selected: true}},
 							{text:'站用变'},
 							{text:'主变'}
 						]}
 					]
-				} else if (this.type == "gis") {
+					//path += '变压器\\接地变'
+				} else if (this.type == "GIS") {
 					this.tree = [
-						{text:"GIS"}
+						{text:"GIS", state:{selected: true}}
 					]
-				} else if (this.type == "cb") {
+					//path += 'GIS'
+				} else if (this.type == "CB") {
 					this.tree = [
-						{text:"断路器"}
+						{text:"断路器", state:{selected: true}}
 					]
-				} else if (this.type == "ct") {
+				} else if (this.type == "CT") {
 					this.tree = [
-						{text:"电流互感器"}
+						{text:"电流互感器", state:{selected: true}}
 					]
-				} else if (this.type == "pt") {
+				} else if (this.type == "PT") {
 					this.tree = [
-						{text:"电压互感器"}
+						{text:"电压互感器", state:{selected: true}}
 					]
-				} else if (this.type == "ds") {
+				} else if (this.type == "DS") {
 					this.tree = [
-						{text:'隔离开关'}
+						{text:'隔离开关', state:{selected: true}}
 					]
-				} else if (this.type == "la") {
+				} else if (this.type == "LA") {
 					this.tree = [
-						{text:'避雷器'}
+						{text:'避雷器', state:{selected: true}}
 					]
-				} else if (this.type == "capacitor") {
+				} else if (this.type == "Capacitor") {
 					this.tree = [
-						{text:'电容器'}
+						{text:'电容器', state:{selected: true}}
 					]
-				} else if (this.type == "sc") {
+				} else if (this.type == "SC") {
 					this.tree = [
-						{text:'开关柜'}
+						{text:'开关柜', state:{selected: true}}
 					]
-				} else if (this.type == "asc") {
+				} else if (this.type == "ASC") {
 					this.tree = [
-						{text:'消弧线圈'}
+						{text:'消弧线圈', state:{selected: true}}
 					]
 				} else {
 					this.tree = [
@@ -108,6 +111,9 @@
 					enabledLinks:true,
 					onNodeSelected: this.nodeSelected
 				})
+
+				console.log($('#tree').treeview('getSelected'))
+				this.nodeSelected(null, $('#tree').treeview('getSelected')[0])
 			},
 
 			methods:{
@@ -123,18 +129,29 @@
 				//选中节点
 				nodeSelected(event, node) {
 					var path = '电气一次\\';
-					var parent = $('#tree').treeview('getParent', node);
-					if (parent != undefined) {
-						path += parent.text + '\\'
+					if ('parentId' in node && node.parentId != undefined)
+					{
+						var parent = $('#tree').treeview('getParent', node)
+						if (parent.text != '其他设备') {
+							path += parent.text + '\\'
+						}
 					}
+					
 					path += node.text;
-					alert(path)
+					//alert(path)
 					JQ.getFamilyFileInfos(path).then(this.loadList)
 				},
 
 				loadList(info) {
 					console.log(info)
-					this.lists = JSON.parse(info)
+					this.lists.length = 0
+					var that = this;
+					var infos = JSON.parse(info);
+					infos.forEach(function(e) {
+						e.img = e.img.replace('#', '%23')
+						that.lists.push(e)
+					})
+					//this.lists = JSON.parse(info)
 				},
 
 				clickList(obj) { //选中的某一项
@@ -143,10 +160,11 @@
 				},
 
 				onOK() {
+					var that = this;
 					var info = {
 						EventName: "PlaceEquipment",
-						FamilyName:'主变设备',
-						FamilyFile:"E:\\work\\ACADTools\\trunk\\Revit\\GRevitTools\\bin\\x64\\Debug\\FamilyLib\\电气一次\\变压器\\110kV\\主变设备.rfa"
+						FamilyName:this.chooseList.name,
+						FamilyFile:this.chooseList.file//"E:\\work\\ACADTools\\trunk\\Revit\\GRevitTools\\bin\\x64\\Debug\\FamilyLib\\电气一次\\变压器\\110kV\\主变设备.rfa"
 						//FamilyFile:"主变设备.rfa"
 					}
 					if (window.JQ) {
