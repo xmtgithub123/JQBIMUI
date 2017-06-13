@@ -3,16 +3,19 @@
 <head>
 	<meta charset="UTF-8">
 	<title>族库</title>
-	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="../public/stylesheets/flex.css">
-	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
-	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">  
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/flex.css">
+	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">  
 	<style type="text/css">
 		.row-list {
 			border:2px solid transparent;
 			border-radius: 6px;
 			transition: all .2s;
+		}
+		.row-list:hover {
+			cursor: pointer;
 		}
 		.row-list.active{
 			border:2px solid #169bd5;
@@ -27,6 +30,12 @@
 			word-break:break-all;
 
 		}
+		.max-height {
+			max-height: 480px;
+    		overflow-y: auto;
+    		border-left:1px solid #dbdbdb;
+
+		}
 	</style>
 </head>
 <body>
@@ -37,23 +46,21 @@
 		 			<div class="col-sm-4">
 		 				<div id="tree"></div>
 		 			</div>
-		 			<div class="col-sm-8">
-		 				
+		 			<div class="col-sm-8 max-height">
 		 					<div class="col-sm-4 mt-15 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)" style="height:135px;">
 		 						<img :src=list.url alt="" class="img-responsive center" style="height:70px;">
 		 						<p class="text-center">{{list.name}}</p>
 		 					</div>
-		 				
 		 			</div>
 		 		</div>
       		</div>
 	    </div>
 	</div>
-	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
-	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入bootstrap.js-->
-	<script src="../public/javascripts/bootstrap-treeview.js"></script> <!--引入bootstrap-treeview.js-->
-	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
-	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/bootstrap.min.js"></script> <!--引入bootstrap.js-->
+	<script src="/javascripts/bootstrap-treeview.js"></script> <!--引入bootstrap-treeview.js-->
+	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
 	
 	<script type="text/javascript">
 
@@ -95,6 +102,16 @@
 				  }
 				],
 				lists:[
+					{id:1,name:'一体式',url:'/img/img.png'},
+					{id:2,name:'变压器主体变压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'变压器',url:'/img/img.png'},
+					{id:2,name:'压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'压器主体',url:'/img/img.png'},
+					{id:1,name:'一体式',url:'/img/img.png'},
+					{id:2,name:'变压器主体变压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'变压器',url:'/img/img.png'},
+					{id:2,name:'压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'压器主体',url:'/img/img.png'},
 					{id:1,name:'一体式',url:'/img/img.png'},
 					{id:2,name:'变压器主体变压器主体变压器主体',url:'/img/img.png'},
 					{id:2,name:'变压器',url:'/img/img.png'},
