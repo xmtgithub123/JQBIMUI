@@ -8,28 +8,66 @@
 	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
 	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<style type="text/css">
+		.row-list {
+			border:2px solid transparent;
+			border-radius: 6px;
+			transition: all .2s;
+		}
+		.row-list.active{
+			border:2px solid #169bd5;
+
+		}
+		.row-list p {
+			height:38px;
+			overflow:hidden;
+			display: -webkit-box;
+			-webkit-line-clamp:2;
+			-webkit-box-orient:vertical;
+			word-break:break-all;
+
+		}
+		.max-height {
+			min-height: 480px;
+			max-height: 480px;
+    		overflow-y: auto;
+    		border-left:1px solid #dbdbdb;
+
+		}
+		.bg-auto-box {
+			width:auto;
+		}
+		.bg-auto-box .col-sm-4 {
+			width:200px;
+		}
+		.bg-auto-box .col-sm-8 {
+			width:calc(100% - 200px);
+		}
+	</style>
 </head>
 <body>
 	<div class="body-wrap">
 	    <div class="panel-body box-wrap">
-      		<div class="bg-box">
+      		<div class="bg-box bg-auto-box">
 				 <div class="row">
 				 	<div class="col-sm-4">
 				 		<div id="tree"></div>
 				 	</div>
-				 	<div class="col-sm-8">
-				 		<div class="row">
+				 	<div class="col-sm-8 max-height">
+				 		
 				 			<div class="col-sm-4 mt-15 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)">
-		 						<img :src=list.img alt="" class="img-responsive text-center" style='width:50px;height:50px'>
+		 						<img :src=list.img alt="" class="img-responsive center" style='height:70px'>
 		 						<p class="text-center">{{list.name}}</p>
 		 					</div>
-				 		</div>
+				 		
 				 	</div>
 				 </div>
       		</div>
 	    </div>
 		<div class="bg-footer">
-			<button class="btn btn-primary btn-bim btn-sm mb-0" @click="onOK">确定</button>
+			<div class="col-md-12">
+			<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="onOK">布置</button>
+			</div>
 		</div>
 	</div>
 	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
@@ -101,7 +139,7 @@
 				} else {
 					this.tree = [
 						{text:'其他设备', nodes:[
-							{text:'穿墙套管'}
+							{text:'穿墙套管', state:{selected: true}}
 						]}
 					]
 				}
@@ -129,7 +167,7 @@
 				//选中节点
 				nodeSelected(event, node) {
 					var path = '电气一次\\';
-					if ('parentId' in node && node.parentId != undefined)
+					if (node.parentId != undefined)
 					{
 						var parent = $('#tree').treeview('getParent', node)
 						if (parent.text != '其他设备') {
