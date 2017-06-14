@@ -121,7 +121,11 @@
 																	<option v-for="option in optionListSecond" >{{option.value}}</option>
 														        </select>
 															</td>
-															<td><input class="input-noborder" style="height:25px;text-align: center;width:100px;" v-model="input_type_t" :class="{disabled:isDisabled}"></td>
+															<td>
+																<select name="" id=""  class="form-control input-sm " v-model="selected_ztype_t" v-cloak>
+																	<option v-for="item in zItems_t" >{{item.name}}</option>
+														        </select>
+															</td>
 															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb_t" :class="{disabled:isDisabled}"></td>
 															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 														</tr>
@@ -261,21 +265,49 @@
 					// {value:'主变进线柜'}
 				],
 				optionListSecond:[ //第二排
-					{value:'出线柜'},
-					{value:'电容器柜'},
-					{value:'分段断路器柜'},
-					{value:'分段隔离柜'},
-					{value:'分段母设柜'},
-					{value:'接地变柜'},
-					{value:'主变进线柜'}
+					{
+						value:'出线柜',
+						symbol:[{
+							name:'100*100',
+						}]
+					},
+					{
+						value:'电容器柜',
+						symbol:[{
+							name:'200*100'
+						},{
+							name:'200*200'
+						}]
+					},
+					{
+						value:'分段断路器柜',
+						symbol:[{
+							name:'300*100'
+						},{
+							name:'300*200'
+						}]
+					},
+					{
+						value:'分段隔离柜',
+						symbol:[{
+							name:'400*100'
+						},{
+							name:'400*200'
+						}]
+					}
+					// ,
+					// {value:'分段母设柜'},
+					// {value:'接地变柜'},
+					// {value:'主变进线柜'}
 				],
 				selected_type:'',//第一排柜子选择框
 				selected_ztype:'',//第一排族类型selected框
 				selected_second:'',//第二排柜子选择框
 				input_type:'', //族类型
 				input_numb:1, //个数
-				input_type_t:'',//第一排族类型
-				input_numb_t:'',//第二排族类型
+				
+				selected_ztype_t:'',//第一排族类型
+				input_numb_t:1,//第二排族类型
 				trList:[
 					// {
 				    //  gz:'',
@@ -365,10 +397,10 @@
 				//第二排表格一行编辑都完成后，自动添加下一行
 				tr_changeEvent_t(){
 					var that = this;
-					if(this.selected_second && this.input_type_t && this.input_numb_t != '') {
-						that.trList_t.push({gz:this.selected_second,ztype:this.input_type_t,numb:this.input_numb_t})
-						that.input_type_t = '';
-						that.input_numb_t='';
+					if(this.selected_second && this.selected_ztype_t && this.input_numb_t != '') {
+						that.trList_t.push({gz:this.selected_second,ztype:this.selected_ztype_t,numb:this.input_numb_t})
+						that.selected_ztype_t = '';
+						that.input_numb_t=1;
 						that.selected_second='';
 					}
 				},
@@ -378,6 +410,7 @@
 				}
 			},
 			computed:{
+				//第一排选择柜子与族类型
 				zItems() {
 					var zItems = [] ,selectedValue = this.$data.selected_type;
 					this.$data.optionList.forEach(function(e){
@@ -386,6 +419,16 @@
 						}
 					});
 					return zItems;
+				},
+				//第二排选择柜子与族类型
+				zItems_t() {
+					var zItems_t = [] ,selectedValue = this.$data.selected_second;
+					this.$data.optionListSecond.forEach(function(e){
+						if(e.value == selectedValue) {
+							zItems_t = e.symbol;
+						}
+					});
+					return zItems_t;
 				},
 				items() {
 					var items = [] ,selectedValue = this.$data.selected;
