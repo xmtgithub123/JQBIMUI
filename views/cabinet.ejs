@@ -7,15 +7,15 @@
 	<link rel="stylesheet" href="../public/stylesheets/flex.css">
 	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
 	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
-	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
 	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 </head>
 <body>
 	<div class="body-wrap">
-	    <div class="panel-body box-wrap">
+	    <div class="box-wrap">
       		<div class="bg-box-0" flex="dir:top main:justify">
 				<div class="bg-box-b">
-					<table class="table table-bordered">
+					<table class="table table-bordered table-ver-top">
       					<col class="col-xs-6">
 					  	<col class="col-xs-6">					 
 					  	<tbody>
@@ -44,10 +44,10 @@
 							</tr>
 							<tr>
 								<td>
-									<div class="panel panel-info">
+									<div class="panel panel-info panel-bim">
 		  								<div class="panel-heading">第一排</div>
 		  								<div class="panel-body-wrap p-5">
-		  									<table class="table table-bordered tree text-center">
+		  									<table class="table table-bordered text-center ">
 						      					<col class="col-xs-4">
 											  	<col class="col-xs-3">
 											  	<col class="col-xs-2">
@@ -71,11 +71,16 @@
 												</tr>
 												<tr @change="tr_changeEvent">
 													<td>
-														<select name="" id=""  class="form-control input-sm " v-model="selected_g" v-cloak>
+														<select name="" id=""  class="form-control input-sm " v-model="selected_type" v-cloak>
 															<option v-for="option in optionList" >{{option.value}}</option>
 												        </select>
 													</td>
-													<td><input class="input-noborder" style="height:25px;text-align: center;width:100px;" v-model="input_type"></td>
+													<td>
+														<!-- <input class="input-noborder" style="height:25px;text-align: center;width:100px;" v-model="input_type"> -->
+														<select name="" id=""  class="form-control input-sm " v-model="selected_ztype" v-cloak>
+															<option v-for="item in zItems" >{{item.name}}</option>
+												        </select>
+													</td>
 													<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb"></td>
 													<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 												</tr>
@@ -85,10 +90,10 @@
 				      				</div>
 								</td>
 								<td>
-									<div class="panel panel-info">
+									<div class="panel panel-info panel-bim">
 		  								<div class="panel-heading">第二排</div>
 											<div class="panel-body-wrap p-5">
-												<table class="table table-bordered tree text-center">
+												<table class="table table-bordered text-center ">
 							      					<col class="col-xs-4">
 												  	<col class="col-xs-3">
 												  	<col class="col-xs-2">
@@ -118,7 +123,7 @@
 															</td>
 															<td><input class="input-noborder" style="height:25px;text-align: center;width:100px;" v-model="input_type_t" :class="{disabled:isDisabled}"></td>
 															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb_t" :class="{disabled:isDisabled}"></td>
-															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel" :class="{disabled:isDisabled}">新增类型</button></td>
+															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 														</tr>
 														
 											  		</tbody>
@@ -220,13 +225,40 @@
 			data:{
 				isToNext:true,
 				optionList:[ //第一排
-					{value:'出线柜'},
-					{value:'电容器柜'},
-					{value:'分段断路器柜'},
-					{value:'分段隔离柜'},
-					{value:'分段母设柜'},
-					{value:'接地变柜'},
-					{value:'主变进线柜'}
+					{
+						value:'出线柜',
+						symbol:[{
+							name:'100*100',
+						}]
+					},
+					{
+						value:'电容器柜',
+						symbol:[{
+							name:'200*100'
+						},{
+							name:'200*200'
+						}]
+					},
+					{
+						value:'分段断路器柜',
+						symbol:[{
+							name:'300*100'
+						},{
+							name:'300*200'
+						}]
+					},
+					{
+						value:'分段隔离柜',
+						symbol:[{
+							name:'400*100'
+						},{
+							name:'400*200'
+						}]
+					}
+					// ,
+					// {value:'分段母设柜'},
+					// {value:'接地变柜'},
+					// {value:'主变进线柜'}
 				],
 				optionListSecond:[ //第二排
 					{value:'出线柜'},
@@ -237,10 +269,11 @@
 					{value:'接地变柜'},
 					{value:'主变进线柜'}
 				],
-				selected_g:'',//第一排柜子选择框
+				selected_type:'',//第一排柜子选择框
+				selected_ztype:'',//第一排族类型selected框
 				selected_second:'',//第二排柜子选择框
 				input_type:'', //族类型
-				input_numb:'', //个数
+				input_numb:1, //个数
 				input_type_t:'',//第一排族类型
 				input_numb_t:'',//第二排族类型
 				trList:[
@@ -254,7 +287,7 @@
 				offsetX:'', //偏移X
 				offsetY:'',//偏移Y
 				checkboxed:'',
-				isDisabled:true, //是否禁用状态
+				// isDisabled:true, //是否禁用状态
 				orientation:'', //朝向
 				interval:'', //间隔
 				decoratePoint:'',//布置点
@@ -262,31 +295,29 @@
 				options:[], 
 				lists:[],
 				selected:'',//设置族
-				selected_type:'',//设置族类型
+				selected_g:'',//设置族类型
 				input_add_name:'',//新增类型 名字
 				input_add_width:'',//新增类型 长度
 				input_add_height:'',//新增类型 宽度
 				status:false,
 			},
 			created(){
-				console.log("aaa")
-					var that = this;
-					that.$http.get('../public/javascripts/type.json').then(function(res){
-						console.log(res)
-						var data = res.data;
-						for (var i =0 ;i < data.length; i++) {
-							var symbolData = data[i].Symbol;
-							var list= [];
-							for (var j = 0 ;j <symbolData.length; j++) {
-								list.push(data[i].Symbol[j])
-							}
-							that.options.push({value:data[i].Name,items:list})
+				var that = this;
+				that.$http.get('../public/javascripts/type.json').then(function(res){
+					console.log(res)
+					var data = res.data;
+					for (var i =0 ;i < data.length; i++) {
+						var symbolData = data[i].Symbol;
+						var list= [];
+						for (var j = 0 ;j <symbolData.length; j++) {
+							list.push(data[i].Symbol[j])
 						}
-					})
-					.catch(function(error) {
-						console.log(error)
-					})
-				console.log(that.options)
+						that.options.push({value:data[i].Name,items:list})
+					}
+				})
+				.catch(function(error) {
+					console.log(error)
+				})
 			},
 			methods:{
 				clickItems(obj) {
@@ -324,11 +355,11 @@
 				//第一排表格一行编辑都完成后，自动添加下一行
 				tr_changeEvent(){
 					var that = this;
-					if(this.selected_g && this.input_type && this.input_numb != '') {
-						that.trList.push({gz:this.selected_g,ztype:this.input_type,numb:this.input_numb})
-						that.input_type = '';
-						that.input_numb='';
-						that.selected_g=''
+					if(this.selected_type && this.selected_ztype && this.input_numb != '') {
+						that.trList.push({gz:this.selected_type,ztype:this.selected_ztype,numb:this.input_numb})
+						that.selected_ztype = '';
+						that.input_numb=1;
+						that.selected_type=''
 					}					
 				},
 				//第二排表格一行编辑都完成后，自动添加下一行
@@ -347,6 +378,15 @@
 				}
 			},
 			computed:{
+				zItems() {
+					var zItems = [] ,selectedValue = this.$data.selected_type;
+					this.$data.optionList.forEach(function(e){
+						if(e.value == selectedValue) {
+							zItems = e.symbol;
+						}
+					});
+					return zItems;
+				},
 				items() {
 					var items = [] ,selectedValue = this.$data.selected;
 					this.$data.options.forEach(function(e){
@@ -358,18 +398,18 @@
 				}
 			},
 			watch:{
-				checkboxed:{
-					//监听双排复选框，默认第二排不可编辑，选中则显示可编辑状态
-					handler:function(val,oldVal){
-						if(val) {
-							this.isDisabled = false
-						}
-						else {
-							this.isDisabled = true
-						}
-					},
-					deep:true
-				}
+				// checkboxed:{
+				// 	//监听双排复选框，默认第二排不可编辑，选中则显示可编辑状态
+				// 	handler:function(val,oldVal){
+				// 		if(val) {
+				// 			this.isDisabled = false
+				// 		}
+				// 		else {
+				// 			this.isDisabled = true
+				// 		}
+				// 	},
+				// 	deep:true
+				// }
 			}
 		})
 	</script>

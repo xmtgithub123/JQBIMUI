@@ -403,3 +403,16 @@ select.input-xs {
 .list-group-item:first-child,.list-group-item:last-child{
   border-radius:0;
 }
+
+
+.panel-bim {
+  margin-bottom: 0;
+}
+.panel-bim .panel-body-wrap{
+      max-height: 330px;
+      overflow-y:auto;   
+}
+
+.table-ver-top>tbody>tr>td {
+   vertical-align: top
+}

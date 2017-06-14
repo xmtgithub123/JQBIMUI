@@ -58,7 +58,7 @@
 		 			</div>
 		 			<div class="col-sm-8 max-height">
 		 					<div class="col-sm-4 col-md-4 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)" style="height:135px;">
-		 						<img :src=list.img alt="" class="img-responsive center" style="height:70px;">
+		 						<img :src=list.url alt="" class="img-responsive center" style="height:70px;">
 		 						<p class="text-center">{{list.name}}</p>
 		 					</div>
 		 			</div>
@@ -83,47 +83,51 @@
 				isToNext:true,
 
 				tree:[
-				  {text:'电气一次', nodes:[
-						{text:'变压器', nodes:[
-							{text:'主变', state:{selected: true}},
-							{text:'接地变'},
-							{text:'站用变'}
-						]},
-						{text:'GIS'},
-						{text:'避雷器'},
-						{text:'穿墙套管'},
-						{text:'电抗器'},
-						{text:'电缆头'},
-						{text:'电缆支吊架'},
-						{text:'电流互感器'},
-						{text:'电压互感器'},
-						{text:'电容器'},
-						{text:'断路器'},
-						{text:'隔离开关'},
-						{text:'接地开关'},
-						{text:'绝缘子'},
-						{text:'开关柜'},
-						{text:'熔断器'},
-						{text:'消弧线圈'},
-						{text:'中性点接地设备'}
-					]},
-					{text:'土建', nodes:[
-						{text:'单柱'},
-						{text:'单柱梁'},
-						{text:'人字柱'},
-						{text:'三角梁'},
-						{text:'栅栏'},
-					]}
+				  {
+				    text: "Parent 1",
+				    nodes: [
+				      {
+				        text: "Child 1",
+				        nodes: [
+				          {text: "Grandchild"},
+				          {text: "Grandchild"}
+				        ]
+				      },
+				      {
+				        text: "Child 2"
+				      }
+				    ]
+				  },
+				  {
+				    text: "Parent 2"
+				  },
+				  {
+				    text: "Parent 3"
+				  },
+				  {
+				    text: "Parent 4"
+				  },
+				  {
+				    text: "Parent 5"
+				  }
 				],
-				lists:[],
+				lists:[
+					{id:1,name:'一体式',url:'/img/img.png'},
+					{id:2,name:'变压器主体变压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'变压器',url:'/img/img.png'},
+					{id:2,name:'压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'压器主体',url:'/img/img.png'},
+					{id:1,name:'一体式',url:'/img/img.png'},
+					{id:2,name:'变压器主体变压器主体变压器主体',url:'/img/img.png'},
+					{id:2,name:'变压器',url:'/img/img.png'},
+					
+				],
 				chooseList:{},
 				isActive:false
 			},
-
 			created(){
 				this.initTree()
 			},
-
 			methods:{
 				initTree() {
 					$('#tree').treeview({
@@ -131,38 +135,12 @@
 						enabledLinks:true,
 						onNodeSelected: this.nodeSelected
 					})
-					this.nodeSelected(null, $('#tree').treeview('getSelected')[0])
 				},
 				
 				//选中节点
 				nodeSelected(event, node) {
-					var path = '';
-					if (node.parentId != undefined)
-					{
-						var parent = $('#tree').treeview('getParent', node)
-						if (parent.parentId != undefined) {
-							path += $('#tree').treeview('getParent', parent).text + '\\'
-						}
-						path += parent.text + '\\'
-					}
-					
-					path += node.text;
-					//alert(path)
-					JQ.getFamilyFileInfos(path).then(this.loadList)
+					alert(node.text)
 				},
-
-				loadList(info) {
-					console.log(info)
-					this.lists.length = 0
-					var that = this;
-					var infos = JSON.parse(info);
-					infos.forEach(function(e) {
-						e.img = e.img.replace('#', '%23')
-						that.lists.push(e)
-					})
-					//this.lists = JSON.parse(info)
-				},
-
 				clickList(obj){ //选中的某一项
 					console.log(obj)
 					this.chooseList = obj;
