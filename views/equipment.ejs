@@ -80,6 +80,7 @@
 		new Vue({
 			el:'body',
 			data:{
+				path:'',  //专业路径
 				type:"",
 				tree:[],
 				lists:[],
@@ -88,7 +89,7 @@
 			},
 
 			created() {
-				//var path = '电气一次\\'
+				this.path = '电气一次\\'
 				this.type = this.getQueryString('Type');
 				if (this.type == 'Transformer') {
 					this.tree = [
@@ -136,6 +137,43 @@
 					this.tree = [
 						{text:'消弧线圈', state:{selected: true}}
 					]
+				} else if (this.type == "Light") {
+					this.tree = [
+						{text:'照明', nodes:[
+							{text:'灯具', state:{selected: true}}
+						]}
+					]
+				} else if (this.type == "PowerBox") {
+					this.tree = [
+						{text:'照明', nodes:[
+							{text:'动力', state:{selected: true}}
+						]}
+					]
+				} else if (this.type == "FireExtinguisher") {
+					this.path = '水工\\'
+					this.tree = [
+						{text:'灭火器', state:{selected: true}}
+					]
+				} else if (this.type == "FireHydrant") {
+					this.path = '水工\\'
+					this.tree = [
+						{text:'消火栓', state:{selected: true}}
+					]
+				} else if (this.type == "FireWaterTank") {
+					this.path = '水工\\'
+					this.tree = [
+						{text:'消防水箱', state:{selected: true}}
+					]
+				} else if (this.type == "Fan") {
+					this.path = '暖通\\'
+					this.tree = [
+						{text:'风机', state:{selected: true}}
+					]
+				} else if (this.type == "Air") {
+					this.path = '暖通\\'
+					this.tree = [
+						{text:'空调', state:{selected: true}}
+					]
 				} else {
 					this.tree = [
 						{text:'其他设备', nodes:[
@@ -166,7 +204,7 @@
 
 				//选中节点
 				nodeSelected(event, node) {
-					var path = '电气一次\\';
+					var path = this.path;
 					if (node.parentId != undefined)
 					{
 						var parent = $('#tree').treeview('getParent', node)
