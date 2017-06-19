@@ -60,7 +60,7 @@
 														{{list.Name}}
 													</td>
 													<td>{{list.Symbol}}</td>
-													<td>{{list.Count}}</td>
+													<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="list.Count"></input></td>
 													<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 												</tr>
 												<tr @change="tr_changeEvent">
@@ -106,7 +106,7 @@
 																{{list.Name}}
 															</td>
 															<td>{{list.Symbol}}</td>
-															<td>{{list.Count}}</td>
+															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="list.Count"></input></td>
 															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 														</tr>
 														<tr @change="tr_changeEvent_t">
