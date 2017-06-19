@@ -16,7 +16,7 @@
       		<div class="bg-box-0">
 				<div class="bg-box-b">
 					<div class="group-item">
-      					支吊架&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;" v-model="hanger">
+      					支吊架&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;" v-model="type">
 								<option>支架</option>
 					 			<option>吊架</option>
 							</select>
@@ -41,12 +41,12 @@
 								  	<col class="col-xs-4">
 							  	    <tbody>
 										<tr>
-											
+
 											<td>
 												<div class="form-box-group">
 													&nbsp;高度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="post_Height"> mm
 												</div>
-												
+
 											</td>
 											<td>
 												<div class="form-box-group">
@@ -87,12 +87,12 @@
 								  	<col class="col-xs-4">
 							  	    <tbody>
 										<tr>
-											
+
 											<td>
 												<div class="form-box-group">
 													长度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_width"> mm
 												</div>
-												
+
 											</td>
 											<td>
 												<div class="form-box-group">
@@ -102,7 +102,7 @@
 											</td>
 											<td>
 												<div class="form-box-group">
-													数量：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_numb"> 
+													数量：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_numb">
 												</div></td>
 										</tr>
 										<tr>
@@ -157,13 +157,13 @@
 									  	    <tbody>
 												<tr v-for="list in trList" v-cloak>
 													<td>
-														{{list.interval}}
+														{{list.Dist}}
 													</td>
 													<td>
-														{{list.number}}
+														{{list.Count}}
 													</td>
 													<td>
-														{{list.angle}}
+														{{list.Angle}}
 													</td>
 												</tr>
 												<tr @change="changeTR(this)">
@@ -189,9 +189,9 @@
 							</div>
 						</div>
       				</div>
-      				
+
       				<div class="bg-footer ">
-						<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" >布置</button>
+						<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="place">布置</button>
 					</div>
 				</div>
       		</div>
@@ -214,7 +214,7 @@
 							<option v-for="option in options">
 								{{option.value}}
 							</option>
-							
+
 						</select>
 					</div>
 					<div class="item_select_2" id="select_type_zu">
@@ -247,7 +247,7 @@
 							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 	      </div>
@@ -264,7 +264,7 @@
 	<script type="text/javascript">
 
 	</script>
-	
+
 	<script type="text/javascript">
 		new Vue({
 			el:'body',
@@ -279,8 +279,8 @@
 				],
 				input_interval:'', //支吊架排布间隔
 				input_number:'', //支吊架排布个数
-				input_angle:'', //支吊架排布角度 
-				hanger:'',//支吊架
+				input_angle:'', //支吊架排布角度
+				type:'支架',//支吊架
 				embeddedPart:'',//预埋件
 				embeddedPart_2:'', //预埋件2
 				post_Height:'',//立柱高度
@@ -295,7 +295,7 @@
 				crossArm_type:'',//横担类型
 				crossArm_type_2:'',//横担类型2
 				objs:[],
-				options:[], 
+				options:[],
 				lists:[],
 				selected:'',//设置族
 				selected_type:'',//设置族类型
@@ -304,7 +304,12 @@
 				input_add_height:'',//新增类型 宽度
 				status:false,
 			},
+
 			created(){
+				if (window.JQ) {
+					//var path = '电气一次\\支吊架\\'
+					//JQ.getFamilyFileInfos(path).then(this.loadList)
+				} else {
 					var that = this;
 					that.$http.get('../public/javascripts/type.json').then(function(res){
 						console.log(res)
@@ -321,17 +326,20 @@
 					.catch(function(error) {
 						console.log(error)
 					})
-				console.log(that.options)
+					console.log(that.options)
+				}
 			},
+
 			methods:{
 				clickItems(obj) {
 					this.status = true;
-					console.log(obj)	
+					console.log(obj)
 					var that = this;
 					that.input_add_name = obj.族名称;
 					that.input_add_width = obj.b;
-					that.input_add_height = obj.h;					
+					that.input_add_height = obj.h;
 				},
+
 				submitData(obj,status) {
 					var that = this;
 					console.log(obj)
@@ -353,28 +361,58 @@
 						alert('增加成功')
 					}
 				},
+
 				submit(){
 
 				},
+
 				changeTR(e){
 					var that = this;
 
 					if ( (/^[0-9]+.?[0-9]*$/.test(this.input_number) == false) && (/^[0-9]+.?[0-9]*$/.test(this.input_angle) == false)) {
-						alert('请输入数字')
+						//alert('请输入数字')
 						this.input_number = ''
 						this.input_angle = ''
-					}
-					else {
-						if(this.input_angle && this.input_interval && this.input_number != '') {
-							that.trList.push({interval:that.input_interval,number:that.input_number,angle:that.input_angle})
+					} else {
+						if (this.input_angle && this.input_interval && this.input_number != '') {
+							that.trList.push({Dist:that.input_interval, Count:that.input_number, Angle:that.input_angle})
 							that.input_interval = ''
 							that.input_number = '',
 							that.input_angle = ''
 						}
 					}
-					
-				}
+				},
+
+				//
+				place() {
+					var that = this;
+					var info = {
+						EventName: 'PlaceSupport',
+						Type: that.type,
+						BasePart: '矩形钢',
+						BasePartSymbolId: 0,
+
+						VerPart: '轻型-角钢-柱',
+						VerPartSymbolId:0,
+						VerPartHeight:1000,
+
+						HorPart: '角钢',
+						HorPartSymbolId: 0,
+						HorPartLen: 500,
+						HorPartDist: 100,
+						HorPartCount: 2,
+						HorPlaceType: '',
+						HorOffset: 0,
+						HorBaseOffset: 200,
+
+						Arrangement: that.trList
+					}
+					JQ.raiseEvent(JSON.stringify(info))
+				},
+
 			},
+
+
 			computed:{
 				items() {
 					var items = [] ,selectedValue = this.$data.selected;
@@ -385,7 +423,7 @@
 					});
 					return items;
 				}
-			}	
+			}
 		})
 	</script>
 </body>
