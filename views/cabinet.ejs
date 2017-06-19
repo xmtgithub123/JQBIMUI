@@ -17,7 +17,7 @@
 				<div class="bg-box-b">
 					<table class="table table-bordered table-ver-top">
       					<col class="col-xs-6">
-					  	<col class="col-xs-6">					 
+					  	<col class="col-xs-6">
 					  	<tbody>
 							<tr>
 								<td>
@@ -55,12 +55,12 @@
 											  </tr>
 											  </thead>
 										  	<tbody>
-												<tr v-for="list in trList" :id="key" v-cloak>
+												<tr v-for="list in firstRow" :id="key" v-cloak>
 													<td>
-														{{list.gz}}
+														{{list.Name}}
 													</td>
-													<td>{{list.ztype}}</td>
-													<td>{{list.numb}}</td>
+													<td>{{list.Symbol}}</td>
+													<td>{{list.Count}}</td>
 													<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 												</tr>
 												<tr @change="tr_changeEvent">
@@ -101,12 +101,12 @@
 													  </tr>
 													</thead>
 											  	    <tbody>
-											  	    	<tr v-for="list in trList_t" :id="key" v-cloak>
+											  	    	<tr v-for="list in secondRow" :id="key" v-cloak>
 															<td>
-																{{list.gz}}
+																{{list.Name}}
 															</td>
-															<td>{{list.ztype}}</td>
-															<td>{{list.numb}}</td>
+															<td>{{list.Symbol}}</td>
+															<td>{{list.Count}}</td>
 															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 														</tr>
 														<tr @change="tr_changeEvent_t">
@@ -123,7 +123,7 @@
 															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb_t" :class="{disabled:isDisabled}"></td>
 															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 														</tr>
-														
+
 											  		</tbody>
 												</table>
 											</div>
@@ -132,9 +132,9 @@
 								</td>
 							</tr>
 						</tbody>
-					</table>					
+					</table>
 
-	      			
+
 				</div>
       			<div class="form-box-group">
 	      				<div>
@@ -144,7 +144,7 @@
 							        </select>
 							偏移X：<input type="text" class="form-control input-sm dl" style="width:140px;margin-right:15px;" v-model="offsetX">Y：<input type="text" class="form-control input-sm dl" style="width:140px;" v-model="offsetY">
 	      				</div>
-						<button class="btn btn-primary" @click="cabinetSubmit">确定</button>
+						<button class="btn btn-primary" @click="place">确定</button>
 	      			</div>
       		</div>
 	    </div>
@@ -166,7 +166,7 @@
 							<option v-for="option in options">
 								{{option.value}}
 							</option>
-							
+
 						</select>
 					</div>
 					<div class="item_select_2" id="select_type_zu">
@@ -199,7 +199,7 @@
 							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 	      </div>
@@ -216,7 +216,7 @@
 	<script type="text/javascript">
 
 	</script>
-	
+
 	<script type="text/javascript">
 		new Vue({
 			el:'body',
@@ -299,26 +299,26 @@
 				selected_second:'',//第二排柜子选择框
 				input_type:'', //族类型
 				input_numb:1, //个数
-				
+
 				selected_ztype_t:'',//第一排族类型
 				input_numb_t:1,//第二排族类型
-				trList:[
+				firstRow:[
 					// {
 				    //  gz:'',
 					// 	ztype:'',
 					// 	numb:;''
 					// }
 				], //第一排tr数组循环
-				trList_t:[],
-				offsetX:'', //偏移X
-				offsetY:'',//偏移Y
+				secondRow:[],
+				offsetX:'0', //偏移X
+				offsetY:'0',//偏移Y
 				checkboxed:'',
 				// isDisabled:true, //是否禁用状态
-				orientation:'', //朝向
-				interval:'', //间隔
-				decoratePoint:'',//布置点
+				orientation:'上', //朝向
+				interval:'2.0', //间隔
+				decoratePoint:'左上',//布置点
 				objs:[],
-				options:[], 
+				options:[],
 				lists:[],
 				selected:'',//设置族
 				selected_g:'',//设置族类型
@@ -327,6 +327,7 @@
 				input_add_height:'',//新增类型 宽度
 				status:false,
 			},
+
 			created(){
 				var that = this;
 				that.$http.get('../public/javascripts/type.json').then(function(res){
@@ -345,15 +346,17 @@
 					console.log(error)
 				})
 			},
+
 			methods:{
 				clickItems(obj) {
 					this.status = true;
-					console.log(obj)	
+					console.log(obj)
 					var that = this;
 					that.input_add_name = obj.族名称;
 					that.input_add_width = obj.b;
-					that.input_add_height = obj.h;					
+					that.input_add_height = obj.h;
 				},
+
 				submitData(obj,status) {
 					var that = this;
 					console.log(obj)
@@ -375,34 +378,51 @@
 						alert('增加成功')
 					}
 				},
+
 				submit(){
 
 				},
+
 				//第一排表格一行编辑都完成后，自动添加下一行
 				tr_changeEvent(){
 					var that = this;
 					if(this.selected_type && this.selected_ztype && this.input_numb != '') {
-						that.trList.push({gz:this.selected_type,ztype:this.selected_ztype,numb:this.input_numb})
+						that.firstRow.push({Name:this.selected_type, Symbol:this.selected_ztype, Count:this.input_numb})
 						that.selected_ztype = '';
 						that.input_numb=1;
 						that.selected_type=''
-					}					
+					}
 				},
+
 				//第二排表格一行编辑都完成后，自动添加下一行
 				tr_changeEvent_t(){
 					var that = this;
 					if(this.selected_second && this.selected_ztype_t && this.input_numb_t != '') {
-						that.trList_t.push({gz:this.selected_second,ztype:this.selected_ztype_t,numb:this.input_numb_t})
+						that.secondRow.push({Name:this.selected_second, Symbol:this.selected_ztype_t, Count:this.input_numb_t})
 						that.selected_ztype_t = '';
 						that.input_numb_t=1;
 						that.selected_second='';
 					}
 				},
-				//点击确定事件
-				cabinetSubmit(){
 
+				//点击确定事件
+				place() {
+					var that = this
+					var info = {
+						EventName: "PlaceCabinet",
+						Dist: that.interval,
+						Direction: that.orientation,
+						OffsetX: that.offsetX,
+						OffsetY: that.offsetY,
+						FirstRow: that.firstRow,
+						SecondRow: that.secondRow
+					}
+					console.log(JSON.stringify(info))
+					//JQ.clickOK(JSON.stringify(info));
+					JQ.raiseEvent(JSON.stringify(info));
 				}
 			},
+
 			computed:{
 				//第一排选择柜子与族类型
 				zItems() {
