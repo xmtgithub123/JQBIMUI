@@ -54,12 +54,12 @@
 				 		<div id="tree"></div>
 				 	</div>
 				 	<div class="col-sm-8 max-height">
-				 		
+
 				 			<div class="col-sm-4 mt-15 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)">
 		 						<img :src=list.img alt="" class="img-responsive center" style='height:70px'>
 		 						<p class="text-center">{{list.name}}</p>
 		 					</div>
-				 		
+
 				 	</div>
 				 </div>
       		</div>
@@ -75,7 +75,7 @@
 	<script src="../public/javascripts/bootstrap-treeview.js"></script>
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
-	
+
 	<script type="text/javascript">
 		new Vue({
 			el:'body',
@@ -184,6 +184,11 @@
 					this.tree = [
 						{text:'空调', state:{selected: true}}
 					]
+				} else if (this.type == 'HerringboneColumn') {
+					this.path = '土建\\'
+					this.tree = [
+						{text:'人字柱', state:{selected: true}}
+					]
 				} else {
 					this.tree = [
 						{text:'其他设备', nodes:[
@@ -191,7 +196,7 @@
 						]}
 					]
 				}
-				
+
     			$('#tree').treeview({
 					data:this.tree,
 					enabledLinks:true,
@@ -222,7 +227,7 @@
 							path += parent.text + '\\'
 						}
 					}
-					
+
 					path += node.text;
 					//alert(path)
 					JQ.getFamilyFileInfos(path).then(this.loadList)
