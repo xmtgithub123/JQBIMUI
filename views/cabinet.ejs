@@ -419,7 +419,10 @@
 					}
 					console.log(JSON.stringify(info))
 					//JQ.clickOK(JSON.stringify(info));
-					JQ.raiseEvent(JSON.stringify(info));
+					//JQ.raiseEvent(JSON.stringify(info));
+					if (window.JQ) {
+						JQ.raiseEvent('{"EventName":"PlaceCabinet" , "Dist":0 , "Direction":"下" , "OffsetX":10 , "OffsetY":10 , "FirstRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "SecondRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "Dist":1000}');
+					}
 				}
 			},
 
