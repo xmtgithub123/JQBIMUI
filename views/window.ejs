@@ -31,16 +31,12 @@
 						</select>
 						<!-- <p>选择：{{selected_type}}</p> -->
 					</div>
-					<div class="item_select_2">
-						<span>&nbsp;&nbsp;&nbsp;&nbsp;布置类型</span>
-						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
-							<option v-for="option in type_options" v-bind:value="option.value">{{option.value}}</option>
-						</select>
-					</div>
+					
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底标高</span>
 						<input type="text" class="form-control input-sm" v-model='input_dbg'>
 					</div>
+					
 					
 				</div>
 				<div class="flex">
@@ -63,8 +59,45 @@
 							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
 						</div>
 					</div>
-					<div style="margin-top:10px;">
-						偏移 : <input type="text" style="width:50px;" placeholder="0.0" v-model="offset">
+					<div class="item_select_2" style="margin-top:10px;">
+						偏移 : <input type="text" style="width:50px;" class="form-control input-sm" placeholder="0.0" v-model="offset">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="item_select_2 col-md-6">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;布置类型：</span>
+						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm" @change="chooseSelectOption">
+							<option v-for="option in type_options" :value="option.value">{{option.value}}</option>
+						</select>
+
+					</div>
+					<div class="col-md-12">
+						<table class="table-bordered text-center ml-15 mt-15" v-show="isTableShow">
+
+						  <tr >
+						    <td style="width:100px;">相邻间隔</td>
+						    
+						    <td v-for="item in tableIntervals">
+						    	<input class="input-noborder" v-model="item.interval" style="height:25px;text-align: center;width:50px;"></input>
+						    </td>
+						    <td @change="td_changeIntervals">
+						    	<input class="input-noborder" v-model="table_interval" style="height:25px;text-align: center;width:50px;"></input>
+						    </td>
+
+						  </tr>
+						  <tr>
+						    <td style="width:100px;">个数:</td>
+						    <td v-for="item in tableNumbers">
+						    	<input class="input-noborder" v-model="item.number" style="height:25px;text-align: center;width:50px;"></input>
+						    </td>
+						    <td @change="td_changeNumber">
+						    	<input class="input-noborder" v-model="table_Number" style="height:25px;text-align: center;width:50px;"></input>
+						    </td>
+						  </tr>
+
+						</table>
 					</div>
 				</div>
 			</div>
@@ -92,7 +125,6 @@
 				selected_symbol: {},  //选中的族类型对象
 
 				selected_bz_type:'中心',//设置布置类型
-				selected_bz_type:'中心',//设置布置类型
 				type_options:[  //布置类型选项
 					{value:'中心'},
 					{value:'头部'}
@@ -105,7 +137,13 @@
 				input_add_height:'',//新增类型 宽度
 				offset:'0',//偏移
 				isDanger:false,
-				status:false
+				status:false,
+				isTableShow:false, // 是否显示表格
+				table_interval:'',//相邻间隔
+				table_Number:'',//个数
+				tableIntervals:[],//间隔数组
+				tableNumbers:[],//个数
+
 			},
 
 			created(){
@@ -117,7 +155,7 @@
 						console.log(error)
 					})
 				} else {
-					that.$http.get('/javascripts/type.json').then(this.loadRes)
+					that.$http.get('../public/javascripts/type.json').then(this.loadRes)
 					.catch(function(error) {
 						console.log(error)
 					})
@@ -152,7 +190,34 @@
 					that.input_add_width = obj.宽度;
 					that.input_add_height = obj.高度;					
 				},
+				chooseSelectOption() {
+					console.log(this.selected_bz_type)
+					this.isTableShow = true
 
+				},
+				td_changeIntervals() {
+					this.inputHasDataFun();
+				},
+				td_changeNumber(){
+					this.inputHasDataFun();
+					
+				},
+				inputHasDataFun(){
+					for(var i =0;i<=this.table_interval.length;i++) {
+						for(var j =i;j<=this.table_Number.length;j++) {
+							if((this.table_interval[i] && this.table_Number[j]) != undefined) {
+								this.tableIntervals.push({interval:this.table_interval})
+								this.table_interval = '';
+								this.tableNumbers.push({number:this.table_Number})
+								this.table_Number = '';
+							}
+							else {
+								console.log('请输入完整')
+							}
+						}
+						
+					}
+				},
 				submitData(obj,status) {
 					var that = this;
 					console.log(obj)
@@ -181,11 +246,8 @@
 					//info.OffsetY = that.offset_y;
 					info.FamilyName = that.selected_symbol.族名称
 					info.SymbolName = that.input_add_name;
-// <<<<<<< HEAD
-// 					info.SymbolId = that.selected_type.Id;
-// =======
 					info.SymbolId = that.selected_symbol.Id
-// >>>>>>> 9c6fe453bef7ecf46c0ff8f820e1ea9a360724ce
+
 					info.PlaceType = that.selected_bz_type;
 					console.log(info);
 					if (window.JQ) {
