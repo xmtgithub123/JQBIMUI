@@ -89,7 +89,7 @@
 							  	    <tbody>
 										<tr>
 
-											<td>
+											<td colspan="2">
 												<div class="form-box-group">
 													长度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartLen"> mm
 
@@ -98,28 +98,28 @@
 
 							  	    		<td rowspan="5">
 							  	    			<div class="img-box-flex">
-							  	    				<img src="/img/img.png" alt="">
+							  	    				<img src="{{type}}2.png" alt="" class="img-responsive">
 							  	    			</div>
 							  	    		</td>
 							  	    	</tr>
 							  	    	<tr>
-							  	    		<td colspan="3">
-							  	    			距底偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="crossArm_bototm_offset">mm
+							  	    		<td colspan="2">
+							  	    			距底偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="horPartZOffset">mm
 							  	    		</td>
 							  	    	</tr>
 							  	    	<tr>
-							  	    		<td colspan="3">
+							  	    		<td colspan="2">
 												<div class="form-box-group dl">
-													横担间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_interval"> mm
+													横担间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartDist"> mm
 													&nbsp;&nbsp;
-													数量：<input type="text" class="form-control input-sm dl " style="width:100px" v-model="crossArm_number">
+													数量：<input type="text" class="form-control input-sm dl " style="width:100px" v-model="horPartCount">
 												</div>
 
 											</td>
 							  	    	</tr>
 										<tr>
 											<td>
-												位置：<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:120px;margin-right:15px;" v-model="crossArm_place">
+												位置：<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:120px;margin-right:15px;" v-model="horPartPlaceType">
 														<option>居中</option>
 												  		<option>居左</option>
 														<option>居右</option>
@@ -127,12 +127,12 @@
 
 											</td>
 											<td>
-												 偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="crossArm_unit">mm
+												 偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="horPartOffset">mm
 
 											</td>
 										</tr>
 										<tr>
-											<td colspan="3">
+											<td colspan="2">
 												<div class="form-box-group">
 													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_type">
 															<option>居中</option>
@@ -203,9 +203,9 @@
 										</table>
 									</div>
 									<div class="col-sm-6 col-md-6">
-										<div class="preview-window">
-											<span>预览窗口</span>
-										</div>
+										<div class="img-box-flex">
+							  	    		<img src="支吊架排布2.png" alt="" class="img-responsive">
+							  	    	</div>
 									</div>
 								</div>
 							</div>
@@ -312,7 +312,7 @@
 				horPartZOffset:'300',//横担立柱底偏移
 				horPartLen:'500',//横担长度
 				horPartDist:'300',//横担间隔
-				horPlaceType:'居中', //横但位置
+				horPartPlaceType:'居中', //横但位置
                 horPartOffset:'0',//横担位置偏移
 				horPartCount: '2', //横担数量
 				crossArm_type:'',//横担类型
@@ -429,7 +429,7 @@
 						HorPartLen: that.horPartLen,
 						HorPartDist: that.horPartDist,
 						HorPartCount: that.horPartCount,
-						HorPlaceType: '',
+						HorPlaceType: that.horPartPlaceType,
 						HorOffset: that.horPartOffset,
 						HorBaseOffset: that.horPartZOffset,
 
