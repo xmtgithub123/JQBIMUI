@@ -56,6 +56,8 @@ router.get('/cabinet', function(req, res, next) {
 router.get('/decoratePost', function(req, res, next) {
   res.render('decoratePost', { title: '布置支吊架' });
 });
-
+router.get('/triangleBeam', function(req, res, next) {
+  res.render('triangleBeam', { title: '三角梁布置' });
+});
 
 module.exports = router;
