@@ -181,6 +181,7 @@
 					//info.OffsetY = that.offset_y;
 					info.FamilyName = that.selected_symbol.族名称
 					info.SymbolName = that.input_add_name;
+					info.EventName = "PlaceDoorWindow"
 // <<<<<<< HEAD
 // 					info.SymbolId = that.selected_type.Id;
 // =======
@@ -189,7 +190,7 @@
 					info.PlaceType = that.selected_bz_type;
 					console.log(info);
 					if (window.JQ) {
-						JQ.clickOK(JSON.stringify(info));
+						JQ.raiseEvent(JSON.stringify(info));
 					}
 				}
 			},
