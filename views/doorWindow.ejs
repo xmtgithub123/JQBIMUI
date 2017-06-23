@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>布置门</title>
+	<title>布置门窗</title>
 	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="../public/stylesheets/flex.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
@@ -123,6 +123,8 @@
 			el:'#win_hook',
 			data:{
 				objs:[],
+				type:'',
+				familyName:'',
 				options:[],
 				lists:[],
 				selected:'',//设置族
@@ -151,9 +153,18 @@
 			},
 
 			created(){
+				this.type = this.getQueryString('Type');
 				var that = this;
+				console.log(this.type);
+				if (this.type == "Door")
+					this.familyName = "门";
+				else if (this.type == "Window")
+					this.familyName = "窗";
+				
+				document.title = "布置" + this.familyName;
+
 				if (window.JQ) {
-					JQ.getFamilys("门").then(this.loadRes)
+					JQ.getFamilys(this.familyName).then(this.loadRes)
 					.catch(function(error) {
 						console.log(error)
 					})
@@ -166,6 +177,15 @@
 			},
 
 			methods:{
+				getQueryString(name) {
+     				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     				var r = window.location.search.substr(1).match(reg);
+     				if (r != null) {
+				 		return  unescape(r[2]);
+					}
+					return null;
+				},
+
 				loadRes(res){
 					var that = this;
 					var data = JSON.parse(res);//res.data;
@@ -279,9 +299,6 @@
 					{
 						for (var i = 0; i < that.tableNumbers.length ; i++)
 						{
-							console.log("test");
-							console.log(that.tableIntervals[i].interval);
-							console.log(parseInt(that.tableIntervals[i].interval));
 							if (parseInt(that.tableIntervals[i].interval) == NaN || parseInt(that.tableNumbers[i].number) == NaN)
 								continue;
 							if (parseInt(that.tableIntervals[i].interval) > 0 && parseInt(that.tableNumbers[i].number) > 0)
