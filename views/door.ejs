@@ -206,13 +206,14 @@
 					var info = {};
 					info.Dist = that.offset;
 					//info.OffsetY = that.offset_y;
+					info.EventName = "PlaceDoorWindow"
 					info.FamilyName = that.selected_symbol.族名称;
 					info.SymbolName = that.input_add_name;
 					info.SymbolId = that.selected_symbol.Id
 					info.PlaceType = that.selected_bz_type;
 					console.log(info);
 					if (window.JQ) {
-						JQ.clickOK(JSON.stringify(info));
+						JQ.raiseEvent(JSON.stringify(info));
 					}
 				}
 			},

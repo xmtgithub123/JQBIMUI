@@ -126,6 +126,7 @@
 											</td>
 											<td>
 												 偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="crossArm_unit">mm
+
 											</td>
 										</tr>
 										<tr>
@@ -295,17 +296,16 @@
 				type:'支架',//支吊架
 				embeddedPart:'',//预埋件
 				embeddedPart_2:'', //预埋件2
-				post_Height:'',//立柱高度
+				post_Height:'1000',//立柱高度
 				post_Type:'',//立柱类型
 				post_Type_2:'',//立柱类型2
-				crossArm_offset:'',//横担立柱底偏移
 
-				crossArm_width:'',//横担长度
-				crossArm_bototm_offset:'',//横担距底偏移
-				crossArm_interval:'',//横担间隔
+				crossArm_width:'500',//横担长度
+				crossArm_bototm_offset:'300',//横担距底偏移
+				crossArm_interval:'300',//横担间隔
 				crossArm_number:'',//横担数量
-				crossArm_place:'', //横但位置
-				crossArm_unit:'',//横担偏移位置单位
+				crossArm_place:'居中', //横但位置
+				crossArm_unit:'0',//横担偏移位置单位
 				crossArm_type:'',//横担类型
 				crossArm_type_2:'',//横担类型2
 				objs:[],
@@ -379,13 +379,12 @@
 				submit(){
 
 				},
-
 				changeTR(){
 					var that = this;
 					if ( (/^[0-9]+.?[0-9]*$/.test(that.input_interval) == false)) {
 						//alert('请输入数字')
-						this.input_number = ''
-						this.input_angle = ''
+						this.input_number = '1'
+						this.input_angle = '0'
 					} else {
 
 						that.trList.push({Dist:that.input_interval, Count:1, Angle:0})
@@ -422,8 +421,7 @@
 						Arrangement: that.trList
 					}
 					JQ.raiseEvent(JSON.stringify(info))
-				},
-
+				}
 			},
 
 

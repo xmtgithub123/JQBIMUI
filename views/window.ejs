@@ -27,7 +27,7 @@
 							<option v-for="option in options">
 								{{option.value}}
 							</option>
-							
+
 						</select>
 					</div>
 					<div class="item_select_2" id="select_type_zu">
@@ -39,13 +39,13 @@
 						</select>
 						<!-- <p>选择：{{selected_type}}</p> -->
 					</div>
-					
+
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底标高</span>
 						<input type="text" class="form-control input-sm" v-model='input_dbg'>
 					</div>
-					
-					
+
+
 				</div>
 				<div class="flex">
 					<button class="btn btn-primary btn-sm btn-bim btn-xs">加载族</button>
@@ -86,7 +86,7 @@
 
 						  <tr >
 						    <td style="width:100px;">相邻间隔</td>
-						    
+
 						    <td v-for="item in tableIntervals">
 						    	<input class="input-noborder" v-model="item.interval" style="height:25px;text-align: center;width:50px;"></input>
 						    </td>
@@ -117,7 +117,7 @@
 		</div>
 	</div>
 	</div>
-	
+
 
 	<script src="../public/javascripts/vue.js"></script>
 	<script src="../public/javascripts/vue-resource.min.js"></script>
@@ -186,16 +186,16 @@
 					if (that.options.length > 0) {
 						that.selected = that.options[0].value
 					}
-				}, 
+				},
 
 				clickItems(obj) {
 					this.status = true;
-					console.log(obj)	
+					console.log(obj)
 					var that = this;
 					that.selected_symbol = obj;
 					that.input_add_name = obj.类型名称;
 					that.input_add_width = obj.宽度;
-					that.input_add_height = obj.高度;					
+					that.input_add_height = obj.高度;
 				},
 
 				//布置类型selected 监听中心与头部方法
@@ -245,7 +245,7 @@
 								console.log('请输入完整')
 							}
 						}
-						
+
 					}
 				},
 				submitData(obj,status) {
@@ -275,12 +275,12 @@
 					//info.OffsetY = that.offset_y;
 					info.FamilyName = that.selected_symbol.族名称
 					info.SymbolName = that.input_add_name;
+					info.EventName = "PlaceDoorWindow"
 					info.SymbolId = that.selected_symbol.Id
-
 					info.PlaceType = that.selected_bz_type;
 					console.log(info);
 					if (window.JQ) {
-						JQ.clickOK(JSON.stringify(info));
+						JQ.raiseEvent(JSON.stringify(info));
 					}
 				}
 			},
@@ -294,9 +294,9 @@
 					});
 					return items;	//返回 items
 				}
-			}	
+			}
 		})
-		
+
 	</script>
 </body>
 </html>
