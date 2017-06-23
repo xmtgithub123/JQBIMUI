@@ -44,7 +44,7 @@
 
 											<td>
 												<div class="form-box-group">
-													&nbsp;高度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="post_Height"> mm
+													&nbsp;高度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="verHeight"> mm
 												</div>
 
 											</td>
@@ -90,31 +90,31 @@
 
 											<td>
 												<div class="form-box-group">
-													长度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_width"> mm
+													长度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartLen"> mm
 												</div>
 
 											</td>
 											<td>
 												<div class="form-box-group">
 
-													间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_interval"> mm
+													间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartDist"> mm
 												</div>
 											</td>
 											<td>
 												<div class="form-box-group">
-													数量：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_numb">
+													数量：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartCount">
 												</div></td>
 										</tr>
 										<tr>
 											<td colspan="3">
 												<div class="form-box-group">
-													立柱底偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="crossArm_offset">mm&nbsp;&nbsp;
-													&nbsp;位置：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_place">
+													立柱底偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="horPartZOffset">mm&nbsp;&nbsp;
+													&nbsp;位置：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="horPlaceType">
 															<option>居中</option>
 													  		<option>居左</option>
 															<option>居右</option>
 												        </select>
-												        偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="crossArmOffset">mm
+												        偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="horPartOffset">mm
 												</div>
 											</td>
 										</tr>
@@ -283,15 +283,16 @@
 				type:'支架',//支吊架
 				embeddedPart:'',//预埋件
 				embeddedPart_2:'', //预埋件2
-				post_Height:'1000',//立柱高度
+				verHeight:'1000',//立柱高度
 				post_Type:'',//立柱类型
 				post_Type_2:'',//立柱类型2
 
-				crossArm_offset:'300',//横担立柱底偏移
-				crossArm_width:'500',//横担长度
-				crossArm_interval:'300',//横担间隔
-				crossArm_place:'居中', //横但位置
-                crossArmOffset:'0',//横担位置偏移
+				horPartZOffset:'300',//横担立柱底偏移
+				horPartLen:'500',//横担长度
+				horPartDist:'300',//横担间隔
+				horPlaceType:'居中', //横但位置
+                horPartOffset:'0',//横担位置偏移
+				horPartCount: '2', //横担数量
 				crossArm_type:'',//横担类型
 				crossArm_type_2:'',//横担类型2
 				objs:[],
@@ -392,19 +393,22 @@
 						BasePart: '矩形钢',
 						BasePartSymbolId: 0,
 
+						//立柱部分
 						VerPart: '热轧槽钢柱',
 						VerPartSymbolId:0,
-						VerPartHeight:1000,
+						VerPartHeight:that.verHeight,
 
+						//横担部分
 						HorPart: '角钢',
 						HorPartSymbolId: 0,
-						HorPartLen: 500,
-						HorPartDist: 100,
-						HorPartCount: 2,
+						HorPartLen: that.horPartLen,
+						HorPartDist: that.horPartDist,
+						HorPartCount: that.horPartCount,
 						HorPlaceType: '',
-						HorOffset: 0,
-						HorBaseOffset: 200,
+						HorOffset: that.horPartOffset,
+						HorBaseOffset: that.horPartZOffset,
 
+						//支架排布
 						Arrangement: that.trList
 					}
 					JQ.raiseEvent(JSON.stringify(info))

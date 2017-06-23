@@ -26,9 +26,9 @@
 						  </tr>
 						  </thead>
 					  	<tbody>
-						  	<tr v-for="(index, list) in FatherTrList">
+						  	<tr v-for="(index, list) in sheetInfos">
 							    <td>
-							    	<select name="" id="" class="form-control input-sm" v-model="list.picFrame" v-cloak>
+							    	<select name="" id="" class="form-control input-sm" v-model="list.Frame" v-cloak>
 										<option v-for="option in options">{{option.Name}}</option>
 									</select>
 							    </td>
@@ -45,21 +45,21 @@
 										  </tr>
 										  </thead>
 									  	<tbody>
-										  	<tr v-for="(i,item) in list.view">
+										  	<tr v-for="(i,item) in list.Views">
 
-											    <td>{{item.name}}</td>
+											    <td>{{item.Name}}</td>
 											    <td  class="text-center">
 											    	<div class="proportion-box">
 											    		<span>1：</span>
 												    	<div class="input-group">
-													      <input type="text" class="form-control input-sm" aria-label="..." v-model="item.proportion" :value="1">
+													      <input type="text" class="form-control input-sm" aria-label="..." v-model="item.Scale" :value="1">
 													      <div class="input-group-btn">
 													        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
 													        <ul class="dropdown-menu dropdown-menu-right">
-													          <li v-for="list in proportionList" @click="listConfirm(this)">
+													          <li v-for="list in scaleList" @click="listConfirm(this)">
 													          	<a href="#">{{list}}</a>
 													          </li>
-													         
+
 													        </ul>
 													      </div><!-- /btn-group -->
 													    </div>
@@ -85,7 +85,7 @@
 													         				<input type="radio" :id="list.Id" :value="list.Name" v-model="picked">
 													         				{{list.Name}}
 													         			</label>
-													         		</div>  				
+													         		</div>
 													         	</li>
 													         </ul>
 													      </div>
@@ -98,31 +98,31 @@
 													</div>
 												</td>
 											    <td>
-												</td> 
+												</td>
 												<td>
-												</td> 
+												</td>
 											</tr>
 									  </tbody>
 									</table>
 							    </td>
 							    <td>
-							    	<input type="text" class="form-control input-sm"  v-model="list.picName">
+							    	<input type="text" class="form-control input-sm"  v-model="list.SheetName">
 							    </td>
 							    <td><button class="btn btn-default btn-sm" style="width:80px;" @click="removeTr(this)"><i class="glyphicon glyphicon-trash"></i></button></td>
 							</tr>
-							
+
 					  </tbody>
 					</table>
 					<button class="btn btn-success btn-bim btn-sm pull-right" @click="addNewDrawings">新增图纸</button>
 				</div>
 				<div class="tz-footer">
-					
+
 					<button class="btn btn-primary btn-bim btn-sm" @click="submit">确定</button>
 				</div>
       		</div>
 	    </div>
 	</div>
-			
+
 	<script src="../public/javascripts/jquery-1.11.1.min.js"></script>
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
@@ -131,16 +131,16 @@
 		new Vue({
 			el:'body',
 			data:{
-				FatherTrList:[
+				sheetInfos:[
 					// {
-					// 	picFrame:'', 图框
-					// 	view:[{		  视图
-					// 		name:'',    名称
-					// 		proportion:'' 比例
+					// 	Frame:'', 图框
+					// 	Views:[{		  视图
+					// 		Name:'',    名称
+					// 		Scale:'' 比例
 					// 	}],
-					// 	picName:'' //图名
+					// 	SheetName:'' //图名
 					// }
-				], //最外层tr循环
+				], //图纸属性数组
 				pic_selected:'' ,//图框selected
 				options:[], //图框selected options
 				name_selected:'',
@@ -148,9 +148,10 @@
 				trList:[], //里层tr循环
 				per_selected:[] ,//比例selected
 				picked:'', //单选选择值
-				proportionList:['1','10','100'], //比例列表
+				scaleList:['1','10','100'], //比例列表
 
 			},
+
 			created() {
 				var that = this;
 				if (window.JQ) {
@@ -166,17 +167,15 @@
 						var data = JSON.parse(res);
 						data.forEach(function(e, i) {
 							that.name_options.push({Name:data[i]})
-							that.FatherTrList.push({picFrame:that.pic_selected, view:[{name:data[i], proportion:''}], picName:data[i]})
+							that.sheetInfos.push({Frame:that.pic_selected, Views:[{Name:data[i], Scale:''}], SheetName:data[i]})
 						})
 					})
-
-					
 				} else {
 					that.$http.get('../public/javascripts/tz.json').then(function(res) {
 						var data = res.body
 						data.forEach(function(e,i) {
 							that.name_options.push({Name:data[i].Name})
-							that.FatherTrList.push({picFrame:'',view:[{name:data[i].Name,proportion:''}],picName:data[i].Name})
+							that.sheetInfos.push({Frame:'', Views:[{name:data[i].Name, Scale:''}], SheetName:data[i].Name})
 						})
 					})
 
@@ -193,47 +192,53 @@
 				modelSubmit(e) { //视图名称点击Model框确认铵钮点击事件
 					console.log(e)
 					var that = this;
-					console.log(that.FatherTrList)
-					for(var i = 0;i<that.FatherTrList.length;i++) {
-						var view = that.FatherTrList[i].view
-						for(var j =0;j<view.length;j++) {
-							if(view[j].name == that.picked) {
-								view.splice(j,1)
+					console.log(that.sheetInfos)
+					for (var i = 0; i < that.sheetInfos.length; i++) {
+						var views = that.sheetInfos[i].Views
+						for (var j = 0; j < views.length; j++) {
+							if (views[j].Name == that.picked) {
+								views.splice(j, 1)
 							}
 							// else{
 							// 	 break;
 							// }
 						}
 					}
-					e.view.push({name:this.picked,proportion:''})
+					e.Views.push({Name:this.picked, Scale:''})
 				},
+
 				listConfirm(e) { //比例选择事件
 					console.log(e)
-					e.item.proportion = e.list
+					e.item.Scale = e.list
 				},
+
 				removeView(e) { //删除视图
 					console.log(e)
 					var index = e.$index;
-					var arrobj = e.list.view
-					arrobj.splice(index,1)
+					var arrobj = e.list.Views
+					arrobj.splice(index, 1)
 				},
+
 				removeTr(e) {  //删除事件
 					// console.log(e)
 					var index = e.$index;
-					this.FatherTrList.splice(index,1)
+					this.sheetInfos.splice(index, 1)
 				},
+
 				addNewDrawings() { //新增加图纸
-					this.FatherTrList.push({picName:'',view:[{name:'',proportion:''}],picName:''})
-					for(var i = this.FatherTrList.length-1;i<this.FatherTrList.length;i++) {
-						var view = this.FatherTrList[i].view;
-						for(var j = 0;j<view.length;j++) {
-							view.splice(j,1)
+					this.sheetInfos.push({Name:'',Views:[{Name:'', Scale:''}], Name:''})
+					for(var i = this.sheetInfos.length - 1; i < this.sheetInfos.length; i++) {
+						var views = this.sheetInfos[i].Views;
+						for (var j = 0; j < views.length; j++) {
+							views.splice(j, 1)
 						}
 					}
 				},
+
 				submit() { //确定提交事件
 					console.log("submit")
-					console.log(this.FatherTrList)
+					console.log(this.sheetInfos)
+					JQ.clickOK(JSON.stringify(this.sheetInfos));
 				}
 			}
 		})
