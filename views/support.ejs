@@ -82,40 +82,53 @@
 							<div class="panel-heading">横担</div>
 							<div class="panel-body-wrap ptb-5">
 								<table class="table table-flex">
-			      					<col class="col-xs-4">
-								  	<col class="col-xs-4">
-								  	<col class="col-xs-4">
+			      					<col class="col-xs-3">
+								  	<col class="col-xs-3">
+								  	<col class="col-xs-3">
+								  	<col class="col-xs-3">
 							  	    <tbody>
 										<tr>
 
 											<td>
 												<div class="form-box-group">
 													长度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartLen"> mm
+
+												</div>
+							  	    		</td>
+
+							  	    		<td rowspan="5">
+							  	    			<div class="img-box-flex">
+							  	    				<img src="/img/img.png" alt="">
+							  	    			</div>
+							  	    		</td>
+							  	    	</tr>
+							  	    	<tr>
+							  	    		<td colspan="3">
+							  	    			距底偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="crossArm_bototm_offset">mm
+							  	    		</td>
+							  	    	</tr>
+							  	    	<tr>
+							  	    		<td colspan="3">
+												<div class="form-box-group dl">
+													横担间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_interval"> mm
+													&nbsp;&nbsp;
+													数量：<input type="text" class="form-control input-sm dl " style="width:100px" v-model="crossArm_number">
 												</div>
 
 											</td>
-											<td>
-												<div class="form-box-group">
-
-													间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartDist"> mm
-												</div>
-											</td>
-											<td>
-												<div class="form-box-group">
-													数量：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartCount">
-												</div></td>
-										</tr>
+							  	    	</tr>
 										<tr>
-											<td colspan="3">
-												<div class="form-box-group">
-													立柱底偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="horPartZOffset">mm&nbsp;&nbsp;
-													&nbsp;位置：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="horPlaceType">
-															<option>居中</option>
-													  		<option>居左</option>
-															<option>居右</option>
-												        </select>
-												        偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="horPartOffset">mm
-												</div>
+											<td>
+												位置：<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:120px;margin-right:15px;" v-model="crossArm_place">
+														<option>居中</option>
+												  		<option>居左</option>
+														<option>居右</option>
+												      </select>
+
+											</td>
+											<td>
+												 偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="crossArm_unit">mm
+
 											</td>
 										</tr>
 										<tr>
@@ -146,35 +159,44 @@
 							<div class="panel-body-wrap p-5">
 								<div class="row">
 									<div class="col-sm-6 col-md-6">
-										<table class="table table-bordered table-flex">
+										<table class="table table-bordered table-flex text-center">
 											<thead>
 											  	<tr>
 												 	<td>间隔</td>
 												    <td>个数</td>
 												    <td>角度</td>
+												    <td>操作</td>
 											  </tr>
 											</thead>
 									  	    <tbody>
 												<tr v-for="list in trList" v-cloak>
 													<td>
-														{{list.Dist}}
+														<input type="text" class="input-noborder" style="width:80px;" v-model="list.Dist">
 													</td>
 													<td>
-														{{list.Count}}
+														<input type="text" class="input-noborder" style="width:80px;" v-model="list.Count">
+
 													</td>
 													<td>
-														{{list.Angle}}
+														<input type="text" class="input-noborder" style="width:80px;" v-model="list.Angle" >
+
+													</td>
+													<td>
+														<button class="btn btn-primary btn-xs" @click="removeTrlist(this)"><i class="glyphicon glyphicon-trash"></i></button>
 													</td>
 												</tr>
-												<tr @change="changeTR(this)">
-													<td>
-														<input type="text" class="input-noborder" style="width:120px;" v-model="input_interval">
+												<tr>
+													<td >
+														<input type="text" class="input-noborder" style="width:80px;" v-model="input_interval" @change="changeTR">
 													</td>
 													<td>
-														<input type="text" class="input-noborder"  style="width:120px;" v-model="input_number">
+														<input type="text" class="input-noborder"  style="width:80px;" v-model="input_number">
 													</td>
 													<td>
-														<input type="text" class="input-noborder"  style="width:120px;" v-model="input_angle">
+														<input type="text" class="input-noborder"  style="width:80px;" v-model="input_angle">
+													</td>
+													<td>
+
 													</td>
 												</tr>
 									  		</tbody>
@@ -366,24 +388,27 @@
 				submit(){
 
 				},
-
-				changeTR(e) {
+				changeTR(){
 					var that = this;
-
-					if ( (/^[0-9]+.?[0-9]*$/.test(this.input_number) == false) && (/^[0-9]+.?[0-9]*$/.test(this.input_angle) == false)) {
+					if ( (/^[0-9]+.?[0-9]*$/.test(that.input_interval) == false)) {
 						//alert('请输入数字')
 						this.input_number = '1'
 						this.input_angle = '0'
 					} else {
-						if (this.input_angle && this.input_interval && this.input_number != '') {
-							that.trList.push({Dist:that.input_interval, Count:that.input_number, Angle:that.input_angle})
-							that.input_interval = ''
-							that.input_number = '',
-							that.input_angle = ''
-						}
-					}
-				},
 
+						that.trList.push({Dist:that.input_interval, Count:1, Angle:0})
+						that.input_interval = ''
+						that.input_number = '',
+						that.input_angle = ''
+
+					}
+					console.log(this.trList)
+				},
+				removeTrlist(e) {
+					console.log(e)
+					var index = e.$index;
+					this.trList.splice(index,1)
+				},
 				//
 				place() {
 					var that = this;
@@ -425,6 +450,14 @@
 						}
 					});
 					return items;
+				}
+			},
+			watch:{
+				trList:{
+					handler:function(val,oldVal) {
+						// console.log(val)
+						this.trList = val
+					}
 				}
 			}
 		})
