@@ -57,6 +57,12 @@ h4 {
 .p-5 {
   padding:5px;
 }
+.pl-0 {
+  padding-left:0;
+}
+.pr-0 {
+  padding-right:0;
+}
 .mt-5 {
   margin-top:5px;
 }
