@@ -53,8 +53,8 @@ router.get('/family', function(req, res, next) {
 router.get('/cabinet', function(req, res, next) {
   res.render('cabinet', { title: '插入电气柜' });
 });
-router.get('/decoratePost', function(req, res, next) {
-  res.render('decoratePost', { title: '布置支吊架' });
+router.get('/support', function(req, res, next) {
+  res.render('support', { title: '布置支吊架' });
 });
 router.get('/triangleBeam', function(req, res, next) {
   res.render('triangleBeam', { title: '三角梁布置' });

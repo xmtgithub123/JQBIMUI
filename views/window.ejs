@@ -6,6 +6,14 @@
 	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="../public/stylesheets/flex.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<style type="text/css">
+		.ml-15 {
+			margin-left:15px;
+		}
+		.mt-15 {
+			margin-top:15px;
+		}
+	</style>
 </head>
 <body>
 	<div class="body-wrap">
@@ -138,17 +146,16 @@
 				offset:'0',//偏移
 				isDanger:false,
 				status:false,
-				isTableShow:false, // 是否显示表格
-				table_interval:'',//相邻间隔
-				table_Number:'',//个数
+				isTableShow:false, // 点击头部的时候判断是否显示表格
+				table_interval:'',//表格-相邻间隔
+				table_Number:'',//表格-个数
 				tableIntervals:[],//间隔数组
-				tableNumbers:[],//个数
+				tableNumbers:[],//个数数组
 
 			},
 
 			created(){
 				var that = this;
-
 				if (window.JQ) {
 					JQ.getFamilys("窗").then(this.loadRes)
 					.catch(function(error) {
@@ -190,18 +197,41 @@
 					that.input_add_width = obj.宽度;
 					that.input_add_height = obj.高度;					
 				},
+
+				//布置类型selected 监听中心与头部方法
 				chooseSelectOption() {
 					console.log(this.selected_bz_type)
-					this.isTableShow = true
+					if(this.selected_bz_type == '头部') {
+						this.isTableShow = true
+					}
+					else {
+						this.isTableShow = false
+					}
 
 				},
+				//监听改变 布置类型 - 头部 -表格中的相邻间隔
 				td_changeIntervals() {
-					this.inputHasDataFun();
-				},
-				td_changeNumber(){
-					this.inputHasDataFun();
+					if( /^[0-9]+.?[0-9]*$/.test(this.table_interval) == false ){
+						alert('请输入数字')
+						this.table_interval = '';
+					}
+					else {
+						this.inputHasDataFun();
+					   }
 					
 				},
+				//监听改变 布置类型 - 头部 -表格中的个数
+				td_changeNumber(){
+					if( /^[0-9]+.?[0-9]*$/.test(this.table_Number) == false ){
+						alert('请输入数字')
+						this.table_Number = '';
+					}
+					else {
+						this.inputHasDataFun();
+					}
+					
+				},
+				//输入相邻间隔与个数后，默认后面自动增加一列
 				inputHasDataFun(){
 					for(var i =0;i<=this.table_interval.length;i++) {
 						for(var j =i;j<=this.table_Number.length;j++) {
@@ -239,7 +269,6 @@
 				},
 				submit(){
 					var that = this;
-
 					var info = {};
 					info.Dist = that.offset;
 					//info.OffsetX = that.offset_x;

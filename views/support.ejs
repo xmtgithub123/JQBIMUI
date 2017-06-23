@@ -82,40 +82,50 @@
 							<div class="panel-heading">横担</div>
 							<div class="panel-body-wrap ptb-5">
 								<table class="table table-flex">
-			      					<col class="col-xs-4">
-								  	<col class="col-xs-4">
-								  	<col class="col-xs-4">
+			      					<col class="col-xs-3">
+								  	<col class="col-xs-3">
+								  	<col class="col-xs-3">
+								  	<col class="col-xs-3">
 							  	    <tbody>
-										<tr>
-
-											<td>
-												<div class="form-box-group">
+							  	    	<tr>
+							  	    		<td colspan="3">
+							  	    			<div class="form-box-group">
 													长度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_width"> mm
 												</div>
-
-											</td>
-											<td>
-												<div class="form-box-group">
-
-													间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_interval"> mm
+							  	    		</td>
+	
+							  	    		<td rowspan="5">
+							  	    			<div class="img-box-flex">
+							  	    				<img src="/img/img.png" alt="">
+							  	    			</div>
+							  	    		</td>
+							  	    	</tr>
+							  	    	<tr>
+							  	    		<td colspan="3">
+							  	    			距底偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="crossArm_bototm_offset">mm
+							  	    		</td>
+							  	    	</tr>
+							  	    	<tr>
+							  	    		<td colspan="3">
+												<div class="form-box-group dl">
+													横担间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_interval"> mm 
+													&nbsp;&nbsp;
+													数量：<input type="text" class="form-control input-sm dl " style="width:100px" v-model="crossArm_number">
 												</div>
+												
 											</td>
-											<td>
-												<div class="form-box-group">
-													数量：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="crossArm_numb">
-												</div></td>
-										</tr>
+							  	    	</tr>
 										<tr>
-											<td colspan="3">
-												<div class="form-box-group">
-													立柱底偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="crossArm_offset">mm&nbsp;&nbsp;
-													&nbsp;位置：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_place">
-															<option>居中</option>
-													  		<option>居左</option>
-															<option>居右</option>
-												        </select>
-												        偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="crossArm_unit">mm
-												</div>
+											<td>
+												位置：<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:120px;margin-right:15px;" v-model="crossArm_place">
+														<option>居中</option>
+												  		<option>居左</option>
+														<option>居右</option>
+												      </select>
+												       
+											</td>
+											<td>
+												 偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="crossArm_unit">mm
 											</td>
 										</tr>
 										<tr>
@@ -157,18 +167,20 @@
 									  	    <tbody>
 												<tr v-for="list in trList" v-cloak>
 													<td>
-														{{list.Dist}}
+														<input type="text" class="input-noborder" style="width:120px;" v-model="list.Dist">
 													</td>
 													<td>
-														{{list.Count}}
+														<input type="text" class="input-noborder" style="width:120px;" v-model="list.Count">
+														
 													</td>
 													<td>
-														{{list.Angle}}
+														<input type="text" class="input-noborder" style="width:120px;" v-model="list.Angle" >
+														
 													</td>
 												</tr>
-												<tr @change="changeTR(this)">
-													<td>
-														<input type="text" class="input-noborder" style="width:120px;" v-model="input_interval">
+												<tr>
+													<td >
+														<input type="text" class="input-noborder" style="width:120px;" v-model="input_interval" @change="changeTR">
 													</td>
 													<td>
 														<input type="text" class="input-noborder"  style="width:120px;" v-model="input_number">
@@ -289,9 +301,11 @@
 				crossArm_offset:'',//横担立柱底偏移
 
 				crossArm_width:'',//横担长度
-				crossArm_interval:'',//横担长度
+				crossArm_bototm_offset:'',//横担距底偏移
+				crossArm_interval:'',//横担间隔
+				crossArm_number:'',//横担数量
 				crossArm_place:'', //横但位置
-				crossArm_unit:'',//横担位置单位
+				crossArm_unit:'',//横担偏移位置单位
 				crossArm_type:'',//横担类型
 				crossArm_type_2:'',//横担类型2
 				objs:[],
@@ -366,21 +380,21 @@
 
 				},
 
-				changeTR(e){
+				changeTR(){
 					var that = this;
-
-					if ( (/^[0-9]+.?[0-9]*$/.test(this.input_number) == false) && (/^[0-9]+.?[0-9]*$/.test(this.input_angle) == false)) {
+					if ( (/^[0-9]+.?[0-9]*$/.test(that.input_interval) == false)) {
 						//alert('请输入数字')
 						this.input_number = ''
 						this.input_angle = ''
 					} else {
-						if (this.input_angle && this.input_interval && this.input_number != '') {
-							that.trList.push({Dist:that.input_interval, Count:that.input_number, Angle:that.input_angle})
-							that.input_interval = ''
-							that.input_number = '',
-							that.input_angle = ''
-						}
+
+						that.trList.push({Dist:that.input_interval, Count:1, Angle:0})
+						that.input_interval = ''
+						that.input_number = '',
+						that.input_angle = ''
+						
 					}
+					console.log(this.trList)
 				},
 
 				//
@@ -422,6 +436,14 @@
 						}
 					});
 					return items;
+				}
+			},
+			watch:{
+				trList:{
+					handler:function(val,oldVal) {
+						// console.log(val)
+						this.trList = val
+					}
 				}
 			}
 		})

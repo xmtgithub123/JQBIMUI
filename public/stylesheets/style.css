@@ -51,6 +51,9 @@ h4 {
 .ml-15 {
   margin-left:15px;
 }
+.mr-15 {
+  margin-right:15px;
+}
 .p-5 {
   padding:5px;
 }
@@ -385,7 +388,7 @@ select.input-xs {
   margin-bottom: 0;
 }
 .preview-window {
-  width:300px;
+ /* width:300px;*/
   height:200px;
   border:1px solid #dbdbdb;
   line-height: 200px;
@@ -421,4 +424,16 @@ select.input-xs {
 
 .table-ver-top>tbody>tr>td {
    vertical-align: top
+}
+
+
+
+/*布置支吊架-横担-预览图片*/
+.img-box-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height:100%;
+  border:1px solid #dbdbdb;
 }
