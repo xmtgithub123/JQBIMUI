@@ -2,43 +2,29 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>登录页</title>
+	<title>添加签名角色</title>
 	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
-	<style type="text/css">
-		body{
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-	</style>
 </head>
 <body>
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
+	<div class="body-wrap p-5">
 				<div class="form-horizontal form-wrap">
-					<h2 class="text-center">登 录</h2>
 				  <div class="form-group">
-				    <label for="inputEmail3" class="col-sm-3 control-label">用户名</label>
-				    <div class="col-sm-7">
-				      <input type="text" class="form-control" id="inputEmail3" placeholder="用户名" v-model="ruleLogin.username" >
+				    <label class="col-sm-3 control-label" style="line-height:30px;">角色</label>
+				    <div class="col-sm-5" style="padding-left: 0;">
+				      <select name="" id="" class="form-control input-sm" v-model="selectRole" v-cloak>
+								<option v-for="role in roleArr">{{role}}</option>
+							</select>
 				    </div>
 				  </div>
-				  <div class="form-group">
-				    <label for="inputPassword3" class="col-sm-3 control-label">密码</label>
-				    <div class="col-sm-7">
-				      <input type="password" class="form-control" id="inputPassword3" placeholder="密码" v-model="ruleLogin.pass" >
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    <div class="col-sm-offset-3 col-sm-9">
-				      <button  class="btn btn-primary" @click="submitForm('ruleLogin')">{{ status ? '正在登录中...' : '登录'}}</button>
+					<div class="form-group"></div>
+					<div class="form-group">
+				    <div class="col-sm-offset-3 col-sm-6">
+				      <button  class="btn btn-primary" @click="submitForm()">插入</button>
 				    </div>
 				  </div>
 				</div>
-			</div>
-		</div>
+
 	</div>
 
 	<script src="../public/javascripts/vue.js"></script>
@@ -48,17 +34,14 @@
 		new Vue({
 			el:'body',
 			data:{
-				status:false,
-				ruleLogin:{
-					username:'',
-					pass:''
-				}
+				 selectRole:"设计",
+				 roleArr:['设计', '校核', '审核', '批准']
 			},
 			methods:{
-				submitForm(formName) {
-					JQ.clickOK("设计");
+				submitForm() {
+					JQ.clickOK(this.selectRole);
 				}
-			},	
+			},
 		})
 
 	</script>

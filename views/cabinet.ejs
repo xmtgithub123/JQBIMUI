@@ -72,7 +72,7 @@
 													<td>
 														<!-- <input class="input-noborder" style="height:25px;text-align: center;width:100px;" v-model="input_type"> -->
 														<select name="" id=""  class="form-control input-sm " v-model="selected_ztype" v-cloak>
-															<option v-for="item in zItems" >{{item.name}}</option>
+															<option v-for="item in zItems" >{{item.symbolName}}</option>
 												        </select>
 													</td>
 													<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb"></td>
@@ -117,7 +117,7 @@
 															</td>
 															<td>
 																<select name="" id=""  class="form-control input-sm " v-model="selected_ztype_t" v-cloak>
-																	<option v-for="item in zItems_t" >{{item.name}}</option>
+																	<option v-for="item in zItems_t" >{{item.symbolName}}</option>
 														        </select>
 															</td>
 															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb_t" :class="{disabled:isDisabled}"></td>
@@ -138,11 +138,7 @@
 				</div>
       			<div class="form-box-group">
 	      				<div>
-	      					布置点：<select class="form-control input-sm dl" name="" id=""  style="width:140px;margin-right:15px;" v-model="decoratePoint">
-										<option>左上</option>
-								  		<option>左下</option>
-							        </select>
-							偏移X：<input type="text" class="form-control input-sm dl" style="width:140px;margin-right:15px;" v-model="offsetX">Y：<input type="text" class="form-control input-sm dl" style="width:140px;" v-model="offsetY">
+							插入偏移X：<input type="text" class="form-control input-sm dl" style="width:140px;margin-right:15px;" v-model="offsetX">Y：<input type="text" class="form-control input-sm dl" style="width:140px;" v-model="offsetY">
 	      				</div>
 						<button class="btn btn-primary" @click="place">确定</button>
 	      			</div>
@@ -173,7 +169,7 @@
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
 						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
 							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
-								{{item.类型名称}}
+								{{item.symbolName}}
 							</option>
 						</select>
 						<!-- <p>选择：{{selected_type}}</p> -->
@@ -218,81 +214,27 @@
 	</script>
 
 	<script type="text/javascript">
-		new Vue({
+		vue = new Vue({
 			el:'body',
 			data:{
 				isToNext:true,
 				optionList:[ //第一排
-					{
-						value:'出线柜',
-						symbol:[{
-							name:'100*100',
-						}]
-					},
-					{
-						value:'电容器柜',
-						symbol:[{
-							name:'200*100'
-						},{
-							name:'200*200'
-						}]
-					},
-					{
-						value:'分段断路器柜',
-						symbol:[{
-							name:'300*100'
-						},{
-							name:'300*200'
-						}]
-					},
-					{
-						value:'分段隔离柜',
-						symbol:[{
-							name:'400*100'
-						},{
-							name:'400*200'
-						}]
-					}
-					// ,
-					// {value:'分段母设柜'},
-					// {value:'接地变柜'},
-					// {value:'主变进线柜'}
+					// {
+					// 	value:'出线柜',
+					// 	symbols:[{
+					// 		symbolName:'100*100',
+					//		symbolId：''
+					// 	}]
+					// },
 				],
 				optionListSecond:[ //第二排
-					{
-						value:'出线柜',
-						symbol:[{
-							name:'100*100',
-						}]
-					},
-					{
-						value:'电容器柜',
-						symbol:[{
-							name:'200*100'
-						},{
-							name:'200*200'
-						}]
-					},
-					{
-						value:'分段断路器柜',
-						symbol:[{
-							name:'300*100'
-						},{
-							name:'300*200'
-						}]
-					},
-					{
-						value:'分段隔离柜',
-						symbol:[{
-							name:'400*100'
-						},{
-							name:'400*200'
-						}]
-					}
-					// ,
-					// {value:'分段母设柜'},
-					// {value:'接地变柜'},
-					// {value:'主变进线柜'}
+					// {
+					// 	value:'出线柜',
+					// 	symbols:[{
+					// 		name:'100*100',
+					// 		symbolId：''
+					// 	}]
+					// },
 				],
 				selected_type:'',//第一排柜子选择框
 				selected_ztype:'',//第一排族类型selected框
@@ -316,7 +258,7 @@
 				// isDisabled:true, //是否禁用状态
 				orientation:'上', //朝向
 				interval:'2000', //间隔
-				decoratePoint:'左上',//布置点
+				//decoratePoint:'左上',//布置点
 				objs:[],
 				options:[],
 				lists:[],
@@ -330,31 +272,47 @@
 
 			created(){
 				var that = this;
-				that.$http.get('../public/javascripts/type.json').then(function(res){
-					console.log(res)
-					var data = res.data;
-					for (var i =0 ;i < data.length; i++) {
-						var symbolData = data[i].Symbol;
-						var list= [];
-						for (var j = 0 ;j <symbolData.length; j++) {
-							list.push(data[i].Symbol[j])
+				if (window.JQ)
+				{
+					var sendJson = {
+						EventName:'JQFamily',
+						Path:'电气一次\\电气柜\\',
+						Operation:'getFamilyFileInfos',
+						Parameters:{宽度:'',长度:''},
+						Callback:'vue.loadSymbols'
 						}
-						that.options.push({value:data[i].Name,items:list})
-					}
-				})
-				.catch(function(error) {
-					console.log(error)
-				})
+					JQ.raiseEvent(JSON.stringify(sendJson));
+				}
 			},
 
 			methods:{
+				loadSymbols(info) {
+					console.log(info)
+					this.optionList.length = 0
+					this.optionListSecond.length = 0
+					var that = this;
+					var infos = info;
+					//var infos = JSON.parse(info);
+					infos.forEach(function(e) {
+						var optionListItem = {};
+						optionListItem.value = e.name;
+						optionListItem.symbols = e.symbols;
+						that.optionList.push(optionListItem);
+						that.optionListSecond.push(optionListItem);
+
+						that.options.push({value:e.name,items:e.symbols});
+
+					})
+					//this.lists = JSON.parse(info)
+				},
+
 				clickItems(obj) {
 					this.status = true;
 					console.log(obj)
 					var that = this;
-					that.input_add_name = obj.族名称;
-					that.input_add_width = obj.b;
-					that.input_add_height = obj.h;
+					that.input_add_name = obj.symbolName;
+					that.input_add_width = obj.parameters.长度;
+					that.input_add_height = obj.parameters.宽度;
 				},
 
 				submitData(obj,status) {
@@ -362,9 +320,9 @@
 					console.log(obj)
 					if(status) {
 						console.log("=====获取修改数据api======")
-						that.input_add_name = '';
-						that.input_add_width = '';
-						that.input_add_height ='';
+						//that.input_add_name = '';
+						//that.input_add_width = '';
+						//that.input_add_height ='';
 						alert('修改成功')
 						that.status = false;
 
@@ -372,9 +330,9 @@
 					else{
 						console.log('======调用增加族类型api======')
 						that.$data.options.push({value:that.input_add_name,items:[that.input_add_width + 'x'+ that.input_add_height]})
-						that.input_add_name = '';
-						that.input_add_width = '';
-						that.input_add_height ='';
+						//that.input_add_name = '';
+						//that.input_add_width = '';
+						//that.input_add_height ='';
 						alert('增加成功')
 					}
 				},
@@ -421,7 +379,8 @@
 					//JQ.clickOK(JSON.stringify(info));
 					//JQ.raiseEvent(JSON.stringify(info));
 					if (window.JQ) {
-						JQ.raiseEvent('{"EventName":"PlaceCabinet" , "Dist":0 , "Direction":"下" , "OffsetX":10 , "OffsetY":10 , "FirstRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "SecondRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "Dist":1000}');
+						JQ.raiseEvent(JSON.stringify(info));
+						//JQ.raiseEvent('{"EventName":"PlaceCabinet" , "Dist":0 , "Direction":"下" , "OffsetX":10 , "OffsetY":10 , "FirstRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "SecondRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "Dist":1000}');
 					}
 				}
 			},
@@ -432,7 +391,7 @@
 					var zItems = [] ,selectedValue = this.$data.selected_type;
 					this.$data.optionList.forEach(function(e){
 						if(e.value == selectedValue) {
-							zItems = e.symbol;
+							zItems = e.symbols;
 						}
 					});
 					return zItems;
@@ -442,7 +401,7 @@
 					var zItems_t = [] ,selectedValue = this.$data.selected_second;
 					this.$data.optionListSecond.forEach(function(e){
 						if(e.value == selectedValue) {
-							zItems_t = e.symbol;
+							zItems_t = e.symbols;
 						}
 					});
 					return zItems_t;
