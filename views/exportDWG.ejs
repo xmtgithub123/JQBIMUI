@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>插入电气柜</title>
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+	<style type="text/css">
+		.a-upload {
+		    padding: 6px 10px;
+		    width:150px;
+		    text-align: center;
+		    position: relative;
+		    cursor: pointer;
+		    color: #888;
+		    background: #fafafa;
+		    border: 1px solid #ddd;
+		    border-radius: 4px;
+		    overflow: hidden;
+		    display: inline-block;
+		    *display: inline;
+		    *zoom: 1
+		}
+
+		.a-upload  input {
+		    position: absolute;
+		    font-size: 100px;
+		    right: 0;
+		    top: 0;
+		    opacity: 0;
+		    filter: alpha(opacity=0);
+		    cursor: pointer
+		}
+
+		.a-upload:hover {
+		    color: #444;
+		    background: #eee;
+		    border-color: #ccc;
+		    text-decoration: none
+		}
+	</style>
+</head>
+<body>
+	<div class="body-wrap p-5">
+	    <div class="box-wrap">
+      		<div class="bg-box-0">
+				<div class="form-inline" flex="dir:left,cross:center;">
+				  <div class="form-group" style="width:80%;">
+				    <label for="exampleInputAmount">结果文件夹 &nbsp;&nbsp;</label>
+				    <div class="input-group" style="width:80%">
+				      <input type="text" class="form-control" id="exampleInputAmount">
+				    </div>
+				  </div>
+
+				<a href="javascript:;" class="a-upload" >
+				    <input type="file" name="" id="">...
+				</a>
+				<!-- <button type="submit" class="btn btn-primary">Transfer cash</button> -->
+				</div>
+				<div class="file-list">
+					<h5>文件列表</h5>
+					<div id="tree"></div>
+				</div>
+				<button class="btn btn-primary btn-bim pull-right mt-30">导出</button>
+      		</div>
+	    </div>
+	</div>
+
+	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script src="../public/javascripts/bootstrap-treeview.js"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'body',
+			data:{
+				isToNext:true,
+
+				tree:[
+
+				  {text:'视图', nodes:[
+					
+						{text:'视图1'},
+						{text:'视图2'},
+						{text:'视图3'}
+					]}
+				],
+
+			},
+			created(){
+				this.initTree()
+			},
+			methods:{
+				initTree() {
+					$('#tree').treeview({
+						data:this.tree,
+						enabledLinks:true,
+						onNodeSelected: this.nodeSelected
+					})
+				}
+			}
+		})
+	</script>
+</body>
+</html>

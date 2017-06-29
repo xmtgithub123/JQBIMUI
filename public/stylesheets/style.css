@@ -443,3 +443,13 @@ select.input-xs {
   height:100%;
   border:1px solid #dbdbdb;
 }
+
+
+/*文件夹列表*/
+.file-list {
+  border:1px solid #dbdbdb;
+  padding:15px;
+  margin-top: 30px;
+  height: 350px;
+  overflow: auto;
+}

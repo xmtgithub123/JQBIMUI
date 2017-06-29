@@ -59,5 +59,8 @@ router.get('/support', function(req, res, next) {
 router.get('/triangleBeam', function(req, res, next) {
   res.render('triangleBeam', { title: '三角梁布置' });
 });
+router.get('/exportDWG', function(req, res, next) {
+  res.render('exportDWG', { title: '导出DWG' });
+});
 
 module.exports = router;
