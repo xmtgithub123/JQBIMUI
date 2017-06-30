@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>电缆沟</title>
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+	<div class="body-wrap p-5">
+	    <div class="box-wrap">
+      		<div class="bg-box-0" flex="dir:top main:justify">
+				<div class="bg-box-b">
+
+					<div class="panel panel-info panel-bim">
+							<div class="panel-heading">电缆沟</div>
+							<div class="panel-body-wrap p-5">
+								<table class="table ">
+		      					<col class="col-xs-4">
+							  	<col class="col-xs-3">
+							  	<col class="col-xs-2">
+							  	<col class="col-xs-3">
+
+						  	<tbody>
+								<tr>
+									<td class="form-inline">
+										<div class="form-group" style="width:100%;">
+										    <label>底板</label>
+										   	<select name="" id=""  class="form-control input-sm " v-model="selected_baseboard" v-cloak style="width:80%;">
+												<option v-for="option in optionList" >{{option.value}}</option>
+									        </select>
+										</div>
+									</td>
+									<td>
+										<select name="" id=""  class="form-control input-sm " v-model="selected_baseboard_item" v-cloak>
+											<option v-for="item in zItems" >{{item.symbolName}}</option>
+								        </select>
+									</td>
+									<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
+								</tr>
+								<tr>
+									<td class="form-inline">
+										<div class="form-group" style="width:100%;">
+										    <label>盖板</label>
+										   	<select name="" id=""  class="form-control input-sm " v-model="selected_CoverPlate" v-cloak style="width:80%;">
+												<option v-for="option in optionList" >{{option.value}}</option>
+									        </select>
+										</div>
+										
+									</td>
+									<td>
+										<select name="" id=""  class="form-control input-sm " v-model="selected_CoverPlate_item" v-cloak>
+											<option v-for="item in zItems" >{{item.symbolName}}</option>
+								        </select>
+									</td>
+									
+									<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
+								</tr>
+								<tr>
+									<td class="form-inline">
+										<div class="form-group" style="width:100%;">
+										    <label>边墙</label>
+										   	<select name="" id=""  class="form-control input-sm " v-model="selected_sidewall" v-cloak style="width:80%;">
+												<option v-for="option in optionList" >{{option.value}}</option>
+									        </select>
+										</div>
+										
+									</td>
+									<td>
+										<select name="" id=""  class="form-control input-sm " v-model="selected_sidewall_item" v-cloak>
+											<option v-for="item in zItems" >{{item.symbolName}}</option>
+								        </select>
+									</td>
+									
+									<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
+								</tr>
+								<tr>
+									<td colspan="3" class="form-inline">
+										<div class="form-group" style="width:100%;">
+										    <label>沟宽</label>
+										    <input type="text" class="form-control" v-model="c" v-cloak>
+										  <label>高</label>
+										   	<input type="text" class="form-control" v-model="input_GrooveHeight">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="form-inline">
+										<div class="form-group" style="width:100%;">
+										    <label>对齐</label>
+										   	<select name="" id=""  class="form-control input-sm " v-model="selected_align" v-cloak style="width:280px;">
+												<option v-for="option in optionList" >{{option.value}}</option>
+									        </select>
+										</div>
+									</td>
+									<td></td>
+									<td></td>
+								</tr>
+						  </tbody>
+						</table>
+							</div>
+      				</div>
+
+
+				</div>
+				<div class="pull-right">
+					<button class="btn btn-primary btn-bim pull-right">布置</button>
+				</div>
+      		</div>
+	    </div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="NewAddTypeModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">新增类型</h4>
+	      </div>
+	      <div class="modal-body">
+	        	<div flex="box:mean">
+				<div class="flex">
+					<div class="item_select_2" id="select_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
+						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+							<option v-for="option in options">
+								{{option.value}}
+							</option>
+
+						</select>
+					</div>
+					<div class="item_select_2" id="select_type_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
+						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
+							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
+								{{item.symbolName}}
+							</option>
+						</select>
+						<!-- <p>选择：{{selected_type}}</p> -->
+					</div>
+				</div>
+				<div class="flex">
+					<button class="btn btn-primary btn-sm btn-bim btn-xs">加载族</button>
+					<div class="add_new_type_box">
+						<p>新增族类型</p>
+						<div class="form-group">
+							<span>名字&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_name" class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>长度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_width"  class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>宽度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_height"  class="form-control input-sm">
+						</div>
+						<div class="clearfix">
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+
+	</script>
+
+	<script type="text/javascript">
+		vue = new Vue({
+			el:'body',
+			data:{
+				isToNext:true,
+				optionList:[ //第一排
+					{
+						value:'出线柜',
+						symbols:[{
+							symbolName:'100*100'
+						}]
+					},
+				],
+				selected_baseboard:'',//底板
+				selected_baseboard_item:'',//底板项
+
+				selected_CoverPlate:'',//盖板
+				selected_CoverPlate_item:'',//盖板项
+
+				selected_sidewall:'',//边墙
+				selected_sidewall_item:'',//边墙项
+
+				input_GrooveWidth:'',//沟宽
+				input_GrooveHeight:'', // 沟高
+
+				selected_align:'',//对齐
+
+			
+				
+				input_type:'', //族类型
+				selected_type:'',//族
+				objs:[],
+				options:[],
+				lists:[],
+				selected:'',//设置族
+				selected_g:'',//设置族类型
+				input_add_name:'',//新增类型 名字
+				input_add_width:'',//新增类型 长度
+				input_add_height:'',//新增类型 宽度
+				status:false,
+			},
+
+			created(){
+				
+			},
+
+			methods:{
+				loadSymbols(info) {
+					console.log(info)
+					this.optionList.length = 0
+					this.optionListSecond.length = 0
+					var that = this;
+					var infos = info;
+					//var infos = JSON.parse(info);
+					infos.forEach(function(e) {
+						var optionListItem = {};
+						optionListItem.value = e.name;
+						optionListItem.symbols = e.symbols;
+						that.optionList.push(optionListItem);
+						that.optionListSecond.push(optionListItem);
+
+						that.options.push({value:e.name,items:e.symbols});
+
+					})
+					//this.lists = JSON.parse(info)
+				},
+
+				clickItems(obj) {
+					this.status = true;
+					console.log(obj)
+					var that = this;
+					that.input_add_name = obj.symbolName;
+					that.input_add_width = obj.parameters.长度;
+					that.input_add_height = obj.parameters.宽度;
+				},
+
+				submitData(obj,status) {
+					var that = this;
+					console.log(obj)
+					if(status) {
+						console.log("=====获取修改数据api======")
+						//that.input_add_name = '';
+						//that.input_add_width = '';
+						//that.input_add_height ='';
+						alert('修改成功')
+						that.status = false;
+
+					}
+					else{
+						console.log('======调用增加族类型api======')
+						that.$data.options.push({value:that.input_add_name,items:[that.input_add_width + 'x'+ that.input_add_height]})
+						//that.input_add_name = '';
+						//that.input_add_width = '';
+						//that.input_add_height ='';
+						alert('增加成功')
+					}
+				},
+
+
+				
+				//点击确定事件
+				place() {
+					var that = this
+					var info = {
+						EventName: "PlaceCabinet",
+						Dist: that.interval,
+						Direction: that.orientation,
+						OffsetX: that.offsetX,
+						OffsetY: that.offsetY,
+						FirstRow: that.firstRow,
+						SecondRow: that.secondRow
+					}
+					console.log(JSON.stringify(info))
+					//JQ.clickOK(JSON.stringify(info));
+					//JQ.raiseEvent(JSON.stringify(info));
+					if (window.JQ) {
+						JQ.raiseEvent(JSON.stringify(info));
+						//JQ.raiseEvent('{"EventName":"PlaceCabinet" , "Dist":0 , "Direction":"下" , "OffsetX":10 , "OffsetY":10 , "FirstRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "SecondRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "Dist":1000}');
+					}
+				}
+			},
+
+			computed:{
+				//第一排选择柜子与族类型
+				zItems() {
+					var zItems = [] ,selectedValue = this.$data.selected_baseboard;
+					this.$data.optionList.forEach(function(e){
+						if(e.value == selectedValue) {
+							zItems = e.symbols;
+						}
+					});
+					return zItems;
+				},
+				
+				items() {
+					var items = [] ,selectedValue = this.$data.selected;
+					this.$data.options.forEach(function(e){
+						if(e.value == selectedValue) {
+							items = e.items;
+						}
+					});
+					return items;
+				}
+			},
+			watch:{
+				// checkboxed:{
+				// 	//监听双排复选框，默认第二排不可编辑，选中则显示可编辑状态
+				// 	handler:function(val,oldVal){
+				// 		if(val) {
+				// 			this.isDisabled = false
+				// 		}
+				// 		else {
+				// 			this.isDisabled = true
+				// 		}
+				// 	},
+				// 	deep:true
+				// }
+			}
+		})
+	</script>
+</body>
+</html>

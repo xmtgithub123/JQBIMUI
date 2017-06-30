@@ -62,5 +62,7 @@ router.get('/triangleBeam', function(req, res, next) {
 router.get('/exportDWG', function(req, res, next) {
   res.render('exportDWG', { title: '导出DWG' });
 });
-
+router.get('/cable', function(req, res, next) {
+  res.render('cable', { title: '电缆沟' });
+});
 module.exports = router;
