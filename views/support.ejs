@@ -15,65 +15,59 @@
 	    <div class="panel-body box-wrap">
       		<div class="bg-box-0">
 				<div class="bg-box-b">
-					<div class="group-item">
-      					支吊架&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;" v-model="type">
+					<form class="form-horizontal">
+					  <div class="form-group">
+					    <label class="col-sm-2 control-label">支吊架：</label>
+					    <div class="col-sm-10 pl-0">
+					      <select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;" v-model="type">
 								<option>支架</option>
 					 			<option>吊架</option>
 							</select>
+							<label>预埋件：</label>
+							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="embeddedPart">
+								<option>预埋件1</option>
+					 			<option>预埋件2</option>
+							</select>
+							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="embeddedPart_2">
+								<option>预埋件1</option>
+					 			<option>预埋件2</option>
+							</select>
+							<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button>
+					    </div>
+					  </div>
+					</form>
 
-						预埋件&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:150px;margin-right:15px;" v-model="embeddedPart">
-							<option>预埋件1</option>
-				 			<option>预埋件2</option>
-						</select>
-						&nbsp;&nbsp;&nbsp;<select name="" id="" class="form-control input-sm dl" v-cloak style="width:150px;margin-right:15px;" v-model="embeddedPart_2">
-							<option>预埋件1</option>
-				 			<option>预埋件2</option>
-						</select>
-						<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button>
-      				</div>
       				<div class="group-item mt-15">
       					<div class="panel panel-info penel-fix">
 							<div class="panel-heading">立柱</div>
 							<div class="panel-body-wrap ptb-5">
-								<table class="table table-flex">
-			      					<col class="col-xs-3">
-								  	<col class="col-xs-5">
-								  	<col class="col-xs-4">
-							  	    <tbody>
-										<tr>
-
-											<td>
-												<div class="form-box-group">
-													&nbsp;高度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="verHeight"> mm
-												</div>
-
-											</td>
-											<td>
-												<div class="form-box-group">
-													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:40%" v-model="post_Type">
-															<option>出线柜</option>
-													  		<option>电容器柜</option>
-															<option>分段断路器柜</option>
-															<option>分段隔离柜</option>
-															<option>分段母设柜</option>
-															<option>接地变柜</option>
-															<option>主变进线柜</option>
-												        </select>
-												        &nbsp;<select name="" id=""  class="form-control input-sm" v-cloak style="width:40%" v-model="post_Type_2">
-															<option>出线柜</option>
-													  		<option>电容器柜</option>
-															<option>分段断路器柜</option>
-															<option>分段隔离柜</option>
-															<option>分段母设柜</option>
-															<option>接地变柜</option>
-															<option>主变进线柜</option>
-												        </select>
-												</div>
-											</td>
-											<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
-										</tr>
-							  		</tbody>
-								</table>
+								<div class="form-horizontal">
+								  <div class="form-group">
+								    <label class="col-sm-2 control-label">高度：</label>
+								    <div class="col-sm-10 pl-0">
+								      <input type="text" class="form-control input-sm dl" style="width:100px" v-model="verHeight"> mm
+								      <label>类型：</label><select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px" v-model="post_Type">
+												<option>出线柜</option>
+										  		<option>电容器柜</option>
+												<option>分段断路器柜</option>
+												<option>分段隔离柜</option>
+												<option>分段母设柜</option>
+												<option>接地变柜</option>
+												<option>主变进线柜</option>
+									        </select>
+									        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px" v-model="post_Type_2">
+												<option>出线柜</option>
+										  		<option>电容器柜</option>
+												<option>分段断路器柜</option>
+												<option>分段隔离柜</option>
+												<option>分段母设柜</option>
+												<option>接地变柜</option>
+												<option>主变进线柜</option>
+									        </select>
+											<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button>
+								    </div>
+								  </div>
+								</div>
 							</div>
 						</div>
       				</div>
@@ -81,75 +75,66 @@
       					<div class="panel panel-info penel-fix">
 							<div class="panel-heading">横担</div>
 							<div class="panel-body-wrap ptb-5">
-								<table class="table table-flex">
-			      					<col class="col-xs-3">
-								  	<col class="col-xs-3">
-								  	<col class="col-xs-3">
-								  	<col class="col-xs-3">
-							  	    <tbody>
-										<tr>
 
-											<td colspan="2">
-												<div class="form-box-group">
-													长度：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartLen"> mm
-
-												</div>
-							  	    		</td>
-
-							  	    		<td rowspan="5">
-							  	    			<div class="img-box-flex">
-							  	    				<img src="{{type}}.png" alt="" class="img-responsive">
-							  	    			</div>
-							  	    		</td>
-							  	    	</tr>
-							  	    	<tr>
-							  	    		<td colspan="2">
-							  	    			距底偏移：<input type="text" class="form-control input-sm dl" style="width:120px;" v-model="horPartZOffset">mm
-							  	    		</td>
-							  	    	</tr>
-							  	    	<tr>
-							  	    		<td colspan="2">
-												<div class="form-box-group dl">
-													横担间隔：<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartDist"> mm
-													&nbsp;&nbsp;
-													数量：<input type="text" class="form-control input-sm dl " style="width:100px" v-model="horPartCount">
-												</div>
-
-											</td>
-							  	    	</tr>
-										<tr>
-											<td>
-												位置：<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:120px;margin-right:15px;" v-model="horPartPlaceType">
+								<div class="row">
+									<div class="col-sm-7">
+										<div class="form-horizontal">
+										  	<div class="form-group">
+											    <label class="col-sm-3 control-label pr-0">长度：</label>
+											    <div class="col-sm-9">
+											      <input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartLen"> mm
+											    </div>
+										  	</div>
+										  	<div class="form-group">
+											    <label class="col-sm-3 control-label pr-0">距底偏移：</label>
+											    <div class="col-sm-9">
+											      	<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="horPartZOffset"> mm
+											    </div>
+										  	</div>
+										  	<div class="form-group">
+											    <label class="col-sm-3 control-label pr-0">横担间隔：</label>
+											    <div class="col-sm-9">
+											      	<input type="text" class="form-control input-sm dl" style="width:100px" v-model="horPartDist"> mm
+											      	<label class="ml-15">数量：</label><input type="text" class="form-control input-sm dl "style="width:80px;" v-model="horPartCount">
+											    </div>
+										  	</div>
+										  	<div class="form-group">
+											    <label class="col-sm-3 control-label pr-0">位置：</label>
+											    <div class="col-sm-9">
+											      	<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;" v-model="horPartPlaceType">
 														<option>居中</option>
 												  		<option>居左</option>
 														<option>居右</option>
-												      </select>
+												      </select>&nbsp;&nbsp;&nbsp;&nbsp;
+												      <label class="ml-15">偏移：</label><input type="text" class="form-control input-sm dl" style="width:80px;" v-model="horPartOffset"> mm
+											    </div>
+										  	</div>
+										  	<div class="form-group">
+											    <label class="col-sm-3 control-label pr-0">类型：</label>
+											    <div class="col-sm-9">
+											      	<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px;margin-right:15px;" v-model="crossArm_type">
 
-											</td>
-											<td>
-												 偏移：<input type="text" class="form-control input-sm dl" style="width:100px;" v-model="horPartOffset">mm
-
-											</td>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<div class="form-box-group">
-													&nbsp;类型：<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_type">
 															<option>居中</option>
 													  		<option>居左</option>
 															<option>居右</option>
 												        </select>
-												        &nbsp;<select name="" id=""  class="form-control input-sm" v-cloak style="width:20%;margin-right:15px;" v-model="crossArm_type_2">
+												       <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px; margin-right:15px;" v-model="crossArm_type_2">
 															<option>居中</option>
 													  		<option>居左</option>
 															<option>居右</option>
 												        </select>
 												        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button>
-												</div>
-											</td>
-										</tr>
-							  		</tbody>
-								</table>
+											    </div>
+										  	</div>
+										</div>
+									</div>
+									<div class="col-sm-5">
+										<div class="img-box-flex">
+					  	    				<img src="{{type}}.png" alt="" class="img-responsive">
+					  	    			</div>
+									</div>
+								</div>
+
 							</div>
 						</div>
       				</div>
@@ -171,14 +156,14 @@
 									  	    <tbody>
 												<tr v-for="list in trList" v-cloak>
 													<td>
-														<input type="text" class="input-noborder" style="width:80px;" v-model="list.Dist">
+														<input type="text" class="input-noborder text-center" style="width:80px;" v-model="list.Dist">
 													</td>
 													<td>
-														<input type="text" class="input-noborder" style="width:80px;" v-model="list.Count">
+														<input type="text" class="input-noborder text-center" style="width:80px;" v-model="list.Count">
 
 													</td>
 													<td>
-														<input type="text" class="input-noborder" style="width:80px;" v-model="list.Angle" >
+														<input type="text" class="input-noborder text-center" style="width:80px;" v-model="list.Angle" >
 
 													</td>
 													<td>
@@ -187,13 +172,13 @@
 												</tr>
 												<tr>
 													<td >
-														<input type="text" class="input-noborder" style="width:80px;" v-model="input_interval" @change="changeTR">
+														<input type="text" class="input-noborder text-center" style="width:80px;" v-model="input_interval" @change="changeTR">
 													</td>
 													<td>
-														<input type="text" class="input-noborder"  style="width:80px;" v-model="input_number">
+														<input type="text" class="input-noborder text-center"  style="width:80px;" v-model="input_number">
 													</td>
 													<td>
-														<input type="text" class="input-noborder"  style="width:80px;" v-model="input_angle">
+														<input type="text" class="input-noborder text-center"  style="width:80px;" v-model="input_angle">
 													</td>
 													<td>
 
@@ -284,7 +269,6 @@
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
 	<script type="text/javascript">
-
 	</script>
 
 	<script type="text/javascript">
@@ -308,7 +292,6 @@
 				verHeight:'1000',//立柱高度
 				post_Type:'',//立柱类型
 				post_Type_2:'',//立柱类型2
-
 				horPartZOffset:'300',//横担立柱底偏移
 				horPartLen:'500',//横担长度
 				horPartDist:'300',//横担间隔
@@ -327,7 +310,6 @@
 				input_add_height:'',//新增类型 宽度
 				status:false,
 			},
-
 			created(){
 				if (window.JQ) {
 					//var path = '电气一次\\支吊架\\'
@@ -352,7 +334,6 @@
 					console.log(that.options)
 				}
 			},
-
 			methods:{
 				clickItems(obj) {
 					this.status = true;
@@ -362,7 +343,6 @@
 					that.input_add_width = obj.b;
 					that.input_add_height = obj.h;
 				},
-
 				submitData(obj,status) {
 					var that = this;
 					console.log(obj)
@@ -373,7 +353,6 @@
 						that.input_add_height ='';
 						alert('修改成功')
 						that.status = false;
-
 					}
 					else{
 						console.log('======调用增加族类型api======')
@@ -384,9 +363,7 @@
 						alert('增加成功')
 					}
 				},
-
 				submit(){
-
 				},
 				changeTR(){
 					var that = this;
@@ -395,12 +372,10 @@
 						this.input_number = '1'
 						this.input_angle = '0'
 					} else {
-
 						that.trList.push({Dist:that.input_interval, Count:1, Angle:0})
 						that.input_interval = ''
 						that.input_number = '',
 						that.input_angle = ''
-
 					}
 					console.log(this.trList)
 				},
@@ -417,12 +392,10 @@
 						Type: that.type,
 						BasePart: '矩形钢',
 						BasePartSymbolId: 0,
-
 						//立柱部分
 						VerPart: '热轧槽钢柱',
 						VerPartSymbolId:0,
 						VerPartHeight:that.verHeight,
-
 						//横担部分
 						HorPart: '角钢',
 						HorPartSymbolId: 0,
@@ -432,15 +405,12 @@
 						HorPlaceType: that.horPartPlaceType,
 						HorOffset: that.horPartOffset,
 						HorBaseOffset: that.horPartZOffset,
-
 						//支架排布
 						Arrangement: that.trList
 					}
 					JQ.raiseEvent(JSON.stringify(info))
 				}
 			},
-
-
 			computed:{
 				items() {
 					var items = [] ,selectedValue = this.$data.selected;
