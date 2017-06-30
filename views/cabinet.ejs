@@ -176,8 +176,7 @@
 					</div>
 				</div>
 				<div class="flex">
-					<button class="btn btn-primary btn-sm btn-bim btn-xs">加载族</button>
-					<div class="add_new_type_box">
+					<div class="add_new_type_box" style = "margin-top:15px;">
 						<p>新增族类型</p>
 						<div class="form-group">
 							<span>名字&nbsp;&nbsp;</span>
@@ -192,7 +191,8 @@
 							<input type="text" v-model="input_add_height"  class="form-control input-sm">
 						</div>
 						<div class="clearfix">
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'增加')" v-cloak>增加</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'修改')" v-cloak>修改</button>
 						</div>
 					</div>
 
@@ -299,7 +299,6 @@
 						optionListItem.symbols = e.symbols;
 						that.optionList.push(optionListItem);
 						that.optionListSecond.push(optionListItem);
-
 						that.options.push({value:e.name,items:e.symbols});
 
 					})
@@ -318,22 +317,61 @@
 				submitData(obj,status) {
 					var that = this;
 					console.log(obj)
-					if(status) {
+					if(status == '修改') {
 						console.log("=====获取修改数据api======")
-						//that.input_add_name = '';
-						//that.input_add_width = '';
-						//that.input_add_height ='';
-						alert('修改成功')
+						
+						if (window.JQ)
+						{
+							var sendJson = {
+								EventName:'JQFamily',
+								Path:'电气一次\\电气柜\\',
+								Operation:'modifyFamilySymbol',
+								FamilyName:that.selected,
+								SymbolName:that.selected_type[0],
+								SymbolNewName:that.input_add_name,
+								Parameters:{宽度:that.input_add_width,长度:that.input_add_height},
+								Callback:'vue.reloadData'
+								}
+							JQ.raiseEvent(JSON.stringify(sendJson));
+						}
+							
 						that.status = false;
 
 					}
-					else{
+					else if (status == '增加'){
 						console.log('======调用增加族类型api======')
+						
+						if (window.JQ)
+						{
+							var sendJson = {
+								EventName:'JQFamily',
+								Path:'电气一次\\电气柜\\',
+								Operation:'addFamilySymbol',
+								FamilyName:that.selected,
+								SymbolName:that.input_add_name,
+								Parameters:{宽度:that.input_add_width,长度:that.input_add_height},
+								Callback:'vue.reloadData'
+								}
+							JQ.raiseEvent(JSON.stringify(sendJson));
+						}
+
 						that.$data.options.push({value:that.input_add_name,items:[that.input_add_width + 'x'+ that.input_add_height]})
-						//that.input_add_name = '';
-						//that.input_add_width = '';
-						//that.input_add_height ='';
-						alert('增加成功')
+					}
+				},
+
+				reloadData()
+				{
+					var that = this;
+					if (window.JQ)
+					{
+						var sendJson = {
+							EventName:'JQFamily',
+							Path:'电气一次\\电气柜\\',
+							Operation:'getFamilyFileInfos',
+							Parameters:{宽度:'',长度:''},
+							Callback:'vue.loadSymbols'
+							}
+						JQ.raiseEvent(JSON.stringify(sendJson));
 					}
 				},
 
