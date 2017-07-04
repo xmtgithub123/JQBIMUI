@@ -231,7 +231,6 @@
 						</select>
 						<!-- <p>选择：{{selected_type}}</p> -->
 					</div>
-
 				</div>
 				<div class="flex">
 					<div class="add_new_type_box">
@@ -249,27 +248,10 @@
 							</table>
 							<button class="btn btn-info" @click="test">test</button>
 						</div>
-						
 						<div class="clearfix">
 							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'增加')" v-cloak>增加</button>
 							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
-						</div> 
-						<!-- <div class="form-group">
-							<span>名字&nbsp;&nbsp;</span>
-							<input type="text" v-model="input_add_name" class="form-control input-sm">
 						</div>
-						<div class="form-group">
-							<span>长度&nbsp;&nbsp;</span>
-							<input type="text" v-model="input_add_width"  class="form-control input-sm">
-						</div>
-						<div class="form-group">
-							<span>宽度&nbsp;&nbsp;</span>
-							<input type="text" v-model="input_add_height"  class="form-control input-sm">
-						</div>
-						<div class="clearfix">
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'增加')" v-cloak>增加</button>
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
-						</div> -->
 					</div>
 
 				</div>
@@ -281,6 +263,24 @@
 	  </div>
 	</div>
 
+	<div class="body-full-mask" v-if="isShowMask" v-cloak>
+		<div class="app-loading">
+	  		<div class="box">
+	  			<div class="line-spin-fade-loader">
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  			</div>
+	  			<p>{{showMaskInfo}}</p>
+
+	  		</div>
+  		</div>
+	</div>
 
 	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
 	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
@@ -334,6 +334,7 @@
 				standColumnPath:'电气一次\\电缆支吊架\\立柱\\',
 				crossArmPath:'电气一次\\电缆支吊架\\横担\\',
 				// parameterList:['r1','r','k','长度','bf','d','t','x','y'],
+				isShowMask:false,//是否显示全屏遮罩
 				parameterList:[
 					{name:'r1',input_value:''},
 					{name:'r',input_value:''},
@@ -343,12 +344,11 @@
 					{name:'d',input_value:''},
 					{name:'t',input_value:''},
 					{name:'x',input_value:''},
-					{name:'y',input_value:''}]
+					{name:'y',input_value:''}],
+				showMaskInfo:'正在获取族类型信息'
 			},
 			created(){
 				var that = this;
-				console.log(this.parameterList)
-
 				if (window.JQ)
 				{
 					var sendJson = {
@@ -358,6 +358,8 @@
 						Parameters:{},
 						Callback:'vue.loadEmbeddedPart'
 						}
+					this.showMaskInfo ='正在获取族类型信息';
+					this.isShowMask = true;
 					JQ.raiseEvent(JSON.stringify(sendJson));
 				}
 				
@@ -411,7 +413,7 @@
 						JQ.raiseEvent(JSON.stringify(sendJson));
 					}
 				},
-				
+
 				loadStandColumn(info)
 				{
 					this.standColumnOptions.length = 0
@@ -439,7 +441,6 @@
 						JQ.raiseEvent(JSON.stringify(sendJson));
 					}
 				},
-
 				loadCrossArm(info)
 				{
 					this.crossArmOptions.length = 0
@@ -448,6 +449,7 @@
 					infos.forEach(function(e) {
 						that.crossArmOptions.push({value:e.name,items:e.symbols});
 					})
+					this.isShowMask = false;
 
 				},
 
@@ -507,8 +509,10 @@
 								Parameters:parameter,
 								Callback:'vue.reloadData'
 								}
-							JQ.raiseEvent(JSON.stringify(sendJson));
+							that.showMaskInfo ='正在更新族类型';
 							that.isShowMask = true;
+							JQ.raiseEvent(JSON.stringify(sendJson));
+							
 						}
 							
 						that.status = false;
@@ -526,8 +530,10 @@
 								Parameters:{宽度:that.input_add_width,长度:that.input_add_height},
 								Callback:'vue.reloadData'
 								}
-							JQ.raiseEvent(JSON.stringify(sendJson));
+							that.showMaskInfo ='正在更新族类型';
 							that.isShowMask = true;
+							JQ.raiseEvent(JSON.stringify(sendJson));
+							
 						}
 					}
 				},
@@ -546,6 +552,7 @@
 							}
 						JQ.raiseEvent(JSON.stringify(sendJson));
 					}
+					this.isShowMask = false;
 				},
 
 				submit(){
