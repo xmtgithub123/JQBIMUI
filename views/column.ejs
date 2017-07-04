@@ -15,7 +15,7 @@
 				<div class="flex">
 					<div class="item_select_2" id="select_zu">
 						<span>结构柱族&nbsp;</span>
-						<select name="" id=""  v-model="selectedFamilyName" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+						<select name="" id=""  v-model="selected_family" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
 							<option v-for="option in options">
 								{{option.value}}
 							</option>
@@ -26,7 +26,7 @@
 						<span>&nbsp;&nbsp;&nbsp;族类型&nbsp;</span>
 						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
 							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
-								{{item.类型名称}}
+								{{item.symbolName}}
 							</option>
 						</select>
 						<!-- <p>选择：{{selected_type}}</p> -->
@@ -40,7 +40,6 @@
 					
 				</div>
 				<div class="flex">
-					<button class="btn btn-primary btn-sm btn-bim btn-xs">加载族</button>
 					<div class="add_new_type_box">
 						<p>新增族类型</p>
 						<div class="form-group">
@@ -56,8 +55,8 @@
 							<input type="text" v-model="inputH"  class="form-control input-sm">
 						</div>
 						<div class="clearfix">
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="modifySymbol" v-cloak>修改</button>
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="addSymbol" v-cloak>增加</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'增加')" v-cloak>增加</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
 						</div>
 					</div>
 					<div style="margin-top:10px;">
@@ -75,18 +74,35 @@
 	</div>
 	</div>
 	
+	<div class="body-full-mask" v-if="isShowMask" v-cloak>	
+		<div class="app-loading">
+	  		<div class="box">
+	  			<div class="line-spin-fade-loader">
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  			</div>
+	  			<p>{{showMaskInfo}}</p>
 
+	  		</div>
+  		</div>
+	</div>
 	<script src="../public/javascripts/vue.js"></script>
 	<script src="../public/javascripts/vue-resource.min.js"></script>
 	<script>
 		var vue = new Vue ({
-			el:'#win_hook',
+			el:'body',
 			data:{
 				objs:[],
 				options:[],
 				lists:[],
 				//selectedFamilyId:0,
-				selectedFamilyName:'',//设置族
+				selected_family:'',//设置族
 				selected_type:'',//设置族类型
 				selected_symbol: {},  //选中的族类型对象
 				selected_bz_type: '框选轴网',//设置布置类型
@@ -102,17 +118,28 @@
 				offset_x:'0',//偏移 x
 				offset_y:'0',//偏移 y
 				isDanger:false,
-				status:false
+				status:false,
+				path:'土建\\结构柱\\',
+				isShowMask:true,//是否显示全屏遮罩
+				showMaskInfo:'正在获取族类型信息'
 			},
 
 			created() {
 				var that = this;
-				if (window.JQ) {
-					JQ.getFamilys("结构柱").then(this.loadRes)
-					.catch(function(error) {
-						console.log(error)
-					})
-				} else {
+				if (window.JQ)
+				{
+					var sendJson = {
+						EventName:'JQFamily',
+						Path:this.path,
+						Operation:'getFamilyFileInfos',
+						Parameters:{b:'',h:''},
+						Callback:'vue.loadRes'
+						}
+					this.showMaskInfo = '正在获取族类型信息';
+					this.isShowMask = true;
+					JQ.raiseEvent(JSON.stringify(sendJson));
+				}
+				else {
 					this.$http.get('../public/javascripts/type.json').then(this.loadRes)
 					.catch(function(error) {
 						console.log(error.body)
@@ -126,94 +153,74 @@
 				loadRes(res) {
 					var that = this;
 
-					var data = JSON.parse(res);
-
-					for (var i = 0; i < data.length; i++) {
-						var symbolData = data[i].Symbol;
-						var list = [];
-						for (var j = 0 ;j < symbolData.length; j++) {
-							var symbol = symbolData[j];
-							symbol.FamilyId = data[i].Id;
-							list.push(symbol)
-							// console.log(list[j])
-						}
-						that.options.push({id:data[i].Id, value:data[i].Name, items:list})
-					}
-
-					if (that.options.length > 0) {
-						that.selectedFamilyName = that.options[0].value
-					}
-				},
-
-				//添加族类型回调，用于刷新界面
-				addSymbolCallback(symbolJSON) {
-					//console.log('addSymbol:')
-					//console.log(symbolJSON)
-					var symbol = JSON.parse(symbolJSON)
 					var that = this;
-					for (var i = 0; i < that.options.length; i++) {
-						console.log(that.options[i].id + '==' + symbol.FamilyId)
-						if (that.options[i].id == symbol.FamilyId) {
-							that.options[i].items.push(symbol)
-							that.selected_type = symbol.类型名称
-							that.selected_symbol = symbol;
-							that.inputSymbolName = symbol.类型名称;
-							that.inputB = symbol.b;
-							that.inputH = symbol.h;
-							break;
-						}
+					isReload = that.options.length > 0;
+					that.options = [];
+					res.forEach(function(e) {
+						that.options.push({value:e.name,items:e.symbols});
+					})
+					
+					if (!isReload && that.options.length > 0) {
+						that.selected_family = that.options[0].value
 					}
+					this.isShowMask = false;
 				},
 
 				//添加族类型
-				addSymbol() {
+				submitData(obj,status) {
 					var that = this;
-					if (window.JQ) {
-						var info = {
-							EventName: "JQFamily",
-							Operation: "add",
-							Name: that.inputSymbolName,
-							b: that.inputB,
-							h: that.inputH,
-							SymbolId: that.selected_symbol.Id,
-							Callback: "vue.addSymbolCallback"
-						}
-						console.log(info)
-						JQ.raiseEvent(JSON.stringify(info));
-					}
-				},
-
-				//修改族类型回调，用于刷新界面
-				modifySymbolCallback(symbolJSON) {
-					var symbol = JOSN.parse(symbolJSON)
-					var that = this;
-					for (var i = 0; i < that.options.length; i++) {
-						var famiy = that.options[i];
-						if (family.id == symbol.FamilyId) {
-							for (var j = 0; j < family.items.length; j++)
-								if (famiy.items[j].Id == symbol.Id) {
-									family.items[j] = symbol;
-									return
+					console.log(obj)
+					if(status == '修改') {				
+						if (window.JQ)
+						{
+							var sendJson = {
+								EventName:'JQFamily',
+								Path:that.path,
+								Operation:'modifyFamilySymbol',
+								FamilyName:that.selected_family,
+								SymbolName:that.selected_type[0],
+								SymbolNewName:that.inputSymbolName,
+								Parameters:{b:that.inputB,h:that.inputH},
+								Callback:'vue.reloadData'
 								}
+							this.showMaskInfo = '正在更新族类型';
+							that.isShowMask = true;
+							JQ.raiseEvent(JSON.stringify(sendJson));
+						}
+							
+						that.status = false;
+
+					}
+					else if (status == '增加'){						
+						if (window.JQ)
+						{
+							var sendJson = {
+								EventName:'JQFamily',
+								Path:that.path,
+								Operation:'addFamilySymbol',
+								FamilyName:that.selected_family,
+								SymbolName:that.inputSymbolName,
+								Parameters:{b:that.inputB,h:that.inputH},
+								Callback:'vue.reloadData'
+								}
+							this.showMaskInfo = '正在更新族类型';
+							that.isShowMask = true;
+							JQ.raiseEvent(JSON.stringify(sendJson));
 						}
 					}
 				},
 
-				//修改族类型
-				modifySymbol() {
-					var that = this;
-					if (window.JQ) {
-						var info = {
-							EventName: "JQFamily",
-							Name: that.inputSymbolName,
-							b: that.inputB,
-							h: that.inputH,
-							SymbolId: that.selected_symbol.Id,
-							Callback: "vue.modifySymbolCallback"
+				reloadData()
+				{
+					var sendJson = {
+						EventName:'JQFamily',
+						Path:this.path,
+						Operation:'getFamilyFileInfos',
+						Parameters:{b:'',h:''},
+						Callback:'vue.loadRes'
 						}
-						console.log(info)
-						JQ.raiseEvent(JSON.stringify(info));
-					}
+					JQ.raiseEvent(JSON.stringify(sendJson));
+					this.isShowMask = false;
 				},
 
 				//选中族类型
@@ -222,9 +229,9 @@
 					// console.log(obj)	
 					var that = this;
 					that.selected_symbol = obj;
-					that.inputSymbolName = obj.类型名称;
-					that.inputB = obj.b;
-					that.inputH = obj.h;
+					that.inputSymbolName = obj.symbolName;
+					that.inputB = obj.parameters.b;
+					that.inputH = obj.parameters.h;
 				},
 
 				//布置构件
@@ -235,10 +242,10 @@
 						EventName: "PlaceColumn",
 						OffsetX: that.offset_x,
 						OffsetY: that.offset_y,
-						FamilyName: that.selected_symbol.族名称,
-						SymbolName: that.selected_symbol.类型名称,
-						SymbolId: that.selected_symbol.Id,
-						PlaceType: that.selected_bz_type
+						FamilyName: that.selected_family,
+						SymbolName: that.selected_symbol.symbolName,
+						PlaceType: that.selected_bz_type,
+						Path:that.path
 					};
 					
 					console.log(info);
@@ -253,7 +260,7 @@
 				//获取族类型
 				items() {
 					var data = this.$data;
-					var selectedFamilyName = data.selectedFamilyName;
+					var selectedFamilyName = data.selected_family;
 					for (var i = 0; i < data.options.length; i++) {
 						//console.log(data.options[i])
 						if (data.options[i].value == selectedFamilyName) {
