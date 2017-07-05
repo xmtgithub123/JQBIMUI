@@ -52,7 +52,7 @@
 				  <div class="form-group" style="width:80%;">
 				    <label for="exampleInputAmount">结果文件夹 &nbsp;&nbsp;</label>
 				    <div class="input-group" style="width:80%">
-				      <input type="text" class="form-control" id="exampleInputAmount">
+				      <input type="text" class="form-control" id="exampleInputAmount" v-model="path">
 				    </div>
 				  </div>
 
@@ -80,6 +80,8 @@
 			data:{
 				isToNext:true,
 
+				path:'',
+
 				tree:[
 
 				  {text:'视图', nodes:[
@@ -91,11 +93,12 @@
 				],
 
 			},
+
 			created(){
 				var that = this;
-				JQ.getViews().then(function(res) {
+				JQ.getExportViews().then(function(res) {
 					var info = JSON.parse(res);
-					info.forEach(e => that.tree.push({text:e}))
+					info.forEach(e => that.tree.push({text:e.Name, id:e.Id}))
 
 					$('#tree').treeview({
 						data:this.tree,
@@ -103,13 +106,16 @@
 						onNodeSelected: this.nodeSelected
 					})
 				})
-
-
 			},
+
 			methods:{
 				export() {
-
-					//JQ.clickOK();
+					var nodes = $('#tree').treeview('getSelected', null);
+					var info = {path: this.path, nodes:[]}
+					nodes.forEach(e =>
+						info.nodes.push({Name:e.text, Id:e.id})
+					)
+					JQ.clickOK(JSON.stringify(infos));
 				}
 			}
 		})
