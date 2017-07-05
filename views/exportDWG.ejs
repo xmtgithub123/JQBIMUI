@@ -65,7 +65,7 @@
 					<h5>文件列表</h5>
 					<div id="tree"></div>
 				</div>
-				<button class="btn btn-primary btn-bim pull-right mt-30">导出</button>
+				<button class="btn btn-primary btn-bim pull-right mt-30" @click="export()">导出</button>
       		</div>
 	    </div>
 	</div>
@@ -83,7 +83,7 @@
 				tree:[
 
 				  {text:'视图', nodes:[
-					
+
 						{text:'视图1'},
 						{text:'视图2'},
 						{text:'视图3'}
@@ -92,15 +92,24 @@
 
 			},
 			created(){
-				this.initTree()
-			},
-			methods:{
-				initTree() {
+				var that = this;
+				JQ.getViews().then(function(res) {
+					var info = JSON.parse(res);
+					info.forEach(e => that.tree.push({text:e}))
+
 					$('#tree').treeview({
 						data:this.tree,
 						enabledLinks:true,
 						onNodeSelected: this.nodeSelected
 					})
+				})
+
+
+			},
+			methods:{
+				export() {
+
+					//JQ.clickOK();
 				}
 			}
 		})

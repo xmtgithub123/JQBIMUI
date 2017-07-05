@@ -168,7 +168,7 @@
 				tableIntervals:[],//间隔数组
 				tableNumbers:[],//个数数组
 				isShowMask:true,//是否显示全屏遮罩
-				showMaskInfo:'正在获取族类型信息......'
+				showMaskInfo:'正在获取族类型信息'
 			},
 
 			created(){
@@ -195,9 +195,53 @@
 						Parameters:{宽度:'',高度:''},
 						Callback:'vue.loadRes'
 						}
-					this.showMaskInfo ='正在获取族类型信息......';
+					this.showMaskInfo ='正在获取族类型信息';
 					this.isShowMask = true;
 					JQ.raiseEvent(JSON.stringify(sendJson));
+				}
+
+				that = this;
+				
+				var tableIntervalsStr; 
+				var tableNumbersStr; 
+				var dbgStr;
+				if (this.type == "Door")
+				{
+					tableIntervalsStr = localStorage.doorTableIntervalsStr;
+					tableNumbersStr = localStorage.doorTableNumbersStr;
+					dbgStr = localStorage.doorDgbStr;
+				}
+				else if (this.type == "Window")
+				{
+					tableIntervalsStr = localStorage.windowTableIntervalsStr;
+					tableNumbersStr = localStorage.windowTableNumbersStr;
+					dbgStr = localStorage.windowDgbStr;
+				}
+				if (tableIntervalsStr != undefined && tableIntervalsStr.length > 0)
+				{
+					tableIntervalsStrArr = tableIntervalsStr.split('--');
+					tableIntervalsStrArr.forEach(function(item){
+						that.tableIntervals.push({interval:item});
+					});
+				}
+
+				if (tableNumbersStr != undefined && tableNumbersStr.length > 0)
+				{
+					tableNumbersStrArr = tableNumbersStr.split('--');
+					tableNumbersStrArr.forEach(function(item){
+						that.tableNumbers.push({number:item});
+					});
+				}
+				if (dbgStr !=undefined && dbgStr.length > 0)
+				{
+					that.input_dbg = dbgStr;
+				}
+				else
+				{
+					if (this.type == "Door")
+						that.input_dbg = '0';
+					else if (this.type == 'Window')
+						that.input_dbg = '950';
 				}
 			},
 
@@ -222,7 +266,8 @@
 					if (!isReload && that.options.length > 0) {
 						that.selected = that.options[0].value
 					}
-					this.isShowMask = false; 
+					this.isShowMask = false;
+					
 				}, 
 
 				clickItems(obj) {
@@ -301,7 +346,7 @@
 								Parameters:{宽度:that.input_add_width,高度:that.input_add_height},
 								Callback:'vue.reloadData'
 								}
-							that.showMaskInfo ='正在更新族类型......';
+							that.showMaskInfo ='正在更新族类型';
 							that.isShowMask = true;
 							JQ.raiseEvent(JSON.stringify(sendJson));
 
@@ -322,7 +367,7 @@
 								Parameters:{宽度:that.input_add_width,高度:that.input_add_height},
 								Callback:'vue.reloadData'
 								}
-							that.showMaskInfo ='正在更新族类型......';
+							that.showMaskInfo ='正在更新族类型';
 							that.isShowMask = true;
 							JQ.raiseEvent(JSON.stringify(sendJson));
 						}
@@ -373,6 +418,36 @@
 					if (window.JQ) {
 						JQ.raiseEvent(JSON.stringify(info));
 					}
+
+					var tableIntervalsStr = "";
+					var tableNumbersStr = "";
+					
+					this.tableIntervals.forEach(function(item){
+						if (tableIntervalsStr.length != 0)
+							tableIntervalsStr += '--';
+						tableIntervalsStr += item.interval;
+					});
+
+
+					this.tableNumbers.forEach(function(item){
+						if (tableNumbersStr.length != 0)
+							tableNumbersStr += '--';
+						tableNumbersStr += item.number;
+					});
+
+					if (this.type == "Door")
+					{
+						localStorage.doorTableIntervalsStr = tableIntervalsStr;
+						localStorage.doorTableNumbersStr = tableNumbersStr;
+						localStorage.doorDgbStr =  this.input_dbg;
+					}
+					else if (this.type == "Window")
+					{
+						localStorage.windowTableIntervalsStr = tableIntervalsStr;
+						localStorage.windowTableNumbersStr = tableNumbersStr;
+						localStorage.windowDgbStr = this.input_dbg;
+					}
+
 				}
 			},
 			computed:{   //vue 的计算属性
