@@ -13,6 +13,9 @@
 		.mt-15 {
 			margin-top:15px;
 		}
+		.isDisabled {
+			pointer-events: none
+		}
 	</style>
 </head>
 <body>
@@ -79,16 +82,16 @@
 
 					</div>
 					<div class="col-md-12">
-						<table class="table-bordered text-center ml-15 mt-15" v-show="isTableShow">
+						<table class="table-bordered text-center ml-15 mt-15">
 
 						  <tr >
 						    <td style="width:100px;">间隔(mm)</td>
 						    
 						    <td v-for="item in tableIntervals">
-						    	<input class="input-noborder" v-model="item.interval" style="height:25px;text-align: center;width:50px;"></input>
+						    	<input class="input-noborder" v-model="item.interval" style="height:25px;text-align: center;width:50px;" ></input>
 						    </td>
 						    <td @change="td_changeIntervals">
-						    	<input class="input-noborder" v-model="table_interval" style="height:25px;text-align: center;width:50px;"></input>
+						    	<input class="input-noborder" v-model="table_interval" style="height:25px;text-align: center;width:50px;" :class="{disabled:isDisabled}"></input>
 						    </td>
 
 						  </tr>
@@ -98,7 +101,7 @@
 						    	<input class="input-noborder" v-model="item.number" style="height:25px;text-align: center;width:50px;"></input>
 						    </td>
 						    <td @change="td_changeNumber">
-						    	<input class="input-noborder" v-model="table_Number" style="height:25px;text-align: center;width:50px;"></input>
+						    	<input class="input-noborder" v-model="table_Number" style="height:25px;text-align: center;width:50px;" :class="{disabled:isDisabled}"></input>
 						    </td>
 						  </tr>
 
@@ -142,11 +145,12 @@
 				input_add_height:'',//新增类型 宽度
 				isDanger:false,
 				status:false,
-				isTableShow:false, // 点击头部的时候判断是否显示表格
+				isTableShow:true, // 点击头部的时候判断是否显示表格
 				table_interval:'',//表格-相邻间隔
 				table_Number:'',//表格-个数
 				tableIntervals:[],//间隔数组
 				tableNumbers:[],//个数数组
+				isDisabled:true,
 
 			},
 
@@ -198,10 +202,10 @@
 				chooseSelectOption() {
 					console.log(this.selected_bz_type)
 					if(this.selected_bz_type == '头部') {
-						this.isTableShow = true
+						this.isDisabled = false
 					}
 					else {
-						this.isTableShow = false
+						this.isDisabled = true
 					}
 
 				},
