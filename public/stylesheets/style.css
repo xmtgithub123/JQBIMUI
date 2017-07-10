@@ -689,7 +689,9 @@ select.input-xs {
         }
 
 
-
+.panel-chort-circuit {
+  margin-bottom: 0;
+}
 .panel-chort-circuit .panel-heading{
   padding:5px 15px;
 } 

@@ -75,7 +75,7 @@
 											  		<div class="radio">
 													  <label>
 													    <input type="radio" name="optionsRadios1" id="optionsRadios1" value="option1" v-model="double_checked">
-													    双烧组
+													    双绕组
 													  </label>
 													</div>
 											  		<!-- <div class="checkbox" >
@@ -121,7 +121,7 @@
 											    <div class="radio">
 												  <label>
 												    <input type="radio" name="optionsRadios2" id="optionsRadios2" value="option2" v-model="three_checked">
-												    三烧组
+												    三绕组
 												  </label>
 												</div>
 											  	<!-- <div class="checkbox" >
@@ -201,7 +201,7 @@
 							<div class="radio m-0">
 							  <label>
 							    <input type="radio" name="optionsRadios3" id="optionsRadios3" value="option3"  v-model="dynamo_checked">
-							    三烧组
+							    发电机
 							  </label>
 							</div>
 								<!-- <div class="checkbox m-0">
@@ -322,15 +322,15 @@
 				line_standard_child:'',//线路规格子内容
 				transformer_stage:'',//变压器台数
 				transformer_capacity:'',//变压器容量
-				double_group_ud:'',//双烧组Ud
-				double_group_height_tension:'',//双烧组高压
-				double_group_low_tension:'',//双烧组低压
-				three_group_u1:'',//三烧组U1
-				three_group_ud12:'',//三烧组ud12
-				three_group_u2:'',//三烧组u2
-				three_group_ud13:'',//三烧组ud13
-				three_group_u3:'',//三烧组u3
-				three_group_ud23:'',//三烧组ud23
+				double_group_ud:'',//双绕组Ud
+				double_group_height_tension:'',//双绕组高压
+				double_group_low_tension:'',//双绕组低压
+				three_group_u1:'',//三绕组U1
+				three_group_ud12:'',//三绕组ud12
+				three_group_u2:'',//三绕组u2
+				three_group_ud13:'',//三绕组ud13
+				three_group_u3:'',//三绕组u3
+				three_group_ud23:'',//三绕组ud23
 				dynamo_xd:'',//发电机 Xd%
 				dynamo_pe:'',//发电机pe
 				dynamo_cosq:'',//发电机cosq
@@ -362,26 +362,26 @@
 					{name:'110'},
 					{name:'220'}
 				],
-				three_group_u1_options:[ //三烧组U1下拉框
+				three_group_u1_options:[ //三绕组U1下拉框
 					{name:'110'},
 					{name:'220'},
 					{name:'330'}
 				],
-				three_group_u2_options:[ //三烧组U1下拉框
+				three_group_u2_options:[ //三绕组U1下拉框
 					{name:'110'},
 					{name:'220'},
 					{name:'330'}
 				],
-				three_group_u3_options:[ //三烧组U1下拉框
+				three_group_u3_options:[ //三绕组U1下拉框
 					{name:'110'},
 					{name:'220'},
 					{name:'330'}
 				],
-				isDoubleCheck:true, //双烧组与三烧组 是否可编辑效果
+				isDoubleCheck:true, //双绕组与三绕组 是否可编辑效果
 				isThreeCheck:true,
 				isdynamoCheck:true,//发电机是否可编辑效果
-				double_checked:'',//双烧组 选中值
-				three_checked:'',//三烧组 选中值
+				double_checked:'',//双绕组 选中值
+				three_checked:'',//三绕组 选中值
 			
 			},
 			created(){
