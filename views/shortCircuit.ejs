@@ -72,11 +72,17 @@
 								    	<div class="col-sm-5 col-md-5">
 								    		<div class="panel panel-default panel-chort-circuit">
 											  <div class="panel-heading">
-											  		<div class="checkbox" >
+											  		<div class="radio">
+													  <label>
+													    <input type="radio" name="optionsRadios1" id="optionsRadios1" value="option1" v-model="double_checked">
+													    双烧组
+													  </label>
+													</div>
+											  		<!-- <div class="checkbox" >
 													    <label>
 													      <input type="checkbox" v-model="double_checked"> 双烧组
 													    </label>
-												    </div>
+												    </div> -->
 											  </div>
 											  <div class="panel-body" :class="{ischeck:isDoubleCheck}">
 											  	<div class="form-group">
@@ -111,12 +117,18 @@
 								    	</div>
 								    	<div class="col-sm-7 col-md-7">
 								    		<div class="panel panel-default panel-chort-circuit">
-											  <div class="panel-heading">
-											  	<div class="checkbox" >
+											    <div class="panel-heading">
+											    <div class="radio">
+												  <label>
+												    <input type="radio" name="optionsRadios2" id="optionsRadios2" value="option2" v-model="three_checked">
+												    三烧组
+												  </label>
+												</div>
+											  	<!-- <div class="checkbox" >
 													    <label>
 													      <input type="checkbox" v-model="three_checked"> 三烧组
 													    </label>
-												  </div>
+												 </div> -->
 											  </div>
 											  <div class="panel-body" :class="{ischeck:isThreeCheck}">
 											    	
@@ -186,11 +198,17 @@
       				<div class="group-item mt-15">
       					<div class="panel panel-info penel-fix">
 							<div class="panel-heading">
-								<div class="checkbox m-0">
+							<div class="radio m-0">
+							  <label>
+							    <input type="radio" name="optionsRadios3" id="optionsRadios3" value="option3"  v-model="dynamo_checked">
+							    三烧组
+							  </label>
+							</div>
+								<!-- <div class="checkbox m-0">
 								    <label>
 								      <input type="checkbox" v-model="dynamo_checked"> 发电机
 								    </label>
-							    </div>
+							    </div> -->
 							</div>
 							<div class="panel-body-wrap ptb-5" :class="{ischeck:isdynamoCheck}">
 								<div class="form-horizontal">
@@ -380,10 +398,16 @@
 					console.log(this.system_voltage)
 					this.double_group_ud = this.system_voltage
 					this.three_group_u1  = this.system_voltage
+				},
+				ToCount() { //计算
+
+				},
+				exportCalcSheet() { //导出计算书
+
 				}
 			},
 			computed:{
-				
+
 				items() {
 					var items = [] ,selectedValue = this.line_standard;
 					this.line_standard_options.forEach(function(e){
