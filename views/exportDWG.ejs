@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>插入电气柜</title>
+	<title>导出DWG图纸</title>
 	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="../public/stylesheets/flex.css">
 	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
@@ -53,19 +53,23 @@
 				    <label for="exampleInputAmount">结果文件夹 &nbsp;&nbsp;</label>
 				    <div class="input-group" style="width:80%">
 				      <input type="text" class="form-control" id="exampleInputAmount" v-model="path">
+					  <span class="input-group-btn">
+        				<button class="btn btn-default" type="button" @click="selectFolder()">...</button>
+      				  </span>
 				    </div>
 				  </div>
+
 
 				<a href="javascript:;" class="a-upload" >
 				    <input type="file" name="" id="filepicker" webkitdirectory multiple>...
 				</a>
 				<!-- <button type="submit" class="btn btn-primary">Transfer cash</button> -->
+
 				</div>
 				<div class="file-list">
-					<h5>文件列表</h5>
 					<div id="tree"></div>
 				</div>
-				<button class="btn btn-primary btn-bim pull-right mt-30" @click="export()">导出</button>
+				<button class="btn btn-primary btn-bim pull-right mt-30" @click="exportDWG()">导出</button>
       		</div>
 	    </div>
 	</div>
@@ -73,6 +77,7 @@
 	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script src="../public/javascripts/jquery-1.11.1.min.js"></script>
 	<script src="../public/javascripts/bootstrap-treeview.js"></script>
 	<script type="text/javascript">
 		  document.getElementById("filepicker").addEventListener("change", function(event) {
@@ -92,17 +97,12 @@
 			data:{
 				isToNext:true,
 
-				path:'',
+				path: '',
 
-				tree:[
-
-				  {text:'视图', nodes:[
-
-						{text:'视图1'},
-						{text:'视图2'},
-						{text:'视图3'}
-					]}
-				],
+				tree: [{text: '文件列表',
+						state: {checked: true},
+						nodes: []}
+					  ],
 
 			},
 
@@ -110,23 +110,55 @@
 				var that = this;
 				JQ.getExportViews().then(function(res) {
 					var info = JSON.parse(res);
-					info.forEach(e => that.tree.push({text:e.Name, id:e.Id}))
+					//console.log(info)
+					info.forEach(function(e) {
+						that.tree[0].nodes.push({text:e.Name, id:e.Id, state: {checked: true}})
+					})
+					//console.log(that.tree)
 
 					$('#tree').treeview({
-						data:this.tree,
+						data:that.tree,
 						enabledLinks:true,
-						onNodeSelected: this.nodeSelected
+						showCheckbox: true,
+						onNodeChecked: that.nodeChecked,
+						onNodeUnchecked: that.nodeUnchecked
 					})
 				})
+
+				//
+				//document.getElementById("selectFolder").addEventListener('change', that.selectPath, false)
 			},
 
 			methods:{
-				export() {
+
+				nodeChecked(event, node) {
+					if (node.text == '文件列表') {
+						$('#tree').treeview('checkAll', { silent: true });
+					}
+				},
+
+				nodeUnchecked(event, node) {
+					if (node.text == '文件列表') {
+						$('#tree').treeview('uncheckAll', { silent: true });
+					}
+				},
+
+				selectFolder() {
+					var that = this
+					JQ.getFolder(function(res) {
+						if (res != '') {
+							that.path = res;
+						}
+					})
+					//console.log(event.target.files)
+				},
+
+				exportDWG() {
 					var nodes = $('#tree').treeview('getSelected', null);
 					var info = {path: this.path, nodes:[]}
-					nodes.forEach(e =>
+					nodes.forEach(function(e) {
 						info.nodes.push({Name:e.text, Id:e.id})
-					)
+					})
 					JQ.clickOK(JSON.stringify(infos));
 				}
 			}
