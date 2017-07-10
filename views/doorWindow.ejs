@@ -79,7 +79,7 @@
 
 					</div>
 					<div class="col-md-12">
-						<table class="table-bordered text-center ml-15 mt-15" v-show="isTableShow">
+						<table class="table-bordered text-center ml-15 mt-15" :class="{disabled:!isTableShow}">
 
 						  <tr >
 						    <td style="width:100px;">间隔(mm)</td>
@@ -167,7 +167,7 @@
 				table_Number:'',//表格-个数
 				tableIntervals:[],//间隔数组
 				tableNumbers:[],//个数数组
-				isShowMask:true,//是否显示全屏遮罩
+				isShowMask:false,//是否显示全屏遮罩
 				showMaskInfo:'正在获取族类型信息'
 			},
 
@@ -460,6 +460,32 @@
 						}
 					});
 					return items;	//返回 items
+				}
+			},
+			watch:{
+				selected:
+				{
+					handler:function(val,oldVal) {
+						if (this.items.length > 0)
+						{
+							this.selected_type = [this.items[0].symbolName];
+							this.clickItems(this.items[0]);
+						}
+						else
+							this.selected_type = [];
+					}
+				},
+				options:
+				{
+					handler:function(val,oldVal) {
+						if (this.selected.length > 0 && this.items.length > 0)
+						{
+							this.selected_type = [this.items[0].symbolName];
+							this.clickItems(this.items[0]);
+						}
+						else
+							this.selected_type = [];
+					}
 				}
 			}	
 		})
