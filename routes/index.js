@@ -65,4 +65,7 @@ router.get('/exportDWG', function(req, res, next) {
 router.get('/cable', function(req, res, next) {
   res.render('cable', { title: '电缆沟' });
 });
+router.get('/shortCircuit', function(req, res, next) {
+  res.render('shortCircuit', { title: '短路计算' });
+});
 module.exports = router;

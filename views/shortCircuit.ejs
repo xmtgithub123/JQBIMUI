@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>短路计算</title>
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+	<style type="text/css">
+		.ischeck input,.ischeck select{
+			background-color:#eee;
+			pointer-events: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="body-wrap">
+	    <div class="panel-body box-wrap">
+      		<div class="bg-box-0">
+				<div class="bg-box-b">
+					<div class="form-horizontal">
+					  <div class="form-group">
+					    <label class="col-sm-2 control-label">系统短路容量</label>
+					    <div class="col-sm-10 pl-0">
+					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="system_short_circuit_capacity"> KVA
+							<label>&nbsp;&nbsp;系统电压</label>
+							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="system_voltage" @change="changeSystemVoltageSelect()">
+								<option v-for="option in system_voltage_items" :value="option.name">
+									{{option.name}}
+								</option>
+							</select> KV
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label class="col-sm-2 control-label">线路长度</label>
+					    <div class="col-sm-10 pl-0">
+					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="line_length"> KVA
+							<label>&nbsp;&nbsp;规格</label>
+							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="line_standard">
+								<option v-for="option in line_standard_options">
+									{{option.value}}
+								</option>
+							</select>
+							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="line_standard_child">
+								<option v-for="option in items">
+									{{option.Name}}
+								</option>
+							</select>
+
+					    </div>
+					  </div>
+					</div>
+
+      				<div class="group-item mt-15">
+      					<div class="panel panel-info penel-fix">
+							<div class="panel-heading">变压器</div>
+							<div class="panel-body-wrap ptb-5">
+								<div class="form-horizontal">
+								  <div class="form-group">
+								    <label class="col-sm-2 control-label">变压器台数</label>
+								    <div class="col-sm-10 pl-0">
+								      		<input type="text" class="form-control input-sm dl" style="width:100px" v-model="transformer_stage">
+								     		 <label>&nbsp;&nbsp;容量 </label> 
+								      		<input type="text" class="form-control input-sm dl" style="width:100px" v-model="transformer_capacity"> MVA
+								    </div>
+								  </div>
+
+								  <div class="row plr-15">
+								    	<div class="col-sm-5 col-md-5">
+								    		<div class="panel panel-default panel-chort-circuit">
+											  <div class="panel-heading">
+											  		<div class="checkbox" >
+													    <label>
+													      <input type="checkbox" v-model="double_checked"> 双烧组
+													    </label>
+												    </div>
+											  </div>
+											  <div class="panel-body" :class="{ischeck:isDoubleCheck}">
+											  	<div class="form-group">
+											  		<label class="col-sm-3 control-label">Ud%</label>
+									    			<div class="col-sm-9">
+									    				<!-- <input type="text" class="form-control input-sm dl" style="width:90%" v-model="double_group_ud" @click="double_input_focus"> % -->
+									    				<input type="text" class="form-control input-sm dl" style="width:90%" v-model="double_group_ud"> %
+									    			</div>
+											  	</div>
+											    <div class="form-group">
+											  		<label class="col-sm-3 control-label">高压</label>
+									    			<div class="col-sm-9">
+									    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="double_group_height_tension">
+															<option v-for="option in double_group_height_tension_options">
+																{{option.name}}
+															</option>
+												        </select> KV
+									    			</div>
+											  	</div>
+											  	 <div class="form-group">
+											  		<label class="col-sm-3 control-label">低压</label>
+									    			<div class="col-sm-9">
+									    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="double_group_low_tension">
+															<option v-for="option in double_group_low_tension_options">
+																{{option.name}}
+															</option>
+												        </select> KV
+									    			</div>
+											  	</div>
+											  </div>
+											</div>
+								    	</div>
+								    	<div class="col-sm-7 col-md-7">
+								    		<div class="panel panel-default panel-chort-circuit">
+											  <div class="panel-heading">
+											  	<div class="checkbox" >
+													    <label>
+													      <input type="checkbox" v-model="three_checked"> 三烧组
+													    </label>
+												  </div>
+											  </div>
+											  <div class="panel-body" :class="{ischeck:isThreeCheck}">
+											    	
+											    	<div class="row mt-5">
+											    		<div class="col-sm-6 col-md-6 p-0">
+											    			<label class="col-sm-3 control-label">U1</label>
+											    			<div class="col-sm-9">
+											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u1">
+																	<option v-for="option in three_group_u1_options">
+																		{{option.name}}
+																	</option>
+														        </select> KV
+											    			</div>
+											    		</div>
+											    		<div class="col-sm-6 col-md-6 p-0">
+											    			<label class="col-sm-3 control-label">Ud%12</label>
+											    			<div class="col-sm-9">
+											    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud12"> %
+											    			</div>
+											    		</div>
+											    	</div>
+											  		<div class="row mt-5">
+											    		<div class="col-sm-6 col-md-6 p-0">
+											    			<label class="col-sm-3 control-label">U2</label>
+											    			<div class="col-sm-9">
+											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u2">
+																		<option v-for="option in three_group_u2_options">
+																			{{option.name}}
+																		</option>
+														        </select> KV
+											    			</div>
+											    		</div>
+											    		<div class="col-sm-6 col-md-6 p-0">
+											    			<label class="col-sm-3 control-label">Ud%13</label>
+											    			<div class="col-sm-9">
+											    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud13"> %
+											    			</div>
+											    		</div>
+											    	</div>
+											    	<div class="row mt-5">
+											    		<div class="col-sm-6 col-md-6 p-0">
+											    			<label class="col-sm-3 control-label">U3</label>
+											    			<div class="col-sm-9">
+											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u3">
+																		<option v-for="option in three_group_u3_options">
+																			{{option.name}}
+																		</option>
+														        </select> KV
+											    			</div>
+											    		</div>
+											    		<div class="col-sm-6 col-md-6 p-0">
+											    			<label class="col-sm-3 control-label">Ud%23</label>
+											    			<div class="col-sm-9">
+											    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud23"> %
+											    			</div>
+											    		</div>
+											    	</div>
+											  	
+											  </div>
+											</div>
+								    	</div>
+								  </div>
+								</div>
+							</div>
+						</div>
+      				</div>
+      				<div class="group-item mt-15">
+      					<div class="panel panel-info penel-fix">
+							<div class="panel-heading">
+								<div class="checkbox m-0">
+								    <label>
+								      <input type="checkbox" v-model="dynamo_checked"> 发电机
+								    </label>
+							    </div>
+							</div>
+							<div class="panel-body-wrap ptb-5" :class="{ischeck:isdynamoCheck}">
+								<div class="form-horizontal">
+								  <div class="form-group">
+								    <label class="col-sm-2 control-label">Xd"%</label>
+								    <div class="col-sm-10 pl-0">
+							      		<input type="text" class="form-control input-sm dl" style="width:100px" v-model="dynamo_xd">
+							     		<label>&nbsp;&nbsp;Pe </label> 
+							      		<input type="text" class="form-control input-sm dl" style="width:100px" v-model="dynamo_pe"> MW
+								        <label>&nbsp;&nbsp;CosQ </label> 
+							      		<input type="text" class="form-control input-sm dl" style="width:100px" v-model="dynamo_cosq"> 
+								    </div>
+								  </div>
+								</div>
+							</div>
+						</div>
+      				</div>
+
+      				<div class="group-item mt-15">
+      					<div class="panel panel-info penel-fix">
+							<div class="panel-heading">计算</div>
+							<div class="panel-body-wrap p-5">
+								<div class="row">
+									<div class="col-sm-6 col-md-6">
+										<button class="btn btn-info btn-bim" @click="ToCount()">计算</button>
+										<br>
+										<textarea name="" id="" rows="4" class="form-control" placeholder="结果文本" multiple v-model="resultText"></textarea>
+									</div>
+									<div class="col-sm-6 col-md-6">
+											<div class="form-horizontal">
+								  				<div class="form-group">
+													<label class="col-sm-3 control-label">TJS</label>
+									    			<div class="col-sm-9">
+									    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="TJS"> S
+									    			</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label">工程名称</label>
+									    			<div class="col-sm-9">
+									    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="project_name"> 
+									    			</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label">日期</label>
+									    			<div class="col-sm-9">
+									    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="date"> 
+									    			</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label">计算人</label>
+									    			<div class="col-sm-9">
+									    				<input type="text" class="form-control input-sm dl" style="width:80px" v-model="calculate_people"> 
+									    				<label>&nbsp;&nbsp;校核</label> 
+							      						<input type="text" class="form-control input-sm dl" style="width:85px" v-model="check">
+									    			</div>
+												</div>
+												<!-- <div class="form-group">
+									    			<div class="col-sm-9 col-sm-offset-3">
+														<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="">导出计算书</button>
+									    				
+									    			</div>
+												</div> -->
+											</div>
+									</div>
+								</div>
+							</div>
+						</div>
+      				</div>
+
+      				<div class="bg-footer ">
+						<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="exportCalcSheet()">导出计算书</button>
+					</div>
+				</div>
+      		</div>
+	    </div>
+	</div>
+
+	<div class="body-full-mask" v-if="isShowMask" v-cloak>
+		<div class="app-loading">
+	  		<div class="box">
+	  			<div class="line-spin-fade-loader">
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  			</div>
+	  			<p>{{showMaskInfo}}</p>
+
+	  		</div>
+  		</div>
+	</div>
+
+	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script type="text/javascript">
+	</script>
+
+	<script type="text/javascript">
+		vue = new Vue({
+			el:'body',
+			data:{
+				system_short_circuit_capacity:'', //系统短路容量
+				system_voltage:'',//系统电压
+				line_length:'',//线路长度
+				line_standard:'',//线路规格
+				line_standard_child:'',//线路规格子内容
+				transformer_stage:'',//变压器台数
+				transformer_capacity:'',//变压器容量
+				double_group_ud:'',//双烧组Ud
+				double_group_height_tension:'',//双烧组高压
+				double_group_low_tension:'',//双烧组低压
+				three_group_u1:'',//三烧组U1
+				three_group_ud12:'',//三烧组ud12
+				three_group_u2:'',//三烧组u2
+				three_group_ud13:'',//三烧组ud13
+				three_group_u3:'',//三烧组u3
+				three_group_ud23:'',//三烧组ud23
+				dynamo_xd:'',//发电机 Xd%
+				dynamo_pe:'',//发电机pe
+				dynamo_cosq:'',//发电机cosq
+				resultText:'',//结果文本
+				TJS:'',//TJS
+				project_name:'',//工程名称
+				date:'',//日期
+				calculate_people:'',//计算人
+				check:'',//校审
+				showMaskInfo:'正在获取族类型信息',
+				double_group_height_tension_options:[
+					{name:'100'},
+					{name:'200'}
+				],
+				double_group_low_tension_options:[
+					{name:'100'},
+					{name:'200'},
+					{name:'300'}
+				],
+				line_standard_options:[ // 规格下拉框
+					{
+						value:'出',
+						child:[{
+							Name:'100*100'
+						}]
+					}
+				],
+				system_voltage_items:[ //系统电压 下拉框
+					{name:'110'},
+					{name:'220'}
+				],
+				three_group_u1_options:[ //三烧组U1下拉框
+					{name:'110'},
+					{name:'220'},
+					{name:'330'}
+				],
+				three_group_u2_options:[ //三烧组U1下拉框
+					{name:'110'},
+					{name:'220'},
+					{name:'330'}
+				],
+				three_group_u3_options:[ //三烧组U1下拉框
+					{name:'110'},
+					{name:'220'},
+					{name:'330'}
+				],
+				isDoubleCheck:true, //双烧组与三烧组 是否可编辑效果
+				isThreeCheck:true,
+				isdynamoCheck:true,//发电机是否可编辑效果
+				double_checked:'',//双烧组 选中值
+				three_checked:'',//三烧组 选中值
+			
+			},
+			created(){
+				
+			},
+			methods:{
+				// double_input_focus() {
+				// 	console.log(this.system_voltage)
+				// 	this.double_group_ud = this.system_voltage
+				// 	console.log('focus')
+				// },
+				//当改变系统电压选择框获取选中的值触发
+				changeSystemVoltageSelect() {
+					console.log(this.system_voltage)
+					this.double_group_ud = this.system_voltage
+					this.three_group_u1  = this.system_voltage
+				}
+			},
+			computed:{
+				
+				items() {
+					var items = [] ,selectedValue = this.line_standard;
+					this.line_standard_options.forEach(function(e){
+						if(e.value == selectedValue) {
+							items = e.child;
+						}
+					});
+					return items;
+				}
+			},
+			watch:{
+				// trList:{
+				// 	handler:function(val,oldVal) {
+				// 		this.trList = val
+				// 	}
+				// }
+				double_checked:{
+					handler:function(val,oldVal) {
+						if(val) {
+							this.isDoubleCheck = false
+						}
+						else {
+							this.isDoubleCheck = true
+						}
+					}
+				},
+				three_checked:{
+					handler:function(val,oldVal) {
+						if(val) {
+							this.isThreeCheck = false
+						}
+						else {
+							this.isThreeCheck = true
+						}
+					}
+				},
+				dynamo_checked:{
+					handler:function(val,oldVal) {
+						if(val) {
+							this.isdynamoCheck = false
+						}
+						else {
+							this.isdynamoCheck = true
+						}
+					}
+				}
+			}
+		})
+	</script>
+</body>
+</html>
