@@ -413,10 +413,8 @@ select.input-xs {
 
 .disabled {
   pointer-events: none;
-  background-color:#bdbdbd;
+  color: #bdbdbd;
 }
-
-
 
 
 /*
