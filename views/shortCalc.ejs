@@ -25,9 +25,9 @@
 					  <div class="form-group">
 					    <label class="col-sm-2 control-label">系统短路容量</label>
 					    <div class="col-sm-10 pl-0">
-					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="system_short_circuit_capacity"> KVA
+					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="Sk"> KVA
 							<label>&nbsp;&nbsp;系统电压</label>
-							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="U1" >
+							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="U1" @change="changeU1()">
 								<option v-for="option in UhighArr" :value="option.name">
 									{{option.name}}
 								</option>
@@ -40,13 +40,13 @@
 					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="line_length"> KM
 							<label>&nbsp;&nbsp;规格</label>
 							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="line_standard">
-								<option v-for="option in line_standard_options">
-									{{option.value}}
+								<option v-for="option in lineOptions">
+									{{option}}
 								</option>
 							</select>
-							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="line_standard_child">
-								<option v-for="option in items">
-									{{option.Name}}
+							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="lineType">
+								<option v-for="option in lineTypes">
+									{{option}}
 								</option>
 							</select>
 
@@ -74,7 +74,7 @@
 											  <div class="panel-heading">
 											  		<div class="radio">
 													  <label>
-													    <input type="radio" name="optionsRadios1" id="optionsRadios1" value="option1" v-model="double_checked">
+													    <input type="radio" name="optionsRadios1" id="optionsRadios1" :value="0" v-model="radio_checked" :checked='isDoubleCheck'>
 													    双绕组
 													  </label>
 													</div>
@@ -84,7 +84,7 @@
 													    </label>
 												    </div> -->
 											  </div>
-											  <div class="panel-body" :class="{ischeck:isDoubleCheck}">
+											  <div class="panel-body" :class="{ischeck:!isDoubleCheck}">
 											  	<div class="form-group">
 											  		<label class="col-sm-3 control-label">Ud%</label>
 									    			<div class="col-sm-9">
@@ -95,7 +95,7 @@
 											    <div class="form-group">
 											  		<label class="col-sm-3 control-label">高压</label>
 									    			<div class="col-sm-9">
-									    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="U1">
+									    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="U1" @change="changeU1()">
 															<option v-for="option in UhighArr">
 																{{option.name}}
 															</option>
@@ -120,7 +120,7 @@
 											    <div class="panel-heading">
 											    <div class="radio">
 												  <label>
-												    <input type="radio" name="optionsRadios2" id="optionsRadios2" value="option2" v-model="three_checked">
+												    <input type="radio" name="optionsRadios2" id="optionsRadios2" :value="1" v-model="radio_checked" :checked='isThreeCheck'>
 												    三绕组
 												  </label>
 												</div>
@@ -130,13 +130,13 @@
 													    </label>
 												 </div> -->
 											  </div>
-											  <div class="panel-body" :class="{ischeck:isThreeCheck}">
+											  <div class="panel-body" :class="{ischeck:!isThreeCheck}">
 
 											    	<div class="row mt-5">
 											    		<div class="col-sm-6 col-md-6 p-0">
 											    			<label class="col-sm-3 control-label">U1</label>
 											    			<div class="col-sm-9">
-											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="U1">
+											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="U1" @change="changeU1()">
 																	<option v-for="option in UhighArr">
 																		{{option.name}}
 																	</option>
@@ -210,7 +210,7 @@
 								    </label>
 							    </div>
 							</div>
-							<div class="panel-body-wrap ptb-5" :class="{ischeck:isdynamoCheck}">
+							<div class="panel-body-wrap ptb-5" :class="{ischeck:isDynamoCheck}">
 								<div class="form-horizontal">
 								  <div class="form-group">
 								    <label class="col-sm-2 control-label">Xd"%</label>
@@ -233,7 +233,7 @@
 							<div class="panel-body-wrap p-5">
 								<div class="row">
 									<div class="col-sm-6 col-md-6">
-										<button class="btn btn-info btn-bim" @click="ToCount()">计算</button>
+										<button class="btn btn-info btn-bim" @click="calc()">计算</button>
 										<br>
 										<textarea name="" id="" rows="4" class="form-control" placeholder="结果文本" multiple v-model="resultText"></textarea>
 									</div>
@@ -315,126 +315,266 @@
 		vue = new Vue({
 			el:'body',
 			data:{
-				system_short_circuit_capacity:'', //系统短路容量
+				Sk:'', //系统短路容量
 				U1:'110',//系统电压
 				line_length:'',//线路长度
-				line_standard:'',//线路规格
-				line_standard_child:'',//线路规格子内容
-				transformer_stage:'',//变压器台数
+				line_standard:'LGJQ-300',//线路规格
+				lineType:'单导线',//线路规格子内容
+				transformer_stage:'1',//变压器台数
 				transformer_capacity:'',//变压器容量
+
 				double_group_ud:'',//双绕组Ud
-				double_group_height_tension:'',//双绕组高压
-				double_group_low_tension:'',//双绕组低压
-				three_group_u1:'',//三绕组U1
+				double_group_low_tension:'10',//双绕组低压
+
 				three_group_ud12:'',//三绕组ud12
-				three_group_u2:'',//三绕组u2
+				three_group_u2:'35',//三绕组u2
 				three_group_ud13:'',//三绕组ud13
-				three_group_u3:'',//三绕组u3
+				three_group_u3:'10',//三绕组u3
 				three_group_ud23:'',//三绕组ud23
+
 				dynamo_xd:'',//发电机 Xd%
 				dynamo_pe:'',//发电机pe
 				dynamo_cosq:'',//发电机cosq
+
 				resultText:'',//结果文本
-				TJS:'',//TJS
+
+				TJS:'1',//TJS
 				project_name:'',//工程名称
 				date:'',//日期
 				calculate_people:'',//计算人
 				check:'',//校审
 				showMaskInfo:'正在获取族类型信息',
 
-				line_standard_options:[ // 规格下拉框
-					{
-						value:'出',
-						child:[{
-							Name:'100*100'
-						}]
-					}
+				lineOptions:[ // 架空线规格
+					'LGJ、LJ-50',
+					'LGJ、LJ-70',
+					'LGJ、LJ-95',
+					'LGJ、LJ-120',
+					'LGJ-150',
+					'LGJ-185',
+					'LGJ-240',
+					'LGJQ-300',
+					'LGJQ-400'
 				],
+				lineTypes: ['单导线'],  //架空线类型，单导线，双分裂，三分裂
+
 				UhighArr:[ //系统电压 下拉框
 					{name:'110'},
 					{name:'220'},
 					{name:'500'}
 				],
-				UlowArr:[
+
+				UlowArr:[  //低压数组
 					{name:'110'},
 					{name:'35'},
 					{name:'10'}
 				],
 
-				isDoubleCheck:true, //双绕组与三绕组 是否可编辑效果
-				isThreeCheck:true,
-				isdynamoCheck:true,//发电机是否可编辑效果
-				double_checked:'',//双绕组 选中值
-				three_checked:'',//三绕组 选中值
+				lineTable:[  //线路规格计算表
+					{U:'110', line:'LGJ、LJ-50', type:'单导线', x:0.442, xpu:0.00334},
+					{U:'110', line:'LGJ、LJ-70', type:'单导线', x:0.432, xpu:0.00327},
+					{U:'110', line:'LGJ、LJ-95', type:'单导线', x:0.416, xpu:0.00315},
+					{U:'110', line:'LGJ、LJ-120', type:'单导线', x:0.409, xpu:0.00309},
+					{U:'110', line:'LGJ-150', type:'单导线', x:0.403, xpu:0.00305},
+					{U:'110', line:'LGJ-185', type:'单导线', x:0.395, xpu:0.00299},
+					{U:'110', line:'LGJ-240', type:'单导线', x:0.388, xpu:0.00293},
+					{U:'110', line:'LGJQ-300', type:'单导线', x:0.382, xpu:0.00289},
+					{U:'110', line:'LGJQ-400', type:'单导线', x:0.373, xpu:0.00282},
 
+					{U:'220', line:'LGJ-185', type:'单导线', x:0.440, xpu:0.000832},
+					{U:'220', line:'LGJ-240', type:'单导线', x:0.342, xpu:0.000817},
+					{U:'220', line:'LGJQ-300', type:'单导线', x:0.427, xpu:0.000807},
+					{U:'220', line:'LGJQ-400', type:'单导线', x:0.417, xpu:0.000788},
+					{U:'220', line:'LGJQ-500', type:'单导线', x:0.411, xpu:0.000777},
+					{U:'220', line:'LGJQ-600', type:'单导线', x:0.405, xpu:0.000766},
+					{U:'220', line:'LGJQ-700', type:'单导线', x:0.398, xpu:0.000752},
+
+					{U:'220', line:'LGJ-185', type:'双分裂', x:0.315, xpu:0.000595},
+					{U:'220', line:'LGJ-240', type:'双分裂', x:0.310, xpu:0.000586},
+					{U:'220', line:'LGJQ-300', type:'双分裂', x:0.308, xpu:0.000582},
+					{U:'220', line:'LGJQ-400', type:'双分裂', x:0.303, xpu:0.000573},
+					{U:'220', line:'LGJQ-500', type:'双分裂', x:0.300, xpu:0.000567},
+					{U:'220', line:'LGJQ-600', type:'双分裂', x:0.297, xpu:0.000561},
+					{U:'220', line:'LGJQ-700', type:'双分裂', x:0.294, xpu:0.000556},
+
+					{U:'500', line:'LGJQ-300', type:'三分裂', x:0.302, xpu:0.00011},
+					{U:'500', line:'LGJQ-400', type:'三分裂', x:0.299, xpu:0.000108},
+					{U:'500', line:'LGJQ-500', type:'三分裂', x:0.297, xpu:0.000108},
+					{U:'500', line:'LGJQ-600', type:'三分裂', x:0.295, xpu:0.000107},
+					{U:'500', line:'LGJQ-700', type:'三分裂', x:0.292, xpu:0.000106},
+				],
+
+				isDoubleCheck:true, //双绕组与三绕组 是否可编辑效果
+				isThreeCheck:false,
+				isDynamoCheck:false,//发电机是否可编辑效果
+				//double_checked:'',//双绕组 选中值
+				//three_checked:'',//三绕组 选中值
+				radio_checked:'',//双绕组三绕组选中值
 			},
+
 			created(){
 
 			},
+
 			methods:{
-				// double_input_focus() {
-				// 	console.log(this.system_voltage)
-				// 	this.double_group_ud = this.system_voltage
-				// 	console.log('focus')
-				// },
 				//当改变系统电压选择框获取选中的值触发
-				changeSystemVoltageSelect() {
-					console.log(this.system_voltage)
-					this.double_group_height_tension = this.system_voltage
-					this.three_group_u1  = this.system_voltage
+				changeU1() {
+					var that = this;
+
+					if (that.U1 == 110) {
+						that.lineOptions = [
+							'LGJ、LJ-50',
+							'LGJ、LJ-70',
+							'LGJ、LJ-95',
+							'LGJ、LJ-120',
+							'LGJ-150',
+							'LGJ-185',
+							'LGJ-240',
+							'LGJQ-300',
+							'LGJQ-400'
+						]
+						that.lineTypes = ['单导线']
+					} else if (that.U1 == 220) {
+						that.lineOptions = [
+							'LGJ-185',
+							'LGJ-240',
+							('LGJQ-300'),
+							('LGJQ-400'),
+							('LGJQ-500'),
+							('LGJQ-600'),
+							('LGJQ-700')
+						]
+						that.lineTypes = [('单导线'), ('双分裂')]
+					} else {
+						that.lineOptions = [
+							('LGJQ-300'),
+							('LGJQ-400'),
+							('LGJQ-500'),
+							('LGJQ-600'),
+							('LGJQ-700')
+						]
+						that.lineTypes = ['三分裂']
+					}
+					that.lineType = that.lineTypes[0]
 				},
-				ToCount() { //计算
 
-				},
-				exportCalcSheet() { //导出计算书
-
-				}
-			},
-			computed:{
-
-				items() {
-					var items = [] ,selectedValue = this.line_standard;
-					this.line_standard_options.forEach(function(e){
-						if(e.value == selectedValue) {
-							items = e.child;
+				getLineX() {
+					/*var that = this
+					that.lineTable.forEach(function(e) {
+						console.log(e.U + '==' + that.U1)
+						console.log(e.line + '==' + that.line_standard)
+						console.log(e.type + '==' + that.lineType)
+						if (e.U == that.U1 && e.line == that.line_standard
+						    && e.type == that.lineType) {
+							return e.x
 						}
-					});
-					return items;
-				}
-			},
-			watch:{
-				// trList:{
-				// 	handler:function(val,oldVal) {
-				// 		this.trList = val
-				// 	}
-				// }
-				double_checked:{
-					handler:function(val,oldVal) {
-						if(val) {
-							this.isDoubleCheck = false
-						}
-						else {
-							this.isDoubleCheck = true
+					})*/
+					var that = this
+					for (var i = 0; i < this.lineTable.length; i++) {
+						//console.log(this.lineTable[i].U + '==' + that.U1 + (this.lineTable[i].U == that.U1))
+						//console.log(this.lineTable[i].line + '==' + that.line_standard + (this.lineTable[i].line == that.line_standard))
+						//console.log(this.lineTable[i].type + '==' + that.lineType + (this.lineTable[i].type == that.lineType))
+						if (this.lineTable[i].U == that.U1
+						    && this.lineTable[i].line == that.line_standard
+						    && this.lineTable[i].type == that.lineType) {
+							return this.lineTable[i].x
 						}
 					}
 				},
-				three_checked:{
-					handler:function(val,oldVal) {
-						if(val) {
+
+				getCalcInfo() {
+					var that = this
+					var info = {
+						Sk: that.Sk,
+						U1: that.U1,
+						LineLen: that.line_length,
+						lineStandard: that.line_standard,
+						//LineX:0.4,
+						Transformer:[]
+					}
+
+					//获取线路电抗
+					info.LineX = that.getLineX()
+
+					//变压器信息
+					for (var i = 0; i < that.transformer_stage; i++) {
+						if (that.isDoubleCheck) {  //双绕组
+							info.Transformer.push({
+								Se:that.transformer_capacity,  //容量
+								Winding:2,
+								Udpercent12:that.double_group_ud,
+								U1:that.U1,
+								U2:that.double_group_low_tension
+							})
+						} else {
+							info.Transformer.push({
+								Se:that.transformer_capacity,  //容量
+								Winding:3,
+								Udpercent12:that.three_group_ud12,
+								Udpercent13:that.three_group_ud13,
+								Udpercent23:that.three_group_ud23,
+								U1:that.U1,
+								U2:that.three_group_u2,
+								U3:that.three_group_u3,
+							})
+						}
+					}
+
+					//发电机信息
+					if (that.isDynamoCheck) {
+						info.Generator = {
+							CosQ:that.dynamo_cosq,
+							Xdpercent:that.dynamo_xd,
+							Pe:that.dynamo_pe
+						}
+					}
+
+					return info
+				},
+
+				calc() { //计算
+					var that = this
+					var info = that.getCalcInfo()
+					JQ.shortCalc(JSON.stringify(info)).then(function(result) {
+						that.resultText = result
+					})
+				},
+
+				exportCalcSheet() { //导出计算书
+					var that = this
+					var info = that.getCalcInfo()
+					info.TJS = that.TJS
+					info.Date = that.date
+					info.CalcPeople = that.calculate_people
+					info.CheckPeople = that.check
+					JQ.clickOK(JSON.stringify(info))
+				}
+			},
+
+			watch:{
+				radio_checked:{
+					handler:function(val, oldVal) {
+						console.log(val)
+						if (val == 0) {
+							this.isDoubleCheck = true
 							this.isThreeCheck = false
 						}
 						else {
+							this.isDoubleCheck = false
 							this.isThreeCheck = true
 						}
+
+
 					}
 				},
+
 				dynamo_checked:{
 					handler:function(val,oldVal) {
 						if(val) {
-							this.isdynamoCheck = false
+							this.isDynamoCheck = false
 						}
 						else {
-							this.isdynamoCheck = true
+							this.isDynamoCheck = true
 						}
 					}
 				}

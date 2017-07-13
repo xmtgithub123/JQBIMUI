@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>防雷计算</title>
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div class="body-wrap" style="margin-right:20px;padding:10px;">
+			<div flex="box:mean">
+				<div class="flex">
+					<div class="item_select_2" id="select_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被保护物高度</span>
+						<input type="text" class="form-control input-sm" v-model="protectHeight" />
+						<span>&nbsp;&nbsp;m &nbsp;&nbsp;&nbsp;&nbsp;</spam>
+					</div>		
+				</div>				
+			</div>
+			
+			<div class="row box_footer">
+				<div class="col-md-12">
+					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="submit" >确定</button>
+				</div>
+			</div>
+	</div>
+	
+
+	<script src="../public/javascripts/vue.js"></script>
+	<script src="../public/javascripts/vue-resource.min.js"></script>
+	<script>
+		vue = new Vue ({
+			el:'body',
+			data:{
+				protectHeight:'0'
+			},
+
+			created(){
+				
+			},
+
+			methods:{
+				submit()
+				{
+					var that = this;
+					var info = {};
+					info.EventName="CalcLightning";
+					info.ProtectHeight = that.protectHeight;
+					if (window.JQ) {
+						JQ.raiseEvent(JSON.stringify(info));
+					}
+				}				
+			},
+			computed:{
+				
+			},
+			watch:{
+				
+			}	
+		})
+		
+	</script>
+</body>
+</html>
