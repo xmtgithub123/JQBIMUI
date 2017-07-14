@@ -68,4 +68,7 @@ router.get('/cable', function(req, res, next) {
 router.get('/shortCircuit', function(req, res, next) {
   res.render('shortCircuit', { title: '短路计算' });
 });
+router.get('/shortCalc', function(req, res, next) {
+  res.render('shortCalc', { title: '短路计算' });
+});
 module.exports = router;
