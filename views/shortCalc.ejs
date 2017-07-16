@@ -3,16 +3,20 @@
 <head>
 	<meta charset="UTF-8">
 	<title>短路计算</title>
-	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="/stylesheets/flex.css">
-	<link rel="stylesheet" href="/stylesheets/font-awesome.css">
-	<link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
-	<link rel="stylesheet" href="/stylesheets/style.css">
-	<script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="../public/stylesheets/flex.css">
+	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
+	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 	<style type="text/css">
-		.ischeck input,.ischeck select{
+		.ischeck input,.ischeck select,.ischeck .input-group{
 			background-color:#eee;
 			pointer-events: none;
+		}
+		.col-flex {
+			display: flex;
+			align-items: center;
 		}
 	</style>
 </head>
@@ -63,12 +67,14 @@
 								    <label class="col-sm-2 control-label">变压器台数</label>
 								    <div class="col-sm-3">
 								    	<div class="input-group">
-		      								<input type="text" class="form-control input-sm" aria-label="...">
+		      								<input type="text" class="form-control input-sm" aria-label="..." v-model="transformer_stage">
 		      								<div class="input-group-btn">
         										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
 	        										<ul class="dropdown-menu dropdown-menu-right">
-          												<li><a href="#">1s</a></li>
-          												<li><a href="#">2s</a></li>
+	        											<li v-for="list in transformerStageLists" @click="selectTransformerStageOne(this)">
+	        												<a href="#">{{list}}</a>
+	        											</li>
+          												
 	        										</ul>
 												</div>
     									</div>
@@ -80,12 +86,14 @@
 								     <label class="col-sm-2 control-label">容量</label>
 								    <div class="col-sm-3">
 								    	<div class="input-group">
-		      								<input type="text" class="form-control input-sm" aria-label="...">
+		      								<input type="text" class="form-control input-sm" aria-label="..." v-model="transformer_capacity">
 		      								<div class="input-group-btn">
         										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
 	        										<ul class="dropdown-menu dropdown-menu-right">
-          												<li><a href="#">1s</a></li>
-          												<li><a href="#">2s</a></li>
+	        											<li v-for="list in transformerCapacityList" @click="selectTransformerCapacityOne(this)">
+	        												<a href="#">{{list}}</a>
+	        											</li>
+          												
 	        										</ul>
 												</div>
     									</div>
@@ -115,29 +123,29 @@
 											  <div class="panel-body" :class="{ischeck:!isDoubleCheck}">
 											  		<div class="form-group">
 												  		<label class="col-sm-3 control-label">高压</label>
-										    			<div class="col-sm-9">
-										    				<div class="input-group">
-							      								<input type="text" class="form-control input-sm" aria-label="...">
+										    			<div class="col-sm-9 col-flex">
+										    				<!-- <div class="input-group" style="width: 80%;float: left;">
+									    						<input type="text" class="form-control input-sm" aria-label="...">
 							      								<div class="input-group-btn">
 					        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
 						        										<ul class="dropdown-menu dropdown-menu-right">
 					          												<li><a href="#">1s</a></li>
 					          												<li><a href="#">2s</a></li>
 						        										</ul>
-																	</div>
-					    									</div>
-										    				<!-- <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="U1" @change="changeU1()">
+																	</div> 
+					    									</div> &nbsp;&nbsp;KV -->
+										    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="U1" @change="changeU1()">
 																<option v-for="option in UhighArr">
 																	{{option.name}}
 																</option>
-													        </select> KV -->
+													        </select>&nbsp;  KV
 										    			</div>
 												  	</div>
 												  	 <div class="form-group">
 												  		<label class="col-sm-3 control-label">低压</label>
-										    			<div class="col-sm-9">
-										    				<div class="input-group">
-							      								<input type="text" class="form-control input-sm" aria-label="...">
+										    			<div class="col-sm-9 col-flex">
+										    				<!-- <div class="input-group" style="width: 80%;float: left;">
+										    					<input type="text" class="form-control input-sm" aria-label="...">
 							      								<div class="input-group-btn">
 					        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
 						        										<ul class="dropdown-menu dropdown-menu-right">
@@ -145,27 +153,29 @@
 					          												<li><a href="#">2s</a></li>
 						        										</ul>
 																	</div>
-					    									</div>
-										    				<!-- <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="double_group_low_tension">
+					    									</div> &nbsp;&nbsp;KV -->
+										    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="double_group_low_tension">
 																<option v-for="option in UlowArr">
 																	{{option.name}}
 																</option>
-													        </select> KV -->
+													        </select>&nbsp; KV
 										    			</div>
 												  	</div>
 												  	<div class="form-group">
 												  		<label class="col-sm-3 control-label">Ud%</label>
-										    			<div class="col-sm-9">
-										    				<div class="input-group">
-							      								<input type="text" class="form-control input-sm" aria-label="...">
+										    			<div class="col-sm-9 col-flex">
+										    				<div class="input-group" style="width: 85%;float: left;">
+										    					<input type="text" class="form-control input-sm" aria-label="..." v-model="double_group_ud">
 							      								<div class="input-group-btn">
 					        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
 						        										<ul class="dropdown-menu dropdown-menu-right">
-					          												<li><a href="#">1s</a></li>
-					          												<li><a href="#">2s</a></li>
+						        											<li v-for="list in doubleGroupUdList" @click="selectDoubleGroupUdOne(this)">
+						        												<a href="#">{{list}}</a>
+						        											</li>
+					          												
 						        										</ul>
-				  												</div>
-						    								</div>
+				  												</div> 
+						    								</div> &nbsp;&nbsp;%
 										    				<!-- <input type="text" class="form-control input-sm dl" style="width:90%" v-model="double_group_ud"> % -->
 										    			</div>
 												  	</div>
@@ -197,7 +207,7 @@
 											    		<div class="col-sm-6 col-md-6 p-0">
 											    			<label class="col-sm-4 control-label">高压</label>
 											    			<div class="col-sm-8">
-											    				<div class="input-group">
+											    				<!-- <div class="input-group">
 								      								<input type="text" class="form-control input-sm" aria-label="...">
 								      								<div class="input-group-btn">
 						        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
@@ -206,18 +216,30 @@
 						          												<li><a href="#">2s</a></li>
 							        										</ul>
 					  												</div>
-						    									</div>
-											    				<!-- <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="U1" @change="changeU1()">
+						    									</div> -->
+											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="U1" @change="changeU1()">
 																	<option v-for="option in UhighArr">
 																		{{option.name}}
 																	</option>
-														        </select> KV -->
+														        </select> KV
 											    			</div>
 											    		</div>
 											    		<div class="col-sm-6 col-md-6 p-0">
 											    			<label class="col-sm-3 control-label">Ud%12</label>
-											    			<div class="col-sm-9">
-											    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud12"> %
+											    			<div class="col-sm-9 col-flex">
+										    					<div class="input-group" style="width: 85%;float: left;">
+								      								<input type="text" class="form-control input-sm" aria-label="..." v-model="three_group_ud12">
+								      								<div class="input-group-btn">
+						        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+							        										<ul class="dropdown-menu dropdown-menu-right">
+							        											<li v-for="list in threeGroupUd12" @click="selectThreeGroupUd12One(this)">
+							        												<a href="#">{{list}}</a>
+							        											</li>
+						          												
+							        										</ul>
+					  												</div>
+						    									</div> &nbsp;&nbsp;%
+						    									<!-- <input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud12"> % -->
 											    			</div>
 											    		</div>
 											    	</div>
@@ -225,7 +247,7 @@
 											    		<div class="col-sm-6 col-md-6 p-0">
 											    			<label class="col-sm-4 control-label">中压</label>
 											    			<div class="col-sm-8">
-											    				<div class="input-group">
+											    				<!-- <div class="input-group">
 								      								<input type="text" class="form-control input-sm" aria-label="...">
 								      								<div class="input-group-btn">
 						        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
@@ -235,17 +257,28 @@
 							        										</ul>
 					  												</div>
 						    									</div>
-											    				<!-- <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u2">
+ -->											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u2">
 																		<option v-for="option in UlowArr">
 																			{{option.name}}
 																		</option>
-														        </select> KV -->
+														        </select> KV
 											    			</div>
 											    		</div>
 											    		<div class="col-sm-6 col-md-6 p-0">
 											    			<label class="col-sm-3 control-label">Ud%13</label>
-											    			<div class="col-sm-9">
-											    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud13"> %
+											    			<div class="col-sm-9 col-flex">
+										    					<div class="input-group" style="width: 85%;float: left;">
+								      								<input type="text" class="form-control input-sm" aria-label="..." v-model="three_group_ud13">
+								      								<div class="input-group-btn">
+						        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+							        										<ul class="dropdown-menu dropdown-menu-right">
+						          												<li v-for="list in threeGroupUd13" @click="selectThreeGroupUd13One(this)">
+							        												<a href="#">{{list}}</a>
+							        											</li>
+							        										</ul>
+					  												</div>
+						    									</div> &nbsp;&nbsp;%
+											    				<!-- <input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud13"> % -->
 											    			</div>
 											    		</div>
 											    	</div>
@@ -253,7 +286,7 @@
 											    		<div class="col-sm-6 col-md-6 p-0">
 											    			<label class="col-sm-4 control-label">低压</label>
 											    			<div class="col-sm-8">
-											    				<div class="input-group">
+											    				<!-- <div class="input-group">
 								      								<input type="text" class="form-control input-sm" aria-label="...">
 								      								<div class="input-group-btn">
 						        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
@@ -262,18 +295,29 @@
 						          												<li><a href="#">2s</a></li>
 							        										</ul>
 					  												</div>
-						    									</div>
-											    				<!-- <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u3">
+						    									</div> -->
+											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u3">
 																		<option v-for="option in UlowArr">
 																			{{option.name}}
 																		</option>
-														        </select> KV -->
+														        </select> KV
 											    			</div>
 											    		</div>
 											    		<div class="col-sm-6 col-md-6 p-0">
 											    			<label class="col-sm-3 control-label">Ud%23</label>
-											    			<div class="col-sm-9">
-											    				<input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud23"> %
+											    			<div class="col-sm-9 col-flex">
+										    					<div class="input-group" style="width: 85%;float: left;">
+								      								<input type="text" class="form-control input-sm" aria-label="..." v-model="three_group_ud23">
+								      								<div class="input-group-btn">
+						        										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+							        										<ul class="dropdown-menu dropdown-menu-right">
+						          												<li v-for="list in threeGroupUd23" @click="selectThreeGroupUd23One(this)">
+							        												<a href="#">{{list}}</a>
+							        											</li>
+							        										</ul>
+					  												</div>
+						    									</div> &nbsp;&nbsp;%
+											    				<!-- <input type="text" class="form-control input-sm dl" style="width:80%" v-model="three_group_ud23"> % -->
 											    			</div>
 											    		</div>
 											    	</div>
@@ -335,17 +379,18 @@
 								  </div>
 								  <div class="form-group">
 								    <label class="col-sm-3 control-label">热稳定时间</label>
-								    <div class="col-sm-4 pl-0">
-							      		<div class="input-group">
-		      								<input type="text" class="form-control input-sm" aria-label="...">
+								    <div class="col-sm-4 pl-0 col-flex" >
+							      		<div class="input-group" style="width: 85%;float: left;">
+		      								<input type="text" class="form-control input-sm" aria-label="..." v-model="hot_stability_time">
 		      								<div class="input-group-btn">
         										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
 	        										<ul class="dropdown-menu dropdown-menu-right">
-          												<li><a href="#">1s</a></li>
-          												<li><a href="#">2s</a></li>
+          												<li v-for="list in hotStabilityTimeList" @click="selectHotStabilityTimeOne(this)">
+	        												<a href="#">{{list}}</a>
+	        											</li>
 	        										</ul>
 												</div>
-    									</div>
+    									</div> &nbsp;&nbsp;S
 						    		</div>
 								    <label class="col-sm-2 control-label">计算人</label>
 								    <div class="col-sm-3 pl-0">
@@ -427,9 +472,9 @@
   		</div>
 	</div>
 
-	<script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
-	<script src="/javascripts/vue.js"></script> <!--引入vue.js-->
-	<script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
 	<script type="text/javascript">
 	</script>
 
@@ -444,10 +489,16 @@
 				lineType:'单导线',//线路规格子内容
 				transformer_stage:'1',//变压器台数
 				transformer_capacity:'',//变压器容量
+				transformerStageLists:[1,2,3,4,5],//变压器台数选择
+				transformerCapacityList:[1,2,3,4,5],//变压器容量选择
 
+				doubleGroupUdList:[1,2,3,4,5], //双绕组Ud%
 				double_group_ud:'',//双绕组Ud
 				double_group_low_tension:'10',//双绕组低压
 
+				threeGroupUd12:[1,2,3,4,5],//三绕组ud12
+				threeGroupUd13:[1,2,3,4,5],//三绕组ud13
+				threeGroupUd23:[1,2,3,4,5],//三绕组ud23
 				three_group_ud12:'',//三绕组ud12
 				three_group_u2:'35',//三绕组u2
 				three_group_ud13:'',//三绕组ud13
@@ -459,7 +510,8 @@
 				dynamo_cosq:'',//发电机cosq
 
 				resultText:'',//结果文本
-
+				hot_stability_time:'', //热稳定时间
+				hotStabilityTimeList:[1,2,3,4,5],//热稳定时间选择
 				TJS:'1',//TJS
 				project_name:'',//工程名称
 				date:'',//日期
@@ -539,6 +591,32 @@
 			},
 
 			methods:{
+				//变压器台数选择控制
+				selectTransformerStageOne(e){
+					this.transformer_stage = e.list
+				},
+				//变压器台数容量控制
+				selectTransformerCapacityOne(e) {
+					this.transformer_capacity = e.list
+				},
+				selectDoubleGroupUdOne(e) {
+					this.double_group_ud = e.list
+				},
+				//三绕组ud12
+				selectThreeGroupUd12One(e) {
+					this.three_group_ud12 = e.list
+				},
+				//三绕组ud13
+				selectThreeGroupUd13One(e) {
+					this.three_group_ud13 = e.list
+				},
+				//三绕组ud23
+				selectThreeGroupUd23One(e) {
+					this.three_group_ud23 = e.list
+				},
+				selectHotStabilityTimeOne(e) {
+					this.hot_stability_time = e.list
+				},
 				//当改变系统电压选择框获取选中的值触发
 				changeU1() {
 					var that = this;
