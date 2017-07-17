@@ -75,11 +75,11 @@
 	        											<li v-for="list in transformerStageLists" @click="selectTransformerStageOne(this)">
 	        												<a href="#">{{list}}</a>
 	        											</li>
-          												
+
 	        										</ul>
 												</div>
     									</div>
-	    								
+
 								      		<!-- <input type="text" class="form-control input-sm dl" style="width:100px" v-model="transformer_stage">
 								     		 <label>&nbsp;&nbsp;容量 </label>
 								      		<input type="text" class="form-control input-sm dl" style="width:100px" v-model="transformer_capacity"> MVA -->
@@ -94,11 +94,11 @@
 	        											<li v-for="list in transformerCapacityList" @click="selectTransformerCapacityOne(this)">
 	        												<a href="#">{{list}}</a>
 	        											</li>
-          												
+
 	        										</ul>
 												</div>
     									</div>
-	    								
+
 								      		<!-- <input type="text" class="form-control input-sm dl" style="width:100px" v-model="transformer_stage">
 								     		 <label>&nbsp;&nbsp;容量 </label>
 								      		<input type="text" class="form-control input-sm dl" style="width:100px" v-model="transformer_capacity"> MVA -->
@@ -133,7 +133,7 @@
 					          												<li><a href="#">1s</a></li>
 					          												<li><a href="#">2s</a></li>
 						        										</ul>
-																	</div> 
+																	</div>
 					    									</div> &nbsp;&nbsp;KV -->
 										    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="U1" @change="changeU1()">
 																<option v-for="option in UhighArr">
@@ -173,15 +173,15 @@
 						        											<li v-for="list in doubleGroupUdList" @click="selectDoubleGroupUdOne(this)">
 						        												<a href="#">{{list}}</a>
 						        											</li>
-					          												
+
 						        										</ul>
-				  												</div> 
+				  												</div>
 						    								</div> &nbsp;&nbsp;%
 										    				<!-- <input type="text" class="form-control input-sm dl" style="width:90%" v-model="double_group_ud"> % -->
 										    			</div>
 												  	</div>
-												    
-												  	
+
+
 												  </div>
 											</div>
 								    	</div>
@@ -236,7 +236,7 @@
 							        											<li v-for="list in threeGroupUd12" @click="selectThreeGroupUd12One(this)">
 							        												<a href="#">{{list}}</a>
 							        											</li>
-						          												
+
 							        										</ul>
 					  												</div>
 						    									</div> &nbsp;&nbsp;%
@@ -365,7 +365,7 @@
 
       				<div class="group-item mt-15">
       					<div class="panel panel-info penel-fix">
-							
+
 							<div class="panel-body-wraps p-5">
 								<div class="form-horizontal">
 								  <div class="form-group">
@@ -375,7 +375,7 @@
 								    </div>
 								    <label class="col-sm-2 control-label">日期</label>
 								    <div class="col-sm-4 pl-0">
-								    	
+
 							      		<input type="text" class="form-control input-sm dl" style="width:100%" v-model="date">
 								    </div>
 								  </div>
@@ -396,7 +396,7 @@
 						    		</div>
 								    <label class="col-sm-2 control-label">计算人</label>
 								    <div class="col-sm-3 pl-0">
-							      		<input type="text" class="form-control input-sm dl" style="width:100%"" v-model="calculate_people">
+							      		<input type="text" class="form-control input-sm dl" style="width:100%" v-model="calculate_people" >
 								    </div>
 								     <label class="col-sm-2 control-label">校核</label>
 								    <div class="col-sm-3 pl-0">
@@ -506,21 +506,21 @@
 				lineType:'单导线',//线路规格子内容
 				transformer_stage:'1',//变压器台数
 				transformer_capacity:'',//变压器容量
-				transformerStageLists:[1,2,3,4,5],//变压器台数选择
-				transformerCapacityList:[1,2,3,4,5],//变压器容量选择
+				transformerStageLists:[1,2,3,4,5],  //变压器台数选择
+				transformerCapacityList:[1,2,31.5,50,63,88,100],  //变压器容量选择
 
-				doubleGroupUdList:[1,2,3,4,5], //双绕组Ud%
-				double_group_ud:'',//双绕组Ud
+				doubleGroupUdList:[10.5,12,14,17], //双绕组Ud%
+				double_group_ud:'10.5',//双绕组Ud
 				double_group_low_tension:'10',//双绕组低压
 
-				threeGroupUd12:[1,2,3,4,5],//三绕组ud12
-				threeGroupUd13:[1,2,3,4,5],//三绕组ud13
-				threeGroupUd23:[1,2,3,4,5],//三绕组ud23
-				three_group_ud12:'',//三绕组ud12
+				threeGroupUd12:[10.5,12,14,17],//三绕组ud12
+				threeGroupUd13:[10.5,12,14,17],//三绕组ud13
+				threeGroupUd23:[10.5,12,14,17],//三绕组ud23
+				three_group_ud12:'10.5',//三绕组ud12
 				three_group_u2:'35',//三绕组u2
-				three_group_ud13:'',//三绕组ud13
+				three_group_ud13:'10.5',//三绕组ud13
 				three_group_u3:'10',//三绕组u3
-				three_group_ud23:'',//三绕组ud23
+				three_group_ud23:'10.5',//三绕组ud23
 
 				dynamo_xd:'',//发电机 Xd%
 				dynamo_pe:'',//发电机pe
