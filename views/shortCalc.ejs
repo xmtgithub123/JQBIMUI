@@ -375,12 +375,8 @@
 								    </div>
 								    <label class="col-sm-2 control-label">日期</label>
 								    <div class="col-sm-4 pl-0">
-								    	<div class="input-group date form_date col-md-12" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-MM-dd">
-						                    <input class="form-control"  type="text" value="" v-model="date">
-											<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-						                </div>
-										<input type="hidden" id="dtp_input2" value="" /><br/>
-							      		<!-- <input type="text" class="form-control input-sm dl" style="width:100%" v-model="date"> -->
+								    	
+							      		<input type="text" class="form-control input-sm dl" style="width:100%" v-model="date">
 								    </div>
 								  </div>
 								  <div class="form-group">
@@ -451,14 +447,31 @@
 
       				<div class="bg-footer pull-right">
 						<button class="btn btn-primary btn-bim btn-sm mb-0 ml-15 pull-right" @click="exportCalcSheet()">导出计算书</button>
-      					<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="CalcSheet()">计算</button>
+      					<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="CalcSheet()" data-toggle="modal" data-target="#CalcSheetModel">计算</button>
 
 					</div>
 				</div>
       		</div>
 	    </div>
 	</div>
-
+	<!-- Modal -->
+	<div class="modal fade" id="CalcSheetModel" tabindex="-1" role="dialog" aria-labelledby="CalcSheetModel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">计算结果</h4>
+	      </div>
+	      <div class="modal-body">
+	        	<textarea name="" class="form-control" id="" cols="30" rows="5" v-model="calcResult"></textarea>
+	      </div>
+	        <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	<div class="body-full-mask" v-if="isShowMask" v-cloak>
 		<div class="app-loading">
 	  		<div class="box">
@@ -481,21 +494,7 @@
 	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
-	<script src="../public/javascripts/bootstrap-datetimepicker.min.js"></script>
-	<script src="../public/javascripts/bootstrap-datetimepicker.zh-CN.js"></script>
-	<script type="text/javascript">
-		$('.form_date').datetimepicker({
-	        language:  'zh-CN',
-	        weekStart: 1,
-	        todayBtn:  1,
-			autoclose: 1,
-			todayHighlight: 1,
-			startView: 2,
-			minView: 2,
-			forceParse: 0
-	    });
-	</script>
-	
+
 	<script type="text/javascript">
 		vue = new Vue({
 			el:'body',
@@ -602,6 +601,7 @@
 				//double_checked:'',//双绕组 选中值
 				//three_checked:'',//三绕组 选中值
 				radio_checked:'',//双绕组三绕组选中值
+				calcResult:'',//计算结果
 			},
 
 			created(){
