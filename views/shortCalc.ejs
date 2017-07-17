@@ -11,7 +11,8 @@
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
 	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 	<style type="text/css">
-		.ischeck input,.ischeck select,.ischeck .input-group{
+		.ischeck input,
+		.ischeck select,.ischeck .input-group{
 			background-color:#eee;
 			pointer-events: none;
 		}
@@ -155,7 +156,7 @@
 						        										</ul>
 																	</div>
 					    									</div> &nbsp;&nbsp;KV -->
-										    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="double_group_low_tension">
+										    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:85%" v-model="double_group_low_tension" @change='changeU3()'>
 																<option v-for="option in UlowArr">
 																	{{option.name}}
 																</option>
@@ -297,7 +298,7 @@
 							        										</ul>
 					  												</div>
 						    									</div> -->
-											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u3">
+											    				<select name="" id=""  class="form-control input-sm dl" v-cloak style="width:80%" v-model="three_group_u3" @change='changeU3()'>
 																		<option v-for="option in UlowArr">
 																			{{option.name}}
 																		</option>
@@ -341,9 +342,9 @@
 							  </label>
 							</div> -->
 								<div class="checkbox m-0" :class="{ischeck:!isDynamoEnable}">
-								    <label>
+								    <div style="min-height: 20px;padding-left: 20px;">
 								      <input type="checkbox" v-model="dynamo_checked"> 发电机
-								    </label>
+								    </div>
 							    </div>
 							</div>
 							<div class="panel-body-wrap ptb-5" :class="{ischeck:isDynamoCheck}">
@@ -383,7 +384,7 @@
 								    <label class="col-sm-3 control-label">热稳定时间</label>
 								    <div class="col-sm-4 pl-0 col-flex" >
 							      		<div class="input-group dropup" style="width: 85%;float: left;">
-		      								<input type="text" class="form-control input-sm" aria-label="..." v-model="hot_stability_time">
+		      								<input type="text" class="form-control input-sm" aria-label="..." v-model="TJS">
 		      								<div class="input-group-btn">
         										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
 	        										<ul class="dropdown-menu dropdown-menu-right">
@@ -396,7 +397,9 @@
 						    		</div>
 								    <label class="col-sm-2 control-label">计算人</label>
 								    <div class="col-sm-3 pl-0">
-							      		<input type="text" class="form-control input-sm dl" style="width:100%" v-model="calculate_people" >
+
+							      		<input type="text" class="form-control input-sm dl" style="width:100%" v-model="calculate_people">
+
 								    </div>
 								     <label class="col-sm-2 control-label">校核</label>
 								    <div class="col-sm-3 pl-0">
@@ -606,6 +609,11 @@
 
 			created(){
 				this.date = this.getDate()
+				var that = this
+				JQ.getProjectInfo().then(function(res) {
+					var info = JSON.parse(res)
+					that.project_name = info.Name
+				})
 			},
 
 			methods:{
@@ -640,6 +648,7 @@
 					var date = new Date()
 					return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
 				},
+
 				//当改变系统电压选择框获取选中的值触发
 				changeU1() {
 					var that = this;
@@ -684,6 +693,18 @@
 					that.line_standard = 'LGJQ-300'
 					that.lineType = that.lineTypes[0]
 					transformer_capacity = that.transformerCapacityList[0]
+				},
+
+				//低压改变
+				changeU3() {
+					var that = this
+					if (that.isDoubleCheck && that.double_group_low_tension == '10'
+					    || that.isThreeCheck && that.three_group_u3 == '10') {
+						that.isDynamoEnable = true
+					} else {
+						that.dynamo_checked = false
+						that.isDynamoEnable = false
+					}
 				},
 
 				getLineX() {

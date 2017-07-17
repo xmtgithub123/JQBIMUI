@@ -71,4 +71,7 @@ router.get('/shortCircuit', function(req, res, next) {
 router.get('/shortCalc', function(req, res, next) {
   res.render('shortCalc', { title: '短路计算' });
 });
+router.get('/calcResult', function(req, res, next) {
+  res.render('calcResult', { title: '计算结果' });
+});
 module.exports = router;
