@@ -340,7 +340,7 @@
 							    发电机
 							  </label>
 							</div> -->
-								<div class="checkbox m-0">
+								<div class="checkbox m-0" :class="{ischeck:!isDynamoEnable}">
 								    <label>
 								      <input type="checkbox" v-model="dynamo_checked"> 发电机
 								    </label>
@@ -447,7 +447,7 @@
 
       				<div class="bg-footer pull-right">
 						<button class="btn btn-primary btn-bim btn-sm mb-0 ml-15 pull-right" @click="exportCalcSheet()">导出计算书</button>
-      					<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="CalcSheet()" data-toggle="modal" data-target="#CalcSheetModel">计算</button>
+      					<button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="calc()" data-toggle="modal" data-target="#CalcSheetModel">计算</button>
 
 					</div>
 				</div>
@@ -463,11 +463,10 @@
 	        <h4 class="modal-title" id="myModalLabel">计算结果</h4>
 	      </div>
 	      <div class="modal-body">
-	        	<textarea name="" class="form-control" id="" cols="30" rows="5" v-model="calcResult"></textarea>
+	        	<textarea name="" class="form-control" id="" cols="30" rows="5" v-model="resultText"></textarea>
 	      </div>
 	        <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
 	      </div>
 	    </div>
 	  </div>
@@ -505,7 +504,7 @@
 				line_standard:'LGJQ-300',//线路规格
 				lineType:'单导线',//线路规格子内容
 				transformer_stage:'1',//变压器台数
-				transformer_capacity:'',//变压器容量
+				transformer_capacity:'1',//变压器容量
 				transformerStageLists:[1,2,3,4,5],  //变压器台数选择
 				transformerCapacityList:[1,2,31.5,50,63,88,100],  //变压器容量选择
 
@@ -528,10 +527,10 @@
 
 				resultText:'',//结果文本
 				hot_stability_time:'', //热稳定时间
-				hotStabilityTimeList:[1,2,3,4,5],//热稳定时间选择
+				hotStabilityTimeList:[1,2,3],//热稳定时间选择
 				TJS:'1',//TJS
 				project_name:'',//工程名称
-				date:'',//日期
+				date: '',//日期
 				calculate_people:'',//计算人
 				check:'',//校审
 				showMaskInfo:'正在获取族类型信息',
@@ -597,7 +596,8 @@
 
 				isDoubleCheck:true, //双绕组与三绕组 是否可编辑效果
 				isThreeCheck:false,
-				isDynamoCheck:false,//发电机是否可编辑效果
+				isDynamoEnable: true, //发电机是否可以选择
+				isDynamoCheck: false,//发电机是否可编辑效果
 				//double_checked:'',//双绕组 选中值
 				//three_checked:'',//三绕组 选中值
 				radio_checked:'',//双绕组三绕组选中值
@@ -605,7 +605,7 @@
 			},
 
 			created(){
-
+				this.date = this.getDate()
 			},
 
 			methods:{
@@ -635,6 +635,11 @@
 				selectHotStabilityTimeOne(e) {
 					this.hot_stability_time = e.list
 				},
+
+				getDate() {
+					var date = new Date()
+					return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+				},
 				//当改变系统电压选择框获取选中的值触发
 				changeU1() {
 					var that = this;
@@ -652,6 +657,7 @@
 							'LGJQ-400'
 						]
 						that.lineTypes = ['单导线']
+						that.transformerCapacityList = [1,2,31.5,50,63,88,100]
 					} else if (that.U1 == 220) {
 						that.lineOptions = [
 							'LGJ-185',
@@ -663,6 +669,7 @@
 							('LGJQ-700')
 						]
 						that.lineTypes = [('单导线'), ('双分裂')]
+						that.transformerCapacityList = [120, 150, 180, 240]
 					} else {
 						that.lineOptions = [
 							('LGJQ-300'),
@@ -672,8 +679,11 @@
 							('LGJQ-700')
 						]
 						that.lineTypes = ['三分裂']
+						that.transformerCapacityList = [300]
 					}
+					that.line_standard = 'LGJQ-300'
 					that.lineType = that.lineTypes[0]
+					transformer_capacity = that.transformerCapacityList[0]
 				},
 
 				getLineX() {
