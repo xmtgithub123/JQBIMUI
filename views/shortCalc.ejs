@@ -11,7 +11,8 @@
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
 	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 	<style type="text/css">
-		.ischeck input,.ischeck select,.ischeck .input-group{
+		.ischeck input,
+		.ischeck select,.ischeck .input-group{
 			background-color:#eee;
 			pointer-events: none;
 		}
@@ -340,10 +341,10 @@
 							    发电机
 							  </label>
 							</div> -->
-								<div class="checkbox m-0">
-								    <label>
+								<div class="checkbox m-0" :class="{ischeck:!isShowCheck}">
+								    <div style="min-height: 20px;padding-left: 20px;">
 								      <input type="checkbox" v-model="dynamo_checked"> 发电机
-								    </label>
+								    </div>
 							    </div>
 							</div>
 							<div class="panel-body-wrap ptb-5" :class="{ischeck:isDynamoCheck}">
@@ -599,7 +600,8 @@
 
 				isDoubleCheck:true, //双绕组与三绕组 是否可编辑效果
 				isThreeCheck:false,
-				isDynamoCheck:false,//发电机是否可编辑效果
+				isDynamoCheck:true,//发电机是否可编辑效果
+				isShowCheck:false, //发电机复选框是否可编辑
 				//double_checked:'',//双绕组 选中值
 				//three_checked:'',//三绕组 选中值
 				radio_checked:'',//双绕组三绕组选中值
