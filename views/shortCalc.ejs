@@ -31,7 +31,7 @@
 					  <div class="form-group">
 					    <label class="col-sm-2 control-label">系统短路容量</label>
 					    <div class="col-sm-10 pl-0">
-					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="Sk"> KVA
+					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="Sk"> MVA
 							<label>&nbsp;&nbsp;系统电压</label>
 							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="U1" @change="changeU1()">
 								<option v-for="option in UhighArr" :value="option.name">
@@ -43,7 +43,7 @@
 					  <div class="form-group">
 					    <label class="col-sm-2 control-label">线路长度</label>
 					    <div class="col-sm-10 pl-0">
-					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="line_length"> KM
+					      <input type="text" class="form-control input-sm dl" style="width:100px;" v-model="line_length"> km
 							<label>&nbsp;&nbsp;规格</label>
 							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="line_standard">
 								<option v-for="option in lineOptions">
@@ -85,9 +85,9 @@
 								     		 <label>&nbsp;&nbsp;容量 </label>
 								      		<input type="text" class="form-control input-sm dl" style="width:100px" v-model="transformer_capacity"> MVA -->
 								    </div>
-								     <label class="col-sm-2 control-label">容量</label>
-								    <div class="col-sm-3">
-								    	<div class="input-group">
+								    <label class="col-sm-2 control-label">容量</label>
+								    <div class="col-sm-3 col-flex">
+										<div class="input-group " style="width: 85%;float: left;">
 		      								<input type="text" class="form-control input-sm" aria-label="..." v-model="transformer_capacity">
 		      								<div class="input-group-btn">
         										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
@@ -97,8 +97,8 @@
 	        											</li>
 
 	        										</ul>
-												</div>
-    									</div>
+											</div>
+    									</div>&nbsp;&nbsp;MVA
 
 								      		<!-- <input type="text" class="form-control input-sm dl" style="width:100px" v-model="transformer_stage">
 								     		 <label>&nbsp;&nbsp;容量 </label>
@@ -507,9 +507,9 @@
 				line_standard:'LGJQ-300',//线路规格
 				lineType:'单导线',//线路规格子内容
 				transformer_stage:'1',//变压器台数
-				transformer_capacity:'1',//变压器容量
+				transformer_capacity:'10',//变压器容量
 				transformerStageLists:[1,2,3,4,5],  //变压器台数选择
-				transformerCapacityList:[1,2,31.5,50,63,88,100],  //变压器容量选择
+				transformerCapacityList:[10,20,31.5,50,63,80,100],  //变压器容量选择
 
 				doubleGroupUdList:[10.5,12,14,17], //双绕组Ud%
 				double_group_ud:'10.5',//双绕组Ud
@@ -597,17 +597,18 @@
 					{U:'500', line:'LGJQ-700', type:'三分裂', x:0.292, xpu:0.000106},
 				],
 
-				isDoubleCheck:true, //双绕组与三绕组 是否可编辑效果
-				isThreeCheck:false,
+				isDoubleCheck: true, //双绕组与三绕组 是否可编辑效果
+				isThreeCheck: false,
 				isDynamoEnable: true, //发电机是否可以选择
 				isDynamoCheck: false,//发电机是否可编辑效果
 				//double_checked:'',//双绕组 选中值
 				//three_checked:'',//三绕组 选中值
-				radio_checked:'',//双绕组三绕组选中值
-				calcResult:'',//计算结果
+				radio_checked: '',//双绕组三绕组选中值
+				calcResult: '',//计算结果
 			},
 
 			created(){
+				this.readCache()
 				this.date = this.getDate()
 				var that = this
 				JQ.getProjectInfo().then(function(res) {
@@ -644,9 +645,10 @@
 					this.hot_stability_time = e.list
 				},
 
+				//获取日期
 				getDate() {
 					var date = new Date()
-					return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+					return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
 				},
 
 				//当改变系统电压选择框获取选中的值触发
@@ -666,7 +668,7 @@
 							'LGJQ-400'
 						]
 						that.lineTypes = ['单导线']
-						that.transformerCapacityList = [1,2,31.5,50,63,88,100]
+						that.transformerCapacityList = [10,20,31.5,50,63,80,100]
 					} else if (that.U1 == 220) {
 						that.lineOptions = [
 							'LGJ-185',
@@ -688,11 +690,11 @@
 							('LGJQ-700')
 						]
 						that.lineTypes = ['三分裂']
-						that.transformerCapacityList = [300]
+						that.transformerCapacityList = [150,225,300]
 					}
 					that.line_standard = 'LGJQ-300'
 					that.lineType = that.lineTypes[0]
-					transformer_capacity = that.transformerCapacityList[0]
+					that.transformer_capacity = that.transformerCapacityList[0]
 				},
 
 				//低压改变
@@ -707,26 +709,14 @@
 					}
 				},
 
-				getLineX() {
-					/*var that = this
-					that.lineTable.forEach(function(e) {
-						console.log(e.U + '==' + that.U1)
-						console.log(e.line + '==' + that.line_standard)
-						console.log(e.type + '==' + that.lineType)
-						if (e.U == that.U1 && e.line == that.line_standard
-						    && e.type == that.lineType) {
-							return e.x
-						}
-					})*/
+				//获取线路阻抗
+				getLineXpu1() {
 					var that = this
 					for (var i = 0; i < this.lineTable.length; i++) {
-						//console.log(this.lineTable[i].U + '==' + that.U1 + (this.lineTable[i].U == that.U1))
-						//console.log(this.lineTable[i].line + '==' + that.line_standard + (this.lineTable[i].line == that.line_standard))
-						//console.log(this.lineTable[i].type + '==' + that.lineType + (this.lineTable[i].type == that.lineType))
 						if (this.lineTable[i].U == that.U1
 						    && this.lineTable[i].line == that.line_standard
 						    && this.lineTable[i].type == that.lineType) {
-							return this.lineTable[i].x
+							return this.lineTable[i].xpu
 						}
 					}
 				},
@@ -734,16 +724,15 @@
 				getCalcInfo() {
 					var that = this
 					var info = {
-						Sk: that.Sk,
+						Sk: that.Sk * 1000,
 						U1: that.U1,
 						LineLen: that.line_length,
 						lineStandard: that.line_standard,
-						//LineX:0.4,
 						Transformer:[]
 					}
 
 					//获取线路电抗
-					info.LineX = that.getLineX()
+					info.LineXpu1 = that.getLineXpu1()
 
 					//变压器信息
 					for (var i = 0; i < that.transformer_stage; i++) {
@@ -782,6 +771,7 @@
 				},
 
 				calc() { //计算
+					this.writeCache()
 					var that = this
 					var info = that.getCalcInfo()
 					JQ.shortCalc(JSON.stringify(info)).then(function(result) {
@@ -790,13 +780,23 @@
 				},
 
 				exportCalcSheet() { //导出计算书
+					this.writeCache()
 					var that = this
 					var info = that.getCalcInfo()
 					info.TJS = that.TJS
+					info.ProjectName = that.project_name
 					info.Date = that.date
 					info.CalcPeople = that.calculate_people
 					info.CheckPeople = that.check
 					JQ.clickOK(JSON.stringify(info))
+				},
+
+				readCache() {
+					//
+				},
+
+				writeCache() {
+					//
 				}
 			},
 
@@ -812,8 +812,6 @@
 							this.isDoubleCheck = false
 							this.isThreeCheck = true
 						}
-
-
 					}
 				},
 
