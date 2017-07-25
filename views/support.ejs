@@ -23,12 +23,12 @@
 								<option>支架</option>
 					 			<option>吊架</option>
 							</select>
-							<label>组名：</label>
-							 <input type="text" class="form-control input-sm dl" style="width:80px;margin-right:15px;" v-model="input_groupName"> 
+							<!--label>组名：</label>
+							<input type="text" class="form-control input-sm dl" style="width:80px;margin-right:15px;" v-model="input_groupName"-->
 							<label>预埋件：</label>
 							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="embeddedPartFamily">
 								<option  v-for="(index ,option) in embeddedPartOptions"> {{option.value}} </option>
-																
+
 								<!--<template  v-for="(index ,option) in embeddedPartOptions"  >
 									<option value="{{option.value}}" v-if="index == 0" selected>{{option.value}}</option>
 									<option v-else >{{option.value}}</option>
@@ -36,7 +36,7 @@
 							</select>
 							<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="embeddedPartSymbol">
 								<option  v-for="(index ,option) in embeddedPartGetSymbolOptions"> {{option.symbolName}} </option>
-								
+
 								<!--<template  v-for="(index ,option) in embeddedPartGetSymbolOptions"  >
 									<option value="{{option.symbolName}}" v-if="index == 0" selected>{{option.symbolName}}</option>
 									<option v-else >{{option.symbolName}}</option>
@@ -243,12 +243,12 @@
 								<table class="table-bordered text-center">
 									<tr v-for="(key,value) in parameterDict">
 										<td style="width:80px;">{{key}}</td>
-										
+
 										<td>
 											<input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
 										</td>
 									</tr>
-							
+
 								</table>
 							</div>
 						</div>
@@ -356,8 +356,8 @@
 					this.isShowMask = true;
 					JQ.raiseEvent(JSON.stringify(sendJson));
 				}
-				
-				
+
+
 				// if (window.JQ) {
 				// 	var path = '电气一次\\预埋件\\'
 				// } else {
@@ -471,7 +471,7 @@
 					console.log(obj)
 					var that = this;
 					that.input_add_name = obj.symbolName;
-					that.parameterDict = obj.parameters; 
+					that.parameterDict = obj.parameters;
 					switch (this.modelDialogType)
 					{
 						case 1:
@@ -483,7 +483,7 @@
 						default:
 							return;
 					}
-					
+
 				},
 
 				submitData(obj,status) {
@@ -492,7 +492,7 @@
 					var parameter = {};
 					switch (this.modelDialogType)
 					{
-						case 1: 
+						case 1:
 							path = this.embeddedPartPath;
 							parameter = {};
 							break;
@@ -508,7 +508,7 @@
 							return;
 					}
 
-					if(status == '修改') {				
+					if(status == '修改') {
 						if (window.JQ)
 						{
 							var sendJson = {
@@ -524,13 +524,13 @@
 							that.showMaskInfo ='正在更新族类型';
 							that.isShowMask = true;
 							JQ.raiseEvent(JSON.stringify(sendJson));
-							
+
 						}
-							
+
 						that.status = false;
 
 					}
-					else if (status == '增加'){						
+					else if (status == '增加'){
 						if (window.JQ)
 						{
 							var sendJson = {
@@ -545,7 +545,7 @@
 							that.showMaskInfo ='正在更新族类型';
 							that.isShowMask = true;
 							JQ.raiseEvent(JSON.stringify(sendJson));
-							
+
 						}
 					}
 				},
@@ -638,7 +638,7 @@
 							break;
 					}
 				}
-				
+
 			},
 			computed:{
 				items:function() {
@@ -650,7 +650,7 @@
 					});
 					return items;
 				},
-				embeddedPartGetSymbolOptions() 
+				embeddedPartGetSymbolOptions()
 				{
 					var items = [] ,selectedValue = this.embeddedPartFamily;
 					this.embeddedPartOptions.forEach(function(e){
@@ -688,7 +688,7 @@
 						this.trList = val
 					}
 				},
-				
+
 				embeddedPartFamily:
 				{
 					handler:function(val , oldVal)

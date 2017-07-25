@@ -45,21 +45,21 @@
 											  <col class="col-xs-4">
 											  <thead>
 											  	<tr>
-											 
+
 											    <td>间隔</td>
 											    <td>个数</td>
 											  </tr>
 											  </thead>
 										  	<tbody>
 											  	<tr v-for="list in hor_arrObj" v-cloak >
-											  		
+
 												    <td><input  style="width:50px;" v-model="list.Dist" ></td>
 												    <td><input  style="width:50px;"v-model="list.count"></td>
 												</tr>
 										  </tbody>
 										</table>
 									</div>
-									
+
 
 									<div class="item_radio">
 										<div class="radio">
@@ -80,7 +80,7 @@
 										    <option v-for="option in hor_options" @click="hor_clickItems" v-cloak>
 										    	{{option.value}}
 										    </option>
-										  
+
 										  </select>
 									</div>
 								</div>
@@ -91,7 +91,7 @@
 										<p>输入</p>
 										<textarea name="" id=""  rows="4" class="form-control"  @change="hor_changeArea" v-model="hor_textarea"></textarea>
 									</div>
-									
+
 								</div>
 							</div>
 						</div>
@@ -111,14 +111,14 @@
 											  <col class="col-xs-4">
 											  <thead>
 											  	<tr>
-											  
+
 											    <td>间隔</td>
 											    <td>个数</td>
 											  </tr>
 											  </thead>
 										  	<tbody>
 											  	<tr v-for="list in ver_arrObj" v-cloak >
-											  		
+
 												    <td><input style="width:50px;" v-model="list.Dist" ></td>
 												    <td><input style="width:50px;" v-model="list.count"></td>
 												</tr>
@@ -155,7 +155,7 @@
 										<p>输入</p>
 										<textarea name="" id=""  rows="4"  class="form-control" @change="ver_changeArea" v-model="ver_textarea"></textarea>
 									</div>
-									
+
 								</div>
 							</div>
 						</div>
@@ -165,13 +165,13 @@
 					<div class="col-md-12">
 						<button class="btn btn-default btn-xs btn-bim pull-right ml-30">取消</button>
 						<a href="javascript:void(0);" class="btn btn-primary btn-xs btn-bim pull-right" @click="onClickOk">插入</a>
-						
+
 					</div>
 				</div>
 	      </div>
 	    </div>
 	</div>
-				
+
 
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
@@ -196,11 +196,13 @@
 				ver_selected:'',  //垂直 - 选择框 - 选中值
 				selected_add_jd:'', //插入基点 - 选择框 - 选中值
 				add_jd:[
-					{value:'中心'},  //插入基点 - 选择框 - 值列表
-					{value:'头部'}
+					{value:'左下交点'},  //插入基点 - 选择框 - 值列表
+					{value:'左上交点'},
+					{value:'右下交点'},
+					{value:'右上交点'}
 				],
 				selected_rotation_angle:'', //旋转角度 -选择框 -选中值
-				rotation_angle:[   
+				rotation_angle:[
 					{value:'0'},	//旋转角度 - 选择框 - 值列表
 					{value:'90'}
 				],
@@ -219,7 +221,7 @@
 					Ver:[],
 					HorLength:0,
 					VerLength:0
-				}  
+				}
 			},
 
 			/*created() {
@@ -237,6 +239,7 @@
 				ver_clickItems(){
 
 				},
+
 				hor_addSubmit() { //选中某一间隔 - 点击新增选中间隔事件
 					if(this.hor_selected != '' && this.hor_selected.length == 1){ //判断是否选则了一个
 
@@ -250,6 +253,7 @@
 						alert("请选择一个间隔")
 					}
 				},
+
 				ver_addSubmit() {
 					if(this.ver_selected != '' && this.ver_selected.length == 1){
 						this.ver_arrObj.push({Dist:this.ver_selected,count:1});
@@ -260,45 +264,50 @@
 						alert("请选择一个间隔")
 					}
 				},
+
 				hor_changeArea(){  // 监听水平textarea的变化
 					console.log('hor change')
 					// console.log(this.hor_arrObj)
-					if (this.hor_textarea == ''){
+					if (this.hor_textarea == '') {
 						this.hor_textarea = []
-					}
-					else {
+					} else {
 
 						var that = this;  //防止this指向问题
 						var obj = this.hor_textarea.split(' '); //将hor_textarea中的数值通过空格分隔
 						// console.log(obj)
 						that.hor_arrObj = []; // 初始化hor_arrObj数组
-						obj.forEach(function(e,i){
-							that.hor_arrObj.push({Dist:e.split('*')[0],count:e.split('*')[1]});   //得到以*分隔的数值
-
+						obj.forEach(function(e, i) {
+							var info = e.split('*')
+							that.hor_arrObj.push({Dist:info[0], count:info[1]});   //得到以*分隔的数值
 						})
-						// console.log(that.hor_arrObj)
+						console.log(that.hor_arrObj)
 					}
 
 					this.updateGridInfos()
 				},
+
 				ver_changeArea(){  // 监听垂直textarea的变化
-					console.log('ver change')
-					if(this.ver_textarea == ''){
+					//console.log('ver change')
+					if(this.ver_textarea == '') {
 						this.ver_textarea = []
-					}
-					else {
+					} else {
 						var that = this;
 						var obj = this.ver_textarea.split(' ');
+						//console.log(obj)
 						that.ver_arrObj = [];
 						obj.forEach(function(e,i){
-							that.ver_arrObj.push({Dist:e.split('*')[0],count:e.split('*')[1]});
+							var info = e.split('*')
+							//console.log(info)
+							that.ver_arrObj.push({Dist:info[0],count:info[1]});
 						})
 					}
+					//console.log(that.ver_arrObj)
 					this.updateGridInfos()
 				},
 
 				//更新轴网对象
 				updateGridInfos() {
+					//console.log('updateGridInfos')
 					var that = this;
 					that.gridInfos.Hor.length = 0;
 					that.gridInfos.Ver.length = 0;
@@ -309,19 +318,20 @@
 
 					var index = 0;
 				    this.hor_arrObj.forEach(function(e, iter) {
-				    	var dist = parseInt(e.Dist[0]);
+				    	var dist = parseInt(e.Dist);
+						//console.log(dist + '  ' + e.Dist)
 				    	var count = e.count;
 				    	for (var i = 0; i < count; i++) {
 							index += 1;
 				    		that.gridInfos.VerLength += dist;
 				        	that.gridInfos.Hor.push({Name:String.fromCharCode(65+index), Dist:dist})
 						}
-						
 				    })
+					//console.log(that.gridInfos.Hor)
 
 					index = 1;
 				    this.ver_arrObj.forEach(function(e, iter) {
-				    	var dist = parseInt(e.Dist[0]);
+				    	var dist = parseInt(e.Dist);
 				    	var count = e.count;
 				    	for (var i = 0; i < count; i++) {
 							index += 1;
@@ -368,7 +378,7 @@
 
 					cxt.closePath()
 					cxt.stroke();
-					
+
 					cxt.restore()
 				},
 
@@ -395,7 +405,7 @@
 				    		gridInfos.VerLength += dist;
 				        	gridInfos.Hor.push({Name:String.fromCharCode(65+index), Dist:dist})
 						}
-						
+
 				    })
 
 					index = 1;
@@ -414,7 +424,7 @@
 					JQ.clickOK(JSON.stringify(this.gridInfos));
 				}
 			},
-			watch:{			
+			watch:{
 				hor_arrObj:{  //增加监听事件
 					handler:function(val,oldVal) {
 						// console.log(val)
@@ -439,7 +449,7 @@
 				},
 				ver_arrObj:{
 					handler:function(val,oldVal) {
-						
+
 						this.ver_textarea = val;
 						var that = this;
 						var ver_obj =[];
@@ -449,12 +459,12 @@
 							}
 						})
 						this.ver_textarea = ver_obj.join(' ');
-						
+
 					},
 					deep:true
 				}
 			}
-		
+
 		})
 
 	</script>

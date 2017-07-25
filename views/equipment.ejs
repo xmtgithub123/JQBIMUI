@@ -94,7 +94,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 	<script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
@@ -155,7 +155,11 @@
 					this.tree = [
 						{text:'避雷器', state:{selected: true}}
 					]
-				} else if (this.type == "Capacitor") {
+				} else if (this.type == "LC") {
+					this.tree = [
+						{text:'避雷针', state:{selected: true}}
+					]
+				}else if (this.type == "Capacitor") {
 					this.tree = [
 						{text:'电容器', state:{selected: true}}
 					]
