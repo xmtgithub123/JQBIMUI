@@ -27,7 +27,7 @@
 							<option v-for="option in options">
 								{{option.value}}
 							</option>
-							
+
 						</select>
 					</div>
 					<div class="item_select_2" id="select_type_zu">
@@ -39,16 +39,16 @@
 						</select>
 						<!-- <p>选择：{{selected_type}}</p> -->
 					</div>
-					
+
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底标高</span>
 						<input type="text" class="form-control input-sm" v-model='input_dbg'>
 					</div>
-					
-					
+
+
 				</div>
 				<div class="flex">
-					<div class="add_new_type_box" style = "margin-top:15px;">
+					<div class="add_new_type_box" >
 						<p>新增族类型</p>
 						<div class="form-group">
 							<span>名字&nbsp;&nbsp;</span>
@@ -83,7 +83,7 @@
 
 						  <tr >
 						    <td style="width:100px;">间隔(mm)</td>
-						    
+
 						    <td v-for="item in tableIntervals">
 						    	<input class="input-noborder" v-model="item.interval" style="height:25px;text-align: center;width:50px;"></input>
 						    </td>
@@ -114,7 +114,7 @@
 		</div>
 	</div>
 	</div>
-	
+
 	<div class="body-full-mask" v-if="isShowMask" v-cloak>
 		<div class="app-loading">
 	  		<div class="box">
@@ -201,9 +201,9 @@
 				}
 
 				that = this;
-				
-				var tableIntervalsStr; 
-				var tableNumbersStr; 
+
+				var tableIntervalsStr;
+				var tableNumbersStr;
 				var dbgStr;
 				if (this.type == "Door")
 				{
@@ -262,22 +262,22 @@
 					res.forEach(function(e) {
 						that.options.push({value:e.name,items:e.symbols});
 					})
-					
+
 					if (!isReload && that.options.length > 0) {
 						that.selected = that.options[0].value
 					}
 					this.isShowMask = false;
-					
-				}, 
+
+				},
 
 				clickItems(obj) {
 					this.status = true;
-					console.log(obj)	
+					console.log(obj)
 					var that = this;
 					that.selected_symbol = obj;
 					that.input_add_name = obj.symbolName;
 					that.input_add_width = obj.parameters.宽度;
-					that.input_add_height = obj.parameters.高度;					
+					that.input_add_height = obj.parameters.高度;
 				},
 
 				//布置类型selected 监听中心与头部方法
@@ -300,7 +300,7 @@
 					else {
 						this.inputHasDataFun();
 					   }
-					
+
 				},
 				//监听改变 布置类型 - 头部 -表格中的个数
 				td_changeNumber(){
@@ -311,7 +311,7 @@
 					else {
 						this.inputHasDataFun();
 					}
-					
+
 				},
 				//输入相邻间隔与个数后，默认后面自动增加一列
 				inputHasDataFun(){
@@ -327,13 +327,13 @@
 								console.log('请输入完整')
 							}
 						}
-						
+
 					}
 				},
 				submitData(obj,status) {
 					var that = this;
 					console.log(obj)
-					if(status == '修改') {				
+					if(status == '修改') {
 						if (window.JQ)
 						{
 							var sendJson = {
@@ -351,11 +351,11 @@
 							JQ.raiseEvent(JSON.stringify(sendJson));
 
 						}
-							
+
 						that.status = false;
 
 					}
-					else if (status == '增加'){						
+					else if (status == '增加'){
 						if (window.JQ)
 						{
 							var sendJson = {
@@ -408,7 +408,7 @@
 								continue;
 							if (parseInt(that.tableIntervals[i].interval) > 0 && parseInt(that.tableNumbers[i].number) > 0)
 							{
-								
+
 								info.Dist += that.tableIntervals[i].interval + "*" + that.tableNumbers[i].number;
 								if (i != that.tableNumbers.length - 1)
 									info.Dist += ";"
@@ -422,7 +422,7 @@
 
 					var tableIntervalsStr = "";
 					var tableNumbersStr = "";
-					
+
 					this.tableIntervals.forEach(function(item){
 						if (tableIntervalsStr.length != 0)
 							tableIntervalsStr += '--';
@@ -487,9 +487,9 @@
 							this.selected_type = [];
 					}
 				}
-			}	
+			}
 		})
-		
+
 	</script>
 </body>
 </html>

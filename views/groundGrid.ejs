@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>布置接地网</title>
+	<title>接地网布置</title>
 	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="../public/stylesheets/flex.css">
 	<link rel="stylesheet" href="../public/stylesheets/style.css">
@@ -19,7 +19,7 @@
 							<option v-for="option in options">
 								{{option.value}}
 							</option>
-							
+
 						</select>
 					</div>
 					<div class="item_select_2" id="select_type_zu">
@@ -33,14 +33,21 @@
 					</div>
 
 					<div class="item_select_2">
-						<span>&nbsp;&nbsp;&nbsp;&nbsp;地面高度</span>
-						<input type="text" style="width:100px;" placeholder="0.0" v-model="ground_level">
+						<span>&nbsp;&nbsp;地面高度</span>
+						<input class="form-control input-sm dl" type="text" style="width:100px;" placeholder="0.0" v-model="ground_level">
 					</div>
 					<div class="item_select_2">
-						<span>&nbsp;&nbsp;&nbsp;&nbsp;距离地面偏移</span>
-						<input type="text" style="width:100px;" placeholder="0.0" v-model="offset_level">
+						<span>&nbsp;&nbsp;距地偏移</span>
+						<input class="form-control input-sm dl" type="text" style="width:100px;" placeholder="0.0" v-model="offset_level">
 					</div>
-					
+					<div class="item_select_2">
+						<span>&nbsp;&nbsp;布置方式</span>
+						<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="placeType">
+							<option>直线</option>
+							<!--option>三点弧</option>
+							<option>网格</option-->
+						</select>
+					</div>
 				</div>
 				<div class="flex">
 					<div class="add_new_type_box">
@@ -55,12 +62,12 @@
 								<table class="table-bordered text-center">
 									<tr v-for="(key,value) in parameterDict">
 										<td style="width:80px;">{{key}}</td>
-										
+
 										<td>
 											<input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
 										</td>
 									</tr>
-							
+
 								</table>
 							</div>
 						</div>
@@ -79,8 +86,8 @@
 		</div>
 	</div>
 	</div>
-	
-	<div class="body-full-mask" v-if="isShowMask" v-cloak>	
+
+	<div class="body-full-mask" v-if="isShowMask" v-cloak>
 		<div class="app-loading">
 	  		<div class="box">
 	  			<div class="line-spin-fade-loader">
@@ -115,6 +122,7 @@
 				status:false,
 				offset_level:'-800',
 				ground_level:'0',
+				placeType: '直线', //布置方式
 				path:'电气一次\\接地\\接地网类型\\',
 				parameterTemplate:{矩形截面宽度W:'',矩形截面高度H:'',圆形截面直径:''},
 				parameterDict:{},
@@ -157,7 +165,7 @@
 					res.forEach(function(e) {
 						that.options.push({value:e.name,items:e.symbols});
 					})
-					
+
 					if (!isReload && that.options.length > 0) {
 						that.selected = that.options[0].value
 					}
@@ -168,7 +176,7 @@
 				submitData(obj,status) {
 					var that = this;
 					console.log(obj)
-					if(status == '修改') {				
+					if(status == '修改') {
 						if (window.JQ)
 						{
 							var sendJson = {
@@ -185,11 +193,11 @@
 							that.isShowMask = true;
 							JQ.raiseEvent(JSON.stringify(sendJson));
 						}
-							
+
 						that.status = false;
 
 					}
-					else if (status == '增加'){						
+					else if (status == '增加'){
 						if (window.JQ)
 						{
 							var sendJson = {
@@ -224,7 +232,7 @@
 				//选中族类型
 				clickItems(obj) {
 					this.status = true;
-					// console.log(obj)	
+					// console.log(obj)
 					var that = this;
 					that.input_add_name = obj.symbolName;
 					that.parameterDict = obj.parameters;
@@ -242,7 +250,7 @@
 						GroundLevel:that.ground_level,
 						Path:that.path
 					};
-					
+
 					console.log(info);
 					if (window.JQ) {
 						//JQ.clickOK(JSON.stringify(info));
@@ -292,10 +300,10 @@
 							this.selected_type = [];
 					}
 				}
-			}	
+			}
 
 		})
-		
+
 	</script>
 </body>
 </html>

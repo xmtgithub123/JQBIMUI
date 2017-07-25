@@ -1,67 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>防雷计算</title>
-	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="../public/stylesheets/flex.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">
-	<style type="text/css">
-	</style>
+    <meta charset="UTF-8">
+    <title>防雷计算</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <style type="text/css">
+        .bg-box-0 {
+            min-height: auto;
+        }
+    </style>
 </head>
 <body>
-	<div class="body-wrap" style="margin-right:20px;padding:10px;">
-			<div flex="box:mean">
-				<div class="flex">
-					<div class="item_select_2" id="select_zu">
-						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被保护物高度</span>
-						<input type="text" class="form-control input-sm" v-model="protectHeight" />
-						<span>&nbsp;&nbsp;m &nbsp;&nbsp;&nbsp;&nbsp;</spam>
-					</div>		
-				</div>				
-			</div>
-			
-			<div class="row box_footer">
-				<div class="col-md-12">
-					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="submit" >确定</button>
-				</div>
-			</div>
-	</div>
-	
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box-0">
+                <div class="bg-box-b">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <p class="form-control-static">被保护物高度：</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="inputPassword2" class="sr-only">Password</label>
+                        <input type="password" class="form-control" id="inputPassword2">&nbsp;&nbsp;m
+                      </div>
+                      <button class="btn btn-info pull-right">计算</button>
+                    </form>
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">
+                                <div class="checkbox m-0">计算结果：</div>
+                            </div>
+                            <div class="panel-body-wrap ptb-5" :class="{ischeck:isDynamoCheck}">
+                                <div class="row p-15">
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="计算结果"></textarea>
+                                    </div>
+                                    <div class="col-sm-4" flex="dir:top cross:center">
+                                        <button class="btn btn-primary btn-bim btn-sm mb-0" @click="draw3D">三维图展示</button>
+                                        <button class="btn btn-primary btn-bim btn-sm mb-0">导出计算书</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<script src="../public/javascripts/vue.js"></script>
-	<script src="../public/javascripts/vue-resource.min.js"></script>
-	<script>
-		vue = new Vue ({
-			el:'body',
-			data:{
-				protectHeight:'0'
-			},
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
 
-			created(){
-				
-			},
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                
+            },
 
-			methods:{
-				submit()
-				{
-					var that = this;
-					var info = {};
-					info.EventName="CalcLightning";
-					info.ProtectHeight = that.protectHeight;
-					if (window.JQ) {
-						JQ.raiseEvent(JSON.stringify(info));
+            created(){
+
+            },
+
+            methods:{
+                draw3D()
+                {
+                    var info = {
+						EventName: "CalcLightning",
+						ProtectHeight:'0'
 					}
-				}				
-			},
-			computed:{
-				
-			},
-			watch:{
-				
-			}	
-		})
-		
-	</script>
+                    if (window.JQ) {
+						JQ.raiseEvent(JSON.stringify(info));
+						//JQ.raiseEvent('{"EventName":"PlaceCabinet" , "Dist":0 , "Direction":"下" , "OffsetX":10 , "OffsetY":10 , "FirstRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "SecondRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "Dist":1000}');
+					}
+                }
+            }
+        })
+    </script>
 </body>
 </html>
