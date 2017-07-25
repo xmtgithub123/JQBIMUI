@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑标高</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box" style="width:400px;height:auto">
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">接地类型</label>
+                    <div class="col-sm-8 pl-0">
+                        <select name="" id="" class="form-control input-sm dl" v-cloak v-model="groundTypeSectioned">
+                            <option v-for="list in groundTypeLists">{{list}}</option>
+                        </select> 
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">电阻率</label>
+                    <div class="col-sm-8 pl-0">
+                      <input type="text" class="form-control input-sm dl" v-model="electricResistivity">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">短路电流</label>
+                    <div class="col-sm-8 pl-0">
+                      <input type="text" class="form-control input-sm dl" v-model="ShortCircuitCurrent">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">持续时间</label>
+                    <div class="col-sm-8 pl-0">
+                      <input type="text" class="form-control input-sm dl" v-model="duration">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">热稳定系数</label>
+                    <div class="col-sm-8 pl-0">
+                      <input type="text" class="form-control input-sm dl" v-model="thermalStabilityFactor">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-footer">
+                    <button class="btn btn-default btn-bim btn-sm" data-toggle="modal" data-target="#CalcSheetModel">计算</button>
+                   
+                    <button class="btn btn-primary btn-bim btn-sm" @click="exportCalcSubmit">导出计算书</button>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+    <!-- Modal -->
+        <div class="modal fade" id="CalcSheetModel" tabindex="-1" role="dialog" aria-labelledby="CalcSheetModel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">计算结果</h4>
+              </div>
+              <div class="modal-body">
+                    <textarea name="" class="form-control" id="" cols="30" rows="5" v-model="calcResult"></textarea>
+              </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="body-full-mask" v-if="isShowMask" v-cloak>
+            <div class="app-loading">
+                <div class="box">
+                    <div class="line-spin-fade-loader">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <p>{{showMaskInfo}}</p>
+
+                </div>
+            </div>
+        </div>
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script type="text/javascript">
+        new Vue({
+            el:'body',
+            data:{
+                groundTypeSectioned:'',//接地类型选中值 
+                groundTypeLists:["type1","type2","type3"],//接地类型值
+                electricResistivity:'',//电阻率
+                ShortCircuitCurrent:'',//短路电流
+                duration:'',//持续时间
+                thermalStabilityFactor:'',//热稳定系数
+                calcResult:''//Model 计算结果框 
+            },
+
+            created() {
+                
+            },
+
+            methods:{
+                exportCalcSubmit() {
+
+                }
+            }
+        })
+    </script>
+</body>
+</html>

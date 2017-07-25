@@ -74,4 +74,7 @@ router.get('/shortCalc', function(req, res, next) {
 router.get('/calcResult', function(req, res, next) {
   res.render('calcResult', { title: '计算结果' });
 });
+router.get('/groundCalc', function(req, res, next) {
+  res.render('groundCalc', { title: '接地计算' });
+});
 module.exports = router;
