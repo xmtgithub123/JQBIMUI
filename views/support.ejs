@@ -216,7 +216,7 @@
 	      <div class="modal-body">
 	      	<div class="row">
 	      		<div class="col-xs-12 col-sm-12">
-	      			<div class="item_select_2" id="select_zu">
+	      			<div class="item_select_2" id="select_zu" >
 							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
 							<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
 								<option v-for="(index , option) in options">{{option.value}}</option>
@@ -226,42 +226,46 @@
 	      	</div>
 	      	<div class="row">
 	      		<div class="col-xs-6">
-	      			<div class="item_select_2" id="select_type_zu">
+	      			<div class="item_select_2" id="select_type_zu" style="align-items: flex-start;">
 							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
-							<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
+							<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak style="height:300px;">
 								<option v-for="(index , item) in items" @click="clickItems(item)"> {{item.symbolName}}</option>
 							</select>
 						</div>
 	      		</div>
 	      		<div class="col-xs-6">
-	      			<div class="add_new_type_box">
+	      			<div class="add_new_type_box" style="height:300px;">
 							<p>新增族类型</p>
 							<div class="form-group">
 								<span>名字&nbsp;&nbsp;</span>
 								<input type="text" v-model="input_add_name" class="form-control input-sm">
 							</div>
-							<div class="col-sm-2 p-0">属性</div>
-							<div class="col-sm-10">
-								<div class="table-height" style="max-height:156px; margin-bottom:20px;">
-									<table class="table-bordered text-center">
-										<tr v-for="(key,value) in parameterDict">
-											<td style="width:80px;">{{key}}</td>
+							<div class="form-group">
+								<span>属性&nbsp;&nbsp;</span>
+								<div class="col-sm-10 mt-5" style="padding-left: 0;padding-right:0;">
+									<div class="table-height" style="max-height:170px; margin-bottom:20px;">
+										<table class="table-bordered text-center">
+											<tr v-for="(key,value) in parameterDict">
+												<td style="width:80px;">{{key}}</td>
 
-											<td>
-												<input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
-											</td>
-										</tr>
+												<td>
+													<input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
+												</td>
+											</tr>
 
-									</table>
+										</table>
+									</div>
 								</div>
 							</div>
+
 							<div class="clearfix">
-								<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'增加')" v-cloak>增加</button>
+								<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right ml-15" @click="submitData(this,'增加')" v-cloak>增加</button>
 								<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
 							</div>
 						</div>
 	      		</div>
 	      	</div>
+
 	        	<!-- <div flex="box:mean">
 					<div class="flex">
 						<div class="item_select_2" id="select_zu">
@@ -313,9 +317,8 @@
 
 					</div>
 				</div> -->
+
 	        </div>
-	      <div class="modal-footer">
-	      </div>
 	    </div>
 	  </div>
 	</div>
@@ -409,31 +412,6 @@
 					this.isShowMask = true;
 					JQ.raiseEvent(JSON.stringify(sendJson));
 				}
-
-
-
-				// if (window.JQ) {
-				// 	var path = '电气一次\\预埋件\\'
-				// } else {
-				// 	var that = this;
-				// 	that.$http.get('/javascripts/type.json').then(function(res){
-				// 		console.log(res)
-				// 		var data = res.data;
-				// 		for (var i =0 ;i < data.length; i++) {
-				// 			var symbolData = data[i].Symbol;
-				// 			var list= [];
-				// 			for (var j = 0 ;j <symbolData.length; j++) {
-				// 				list.push(data[i].Symbol[j])
-				// 			}
-				// 			that.options.push({value:data[i].Name,items:list})
-				// 		}
-				// 	})
-				// 	.catch(function(error) {
-				// 		console.log(error)
-				// 	})
-				// 	console.log(that.options)
-				// }
-
 			},
 
 			methods:{
@@ -530,7 +508,6 @@
 						default:
 							return;
 					}*/
-
 				},
 
 				//获取族路径
