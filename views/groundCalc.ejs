@@ -18,7 +18,7 @@
                     <div class="col-sm-8 pl-0">
                         <select name="" id="" class="form-control input-sm dl" v-cloak v-model="groundTypeSectioned">
                             <option v-for="list in groundTypeLists">{{list}}</option>
-                        </select> 
+                        </select>
                     </div>
                   </div>
                   <div class="form-group">
@@ -30,7 +30,7 @@
                   <div class="form-group">
                     <label class="col-sm-4 control-label">短路电流</label>
                     <div class="col-sm-8 pl-0">
-                      <input type="text" class="form-control input-sm dl" v-model="ShortCircuitCurrent">
+                      <input type="text" class="form-control input-sm dl" v-model="s">
                     </div>
                   </div>
                   <div class="form-group">
@@ -48,14 +48,14 @@
                 </div>
 
                 <div class="bg-footer">
-                    <button class="btn btn-default btn-bim btn-sm" data-toggle="modal" data-target="#CalcSheetModel">计算</button>
-                   
-                    <button class="btn btn-primary btn-bim btn-sm" @click="exportCalcSubmit">导出计算书</button>
+                    <button class="btn btn-default btn-bim btn-sm" data-toggle="modal" data-target="#CalcSheetModel" @click="calc">计算</button>
+
+                    <button class="btn btn-primary btn-bim btn-sm" @click="exportCalcDoc">导出计算书</button>
                 </div>
             </div>
         </div>
     </div>
-                
+
     <!-- Modal -->
         <div class="modal fade" id="CalcSheetModel" tabindex="-1" role="dialog" aria-labelledby="CalcSheetModel">
           <div class="modal-dialog" role="document">
@@ -99,22 +99,44 @@
         new Vue({
             el:'body',
             data:{
-                groundTypeSectioned:'',//接地类型选中值 
+                groundTypeSectioned:'',//接地类型选中值
                 groundTypeLists:["type1","type2","type3"],//接地类型值
-                electricResistivity:'',//电阻率
-                ShortCircuitCurrent:'',//短路电流
-                duration:'',//持续时间
+                electricResistivity:'10',//电阻率
+                shortCircuitCurrent:'10',//短路电流
+                duration:'1',//持续时间
                 thermalStabilityFactor:'',//热稳定系数
-                calcResult:''//Model 计算结果框 
+
+                calcResult:''//Model 计算结果框
             },
 
             created() {
-                
+
             },
 
             methods:{
-                exportCalcSubmit() {
+                //计算
+                calc() {
+                    var info = {
+                        Type: this.groundTypeSectioned,
+                        R: this.electricResistivity,
+                        I: this.shortCircuitCurrent,
+                        T: this.duration
+                    }
+                    var that = this
+                    JQ.groundCalc(JSON.stringify(info)).then(function(res) {
+                        that.calcResult = res;
+                    })
+                },
 
+                //导出计算书
+                exportCalcDoc() {
+                    var info = {
+                        Type: this.groundTypeSectioned,
+                        R: this.electricResistivity,
+                        I: this.shortCircuitCurrent,
+                        T: this.duration
+                    }
+                    JQ.clickOK(JSON.stringify(info));
                 }
             }
         })

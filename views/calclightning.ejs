@@ -26,8 +26,8 @@
                         <p class="form-control-static">被保护物高度：</p>
                       </div>
                       <div class="form-group">
-                        <label for="inputPassword2" class="sr-only">Password</label>
-                        <input type="password" class="form-control" id="inputPassword2">&nbsp;&nbsp;m
+                        <label for="protectHeight" class="sr-only"> </label>
+                        <input class="form-control" id="protectHeight" v-model="protectHeight">&nbsp;&nbsp;m
                       </div>
                       <button class="btn btn-info pull-right">计算</button>
                     </form>
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-sm-4" flex="dir:top cross:center">
                                         <button class="btn btn-primary btn-bim btn-sm mb-0" @click="draw3D">三维图展示</button>
-                                        <button class="btn btn-primary btn-bim btn-sm mb-0">导出计算书</button>
+                                        <button class="btn btn-primary btn-bim btn-sm mb-0" @click="draw2D">生成二维图</button>
                                         
                                     </div>
                                 </div>
@@ -55,6 +55,25 @@
         </div>
     </div>
 
+    <div class="body-full-mask" v-if="isShowMask" v-cloak>
+		<div class="app-loading">
+	  		<div class="box">
+	  			<div class="line-spin-fade-loader">
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  				<div></div>
+	  			</div>
+                <p>{{showMaskInfoLine1}}</p>
+                <p style="margin-top:-40px;">{{showMaskInfoLine2}}</p>
+	  		</div>
+  		</div>
+    </div>
+    
     <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
     <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
     <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
@@ -63,7 +82,10 @@
         vue = new Vue({
             el:'body',
             data:{
-                
+                protectHeight:'10',
+                isShowMask:false,
+                showMaskInfoLine1:'hello',
+                showMaskInfoLine2:'world'
             },
 
             created(){
@@ -74,13 +96,32 @@
                 draw3D()
                 {
                     var info = {
-						EventName: "CreateLightningFormArea",
-						ProtectHeight:'0'
-					}
+                        EventName: "CreateLightningFormArea",
+                        ProtectHeight:this.protectHeight
+                    }
                     if (window.JQ) {
-						JQ.raiseEvent(JSON.stringify(info));
-						//JQ.raiseEvent('{"EventName":"PlaceCabinet" , "Dist":0 , "Direction":"下" , "OffsetX":10 , "OffsetY":10 , "FirstRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "SecondRow":[{"Name":"出线柜" , "Count":3} , {"Name":"主变进线柜" , "Count":2} , {"Name":"出线柜" , "Count":2}] , "Dist":1000}');
-					}
+                        JQ.raiseEvent(JSON.stringify(info));
+                    }
+                },
+                draw2D()
+                {
+                    var info = {
+                        EventName: "CreateLightningPlaneArea",
+                        ProtectHeight:this.protectHeight
+                    }
+                    if (window.JQ) {
+                        JQ.raiseEvent(JSON.stringify(info));
+                    }
+                },
+                showMaskInfo:function(line1,line2)
+                {
+                    this.showMaskInfoLine1 = line1;
+                    this.showMaskInfoLine2 = line2;
+                    this.isShowMask = true;
+                },
+                hideMaskInfo:function()
+                {
+                    this.isShowMask = false;
                 }
             }
         })
