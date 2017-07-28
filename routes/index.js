@@ -77,4 +77,7 @@ router.get('/calcResult', function(req, res, next) {
 router.get('/groundCalc', function(req, res, next) {
   res.render('groundCalc', { title: '接地计算' });
 });
+router.get('/groundGrid', function(req, res, next) {
+  res.render('groundGrid', { title: '接地网布置' });
+});
 module.exports = router;

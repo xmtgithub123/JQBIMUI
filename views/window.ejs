@@ -23,8 +23,8 @@
 	<div class="body-wrap">
 		<div class="panel-wrap">
 		<div class="panel-body box-wrap" id="win_hook">
-			<div flex="box:mean">
-				<div class="flex">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12">	
 					<div class="item_select_2" id="select_zu">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
 						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
@@ -34,6 +34,10 @@
 							
 						</select>
 					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-sm-6">
 					<div class="item_select_2" id="select_type_zu">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
 						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
@@ -41,18 +45,9 @@
 								{{item.类型名称}}
 							</option>
 						</select>
-						<!-- <p>选择：{{selected_type}}</p> -->
 					</div>
-					
-					<div class="item_select_2">
-						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底标高</span>
-						<input type="text" class="form-control input-sm" v-model='input_dbg'>
-					</div>
-					
-					
 				</div>
-				<div class="flex">
-					<button class="btn btn-primary btn-sm btn-bim btn-xs">加载族</button>
+				<div class="col-xs-6 col-sm-6">
 					<div class="add_new_type_box">
 						<p>新增族类型</p>
 						<div class="form-group">
@@ -74,9 +69,71 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
-					<div class="item_select_2 col-md-6">
-						<span>&nbsp;&nbsp;&nbsp;&nbsp;布置类型：</span>
+				<div class="col-sm-12">	
+					<div class="item_select_2">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底标高</span>
+						<input type="text" class="form-control input-sm" v-model='input_dbg'>
+					</div>
+				</div>
+			</div>
+
+			<!-- <div flex="box:mean">
+				<div class="flex">
+					<div class="item_select_2" id="select_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
+						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+							<option v-for="option in options">
+								{{option.value}}
+							</option>
+							
+						</select>
+					</div>
+					<div class="item_select_2" id="select_type_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
+						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
+							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
+								{{item.类型名称}}
+							</option>
+						</select>
+					</div>
+					
+					<div class="item_select_2">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底标高</span>
+						<input type="text" class="form-control input-sm" v-model='input_dbg'>
+					</div>
+					
+					
+				</div>
+				<div class="flex">
+					
+					<div class="add_new_type_box">
+						<p>新增族类型</p>
+						<div class="form-group">
+							<span>名字&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_name" class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>宽度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_width"  class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>高度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_height"  class="form-control input-sm">
+						</div>
+						<div class="clearfix">
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,status)" v-cloak>{{ status ? '修改' : '增加'}}</button>
+						</div>
+					</div>
+				</div>
+			</div> -->
+
+
+
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="item_select_2">
+						<span>&nbsp;&nbsp;&nbsp;布置类型</span>
 						<select name="" id="" v-model="selected_bz_type" class="form-control input-sm" @change="chooseSelectOption">
 							<option v-for="option in type_options" :value="option.value">{{option.value}}</option>
 						</select>
