@@ -178,7 +178,7 @@ h4 {
 }
 
 .item_select_2 .item_select_h{
-  height:210px !important;
+  height:210px;
 }
 .add_new_type_box {
   height: 210px;
