@@ -178,7 +178,55 @@
 	        <h4 class="modal-title" id="myModalLabel">新增类型</h4>
 	      </div>
 	      <div class="modal-body">
-	        	<div flex="box:mean">
+	      	<div class="row">
+	      		<div class="col-xs-12 col-sm-12">
+	      			<div class="item_select_2" id="select_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
+						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+							<option v-for="option in options">
+								{{option.value}}
+							</option>
+
+						</select>
+					</div>
+	      		</div>
+	      	</div>
+	      	<div class="row">
+	      		<div class="col-xs-6 col-sm-6">
+	      			<div class="item_select_2" id="select_type_zu">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
+						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
+							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
+								{{item.symbolName}}
+							</option>
+
+
+						</select>
+					</div>
+	      		</div>
+	      		<div class="col-xs-6 col-sm-6">
+	      			<div class="add_new_type_box" style = "margin-top:15px;">
+						<p>新增族类型</p>
+						<div class="form-group">
+							<span>名字&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_name" class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>宽度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_width"  class="form-control input-sm">
+						</div>
+						<div class="form-group">
+							<span>长度&nbsp;&nbsp;</span>
+							<input type="text" v-model="input_add_height"  class="form-control input-sm">
+						</div>
+						<div class="clearfix">
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'增加')" v-cloak>增加</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
+						</div>
+					</div>
+	      		</div>
+	      	</div>
+	       <!--  <div flex="box:mean">
 				<div class="flex">
 					<div class="item_select_2" id="select_zu">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
@@ -198,7 +246,6 @@
 
 
 						</select>
-						<!-- <p>选择：{{selected_type}}</p> -->
 					</div>
 				</div>
 				<div class="flex">
@@ -223,7 +270,7 @@
 					</div>
 
 				</div>
-			</div>
+			</div> -->
 	      </div>
 	      <div class="modal-footer">
 	      </div>
@@ -314,7 +361,7 @@
 				input_add_height:'',//新增类型 宽度
 				status:false,
 				path:'',
-				isShowMask:false,//是否显示全屏遮罩
+				isShowMask:true,//是否显示全屏遮罩
 				showMaskInfo:'正在获取族类型信息'
 			},
 
