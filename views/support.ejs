@@ -42,7 +42,7 @@
 									<option v-else >{{option.symbolName}}</option>
 								</template>-->
 							</select>
-							<button class="btn btn-primary btn-sm" @click="modifySymbol(1)" >新增类型</button>
+							<button class="btn btn-primary btn-sm" @click="showEditSymbol(1)" >新增类型</button>
 					    </div>
 					  </div>
 					</div>
@@ -67,7 +67,7 @@
 													{{option.symbolName}}
 												</option>
 									        </select>
-											<button class="btn btn-primary btn-sm" @click="modifySymbol(2)">新增类型</button>
+											<button class="btn btn-primary btn-sm" @click="showEditSymbol(2)">新增类型</button>
 								    </div>
 								  </div>
 								</div>
@@ -124,7 +124,7 @@
 																{{option.symbolName}}
 															</option>
 												        </select>
-												        <button class="btn btn-primary btn-sm" @click="modifySymbol(3)">新增类型</button>
+												        <button class="btn btn-primary btn-sm" @click="showEditSymbol(3)">新增类型</button>
 											    </div>
 										  	</div>
 										</div>
@@ -270,11 +270,17 @@
 								<option v-for="(index , option) in options">{{option.value}}</option>
 							</select>
 						</div>
+<<<<<<< HEAD
 						<div class="item_select_2" id="select_type_zu">
 							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
 							<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
 								<option v-for="(index , item) in items" @click="clickItems(item)"> {{item.symbolName}}</option>
 							</select>
+=======
+						<div class="clearfix">
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="addSymbol()" v-cloak>增加</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="modifySymbol()" v-cloak>修改</button>
+>>>>>>> a538b82331de3a54820f749de9e233665130e7c0
 						</div>
 					</div>
 					<div class="flex">
@@ -350,7 +356,7 @@
 					// 	number:'',
 					// 	angle:''
 					// }
-				],
+				],  //支架排布信息数组
 				input_interval:'', //支吊架排布间隔
 				input_number:'', //支吊架排布个数
 				input_angle:'', //支吊架排布角度
@@ -369,7 +375,7 @@
 				horPartPlaceType:'居中', //横但位置
                 horPartOffset:'0',//横担位置偏移
 				horPartCount: '2', //横担数量
-				crossArmFamily:'',//横担族
+				crossArmFamily:'角钢',//横担族
 				crossArmSymbol:'',//横担类型
 				crossArmOptions:[],	//横担所有族
 				objs:[],
@@ -389,20 +395,21 @@
 				parameterDict:{},
 			},
 			created(){
+
 				var that = this;
-				if (window.JQ)
-				{
+				if (window.JQ) {
 					var sendJson = {
 						EventName:'JQFamily',
 						Path:that.embeddedPartPath,
 						Operation:'getFamilyFileInfos',
 						Parameters:that.parameterTemplate,
 						Callback:'vue.loadEmbeddedPart'
-						}
+					}
 					this.showMaskInfo ='正在获取族类型信息';
 					this.isShowMask = true;
 					JQ.raiseEvent(JSON.stringify(sendJson));
 				}
+
 
 
 				// if (window.JQ) {
@@ -426,42 +433,41 @@
 				// 	})
 				// 	console.log(that.options)
 				// }
+
 			},
+
 			methods:{
-				loadEmbeddedPart(info)
-				{
+				//加载预埋件族
+				loadEmbeddedPart(info) {
 					this.embeddedPartOptions.length = 0
 					var that = this;
 					var infos = info;
 					infos.forEach(function(e) {
-						that.embeddedPartOptions.push({value:e.name,items:e.symbols});
+						that.embeddedPartOptions.push({value:e.name, items:e.symbols});
 					})
-					if (this.embeddedPartFamily.length == 0 && this.embeddedPartOptions.length > 0)
-					{
+					if (this.embeddedPartFamily.length == 0 && this.embeddedPartOptions.length > 0) {
 						//todo:读取配置
 						this.embeddedPartFamily = this.embeddedPartOptions[0].value;
 					}
-					if (this.embeddedPartSymbol.length == 0 && this.embeddedPartGetSymbolOptions.length > 0)
-					{
+					if (this.embeddedPartSymbol.length == 0 && this.embeddedPartGetSymbolOptions.length > 0) {
 						//todo:读取配置
 						this.embeddedPartSymbol = this.embeddedPartGetSymbolOptions[0].symbolName;
 					}
-					var parameterJson = {};
-					if (window.JQ)
-					{
+					//var parameterJson = {};
+					if (window.JQ) {
 						var sendJson = {
 							EventName:'JQFamily',
 							Path:that.standColumnPath,
 							Operation:'getFamilyFileInfos',
 							Parameters:that.parameterTemplate,
 							Callback:'vue.loadStandColumn'
-							}
+						}
 						JQ.raiseEvent(JSON.stringify(sendJson));
 					}
 				},
 
-				loadStandColumn(info)
-				{
+				//加载立柱族
+				loadStandColumn(info) {
 					this.standColumnOptions.length = 0
 					var that = this;
 					var infos = info;
@@ -469,30 +475,27 @@
 						that.standColumnOptions.push({value:e.name,items:e.symbols});
 					})
 
-					if (this.standColumnFamily.length == 0 && this.standColumnOptions.length > 0)
-					{
+					if (this.standColumnFamily.length == 0 && this.standColumnOptions.length > 0) {
 						this.standColumnFamily = this.standColumnOptions[0].value;
 					}
-					if (this.standColumnSymbol.length == 0 && this.standColumnGetSymbolOptions.length > 0)
-					{
+					if (this.standColumnSymbol.length == 0 && this.standColumnGetSymbolOptions.length > 0) {
 						this.standColumnSymbol = this.standColumnGetSymbolOptions[0].symbolName;
 					}
 
-					if (window.JQ)
-					{
+					if (window.JQ) {
 						var sendJson = {
 							EventName:'JQFamily',
 							Path:that.crossArmPath,
 							Operation:'getFamilyFileInfos',
 							Parameters:that.parameterTemplate,
 							Callback:'vue.loadCrossArm'
-							}
+						}
 						JQ.raiseEvent(JSON.stringify(sendJson));
 					}
 				},
 
-				loadCrossArm(info)
-				{
+				//加载横臂族
+				loadCrossArm(info) {
 					this.crossArmOptions.length = 0
 					var that = this;
 					var infos = info;
@@ -500,26 +503,23 @@
 						that.crossArmOptions.push({value:e.name,items:e.symbols});
 					})
 
-					if (this.crossArmFamily.length == 0 && this.crossArmOptions.length > 0)
-					{
+					if (this.crossArmFamily.length == 0 && this.crossArmOptions.length > 0) {
 						this.crossArmFamily = this.crossArmOptions[0].value;
 					}
-					if (this.crossArmSymbol.length == 0 && this.crossArmGetSymbolOptions.length > 0)
-					{
+					if (this.crossArmSymbol.length == 0 && this.crossArmGetSymbolOptions.length > 0) {
 						this.crossArmSymbol = this.crossArmGetSymbolOptions[0].symbolName;
 					}
 
 					this.isShowMask = false;
-
 				},
 
-				clickItems:function(obj) {
+				clickItems(obj) {
 					this.status = true;
 					console.log(obj)
 					var that = this;
 					that.input_add_name = obj.symbolName;
 					that.parameterDict = obj.parameters;
-					switch (this.modelDialogType)
+					/*switch (this.modelDialogType)
 					{
 						case 1:
 							break;
@@ -529,11 +529,64 @@
 							break;
 						default:
 							return;
-					}
+					}*/
 
 				},
 
-				submitData(obj,status) {
+				//获取族路径
+				getPath() {
+					switch (this.modelDialogType) {
+						case 1:
+							return this.embeddedPartPath;
+
+						case 2:
+							return this.standColumnPath
+
+						case 3:
+							return this.crossArmPath
+
+						default:
+							return ''
+					}
+				},
+
+				//修改族类型
+				modifySymbol() {
+					var that = this
+					var sendJson = {
+						EventName:'JQFamily',
+						Path: that.getPath(),
+						Operation:'modifyFamilySymbol',
+						FamilyName:that.selected,
+						SymbolName:that.selected_type[0],
+						SymbolNewName:that.input_add_name,
+						Parameters:that.parameterDict,
+						Callback:'vue.reloadData'
+					}
+					that.showMaskInfo ='正在更新族类型';
+					that.isShowMask = true;
+					JQ.raiseEvent(JSON.stringify(sendJson));
+					that.status = false;
+				},
+
+				//添加族类型
+				addSymbol() {
+					var that = this;
+					var sendJson = {
+						EventName:'JQFamily',
+						Path: that.getPath(),
+						Operation:'addFamilySymbol',
+						FamilyName:that.selected,
+						SymbolName:that.input_add_name,
+						Parameters:that.parameterDict,
+						Callback:'vue.reloadData'
+					}
+					that.showMaskInfo ='正在更新族类型';
+					that.isShowMask = true;
+					JQ.raiseEvent(JSON.stringify(sendJson));
+				},
+
+				/*submitData(obj, status) {
 					var that = this;
 					var path = '';
 					var parameter = {};
@@ -555,7 +608,7 @@
 							return;
 					}
 
-					if(status == '修改') {
+					if (status == '修改') {
 						if (window.JQ)
 						{
 							var sendJson = {
@@ -567,7 +620,7 @@
 								SymbolNewName:that.input_add_name,
 								Parameters:that.parameterDict,
 								Callback:'vue.reloadData'
-								}
+							}
 							that.showMaskInfo ='正在更新族类型';
 							that.isShowMask = true;
 							JQ.raiseEvent(JSON.stringify(sendJson));
@@ -595,26 +648,22 @@
 
 						}
 					}
-				},
+				},*/
 
-				reloadData()
-				{
+				reloadData() {
 					var that = this;
-					if (window.JQ)
-					{
+					if (window.JQ) {
 						var sendJson = {
 							EventName:'JQFamily',
 							Path:that.embeddedPartPath,
 							Operation:'getFamilyFileInfos',
 							Parameters:that.parameterTemplate,
 							Callback:'vue.loadEmbeddedPart'
-							}
+						}
 						JQ.raiseEvent(JSON.stringify(sendJson));
 					}
 				},
 
-				submit(){
-				},
 				changeTR(){
 					var that = this;
 					if ( (/^[0-9]+.?[0-9]*$/.test(that.input_interval) == false)) {
@@ -629,27 +678,29 @@
 					}
 					console.log(this.trList)
 				},
+
 				removeTrlist(e) {
 					console.log(e)
 					var index = e.$index;
-					this.trList.splice(index,1)
+					this.trList.splice(index, 1)
 				},
-				//
+
+				//布置
 				place() {
 					var that = this;
 					var info = {
 						EventName: 'PlaceSupport',
 						Type: that.type,
 						GroupName:that.input_groupName,
-						BasePart: '矩形钢',
-						BasePartSymbolId: 0,
+						BasePart: that.embeddedPartFamily,
+						BasePartSymbol: that.embeddedPartSymbol,
 						//立柱部分
-						VerPart: '热轧槽钢柱',
-						VerPartSymbolId:0,
+						VerPart: that.standColumnFamily,
+						VerPartSymbol:that.standColumnSymbol,
 						VerPartHeight:that.standColumnHeight,
 						//横担部分
-						HorPart: '角钢',
-						HorPartSymbolId: 0,
+						HorPart: that.crossArmFamily,
+						HorPartSymbol: that.crossArmSymbol,
 						HorPartLen: that.horPartLen,
 						HorPartDist: that.horPartDist,
 						HorPartCount: that.horPartCount,
@@ -659,36 +710,39 @@
 						//支架排布
 						Arrangement: that.trList
 					}
+					console.log(info)
 					JQ.raiseEvent(JSON.stringify(info))
 				},
 
-				modifySymbol(type)
-				{
+				showEditSymbol(type) {
 					$("#NewAddTypeModel").modal("show");
 					this.modelDialogType = type;
-					this.selected = "";
+					//this.selected = "";
 					this.parameterDict = {};
 					this.input_add_name = "";
 					switch (type)
 					{
-						case 1:
+						case 1:  //预埋件
 							this.options = this.embeddedPartOptions;
+							this.selected = this.embeddedPartFamily;
 							break;
-						case 2:
+						case 2:  //立柱
 							this.options = this.standColumnOptions;
+							this.selected = this.standColumnFamily;
 							break;
-						case 3:
+						case 3:  //横臂
 							this.options = this.crossArmOptions;
+							this.selected = this.crossArmFamily
 							break;
 						default:
 							this.options = [];
 							break;
 					}
 				}
-
 			},
+
 			computed:{
-				items:function() {
+				items() {
 					var items = [] ,selectedValue = this.selected;
 					this.options.forEach(function(e){
 						if(e.value == selectedValue) {
@@ -697,30 +751,30 @@
 					});
 					return items;
 				},
-				embeddedPartGetSymbolOptions()
-				{
+
+				embeddedPartGetSymbolOptions() {
 					var items = [] ,selectedValue = this.embeddedPartFamily;
-					this.embeddedPartOptions.forEach(function(e){
+					this.embeddedPartOptions.forEach(function(e) {
 						if(e.value == selectedValue) {
 							items = e.items;
 						}
 					});
 					return items;
 				},
-				standColumnGetSymbolOptions()
-				{
+
+				standColumnGetSymbolOptions() {
 					var items = [] ,selectedValue = this.standColumnFamily;
-					this.standColumnOptions.forEach(function(e){
+					this.standColumnOptions.forEach(function(e) {
 						if(e.value == selectedValue) {
 							items = e.items;
 						}
 					});
 					return items;
 				},
-				crossArmGetSymbolOptions()
-				{
+
+				crossArmGetSymbolOptions() {
 					var items = [] ,selectedValue = this.crossArmFamily;
-					this.crossArmOptions.forEach(function(e){
+					this.crossArmOptions.forEach(function(e) {
 						if(e.value == selectedValue) {
 							items = e.items;
 						}
@@ -728,18 +782,17 @@
 					return items;
 				}
 			},
+
 			watch:{
 				trList:{
-					handler:function(val,oldVal) {
+					handler(val,oldVal) {
 						// console.log(val)
 						this.trList = val
 					}
 				},
 
-				embeddedPartFamily:
-				{
-					handler:function(val , oldVal)
-					{
+				embeddedPartFamily: {
+					handler(val , oldVal) {
 						if (this.embeddedPartGetSymbolOptions.length > 0)
 						{
 							this.embeddedPartSymbol = this.embeddedPartGetSymbolOptions[0].symbolName;
@@ -747,10 +800,8 @@
 					}
 				},
 
-				standColumnFamily:
-				{
-					handler:function(val , oldVal)
-					{
+				standColumnFamily: {
+					handler(val , oldVal) {
 						if (this.standColumnGetSymbolOptions.length > 0)
 						{
 							this.standColumnSymbol = this.standColumnGetSymbolOptions[0].symbolName;
@@ -760,7 +811,7 @@
 
 				crossArmFamily:
 				{
-					handler:function(val , oldVal)
+					handler(val, oldVal)
 					{
 						if (this.crossArmGetSymbolOptions.length > 0)
 						{
@@ -771,7 +822,7 @@
 
 				selected:
 				{
-					handler:function(val,oldVal) {
+					handler(val, oldVal) {
 						if (this.items.length > 0)
 						{
 							this.selected_type = [this.items[0].symbolName];
@@ -782,9 +833,8 @@
 					}
 				},
 
-				options:
-				{
-					handler:function(val,oldVal) {
+				options: {
+					handler(val,oldVal) {
 						if (this.selected.length > 0 && this.items.length > 0)
 						{
 							this.selected_type = [this.items[0].symbolName];
@@ -794,8 +844,6 @@
 							this.selected_type = [];
 					}
 				}
-
-
 			}
 		})
 	</script>
