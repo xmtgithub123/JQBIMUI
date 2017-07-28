@@ -80,4 +80,7 @@ router.get('/groundCalc', function(req, res, next) {
 router.get('/groundGrid', function(req, res, next) {
   res.render('groundGrid', { title: '接地网布置' });
 });
+router.get('/doorWindow', function(req, res, next) {
+  res.render('doorWindow', { title: '布置门窗' });
+});
 module.exports = router;
