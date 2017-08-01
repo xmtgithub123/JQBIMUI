@@ -11,8 +11,8 @@
 	<div class="body-wrap">
 		<div class="panel-wrap ">
 		<div class="panel-body box-wrap" id="win_hook">
-			<div  flex="box:mean">
-				<div class="flex">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12">
 					<div class="item_select_2" id="select_zu">
 						<span>接地网族&nbsp;</span>
 						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
@@ -22,6 +22,10 @@
 
 						</select>
 					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-sm-6">
 					<div class="item_select_2" id="select_type_zu">
 						<span>&nbsp;&nbsp;&nbsp;族类型&nbsp;</span>
 						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
@@ -31,25 +35,8 @@
 						</select>
 						<!-- <p>选择：{{selected_type}}</p> -->
 					</div>
-
-					<div class="item_select_2">
-						<span>&nbsp;&nbsp;地面高度</span>
-						<input class="form-control input-sm dl" type="text" style="width:100px;" placeholder="0.0" v-model="ground_level">
-					</div>
-					<div class="item_select_2">
-						<span>&nbsp;&nbsp;距地偏移</span>
-						<input class="form-control input-sm dl" type="text" style="width:100px;" placeholder="0.0" v-model="offset_level">
-					</div>
-					<div class="item_select_2">
-						<span>&nbsp;&nbsp;布置方式</span>
-						<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="placeType">
-							<option>直线</option>
-							<!--option>三点弧</option>
-							<option>网格</option-->
-						</select>
-					</div>
 				</div>
-				<div class="flex">
+				<div class="col-xs-6 col-sm-6">
 					<div class="add_new_type_box">
 						<p>新增族类型</p>
 						<div class="form-group">
@@ -78,6 +65,39 @@
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-xs-6 col-sm-6">
+					<div class="item_select_2">
+						<span>&nbsp;&nbsp;地面高度</span>
+						<input class="form-control input-sm dl" type="text" style="width:100px;" placeholder="0.0" v-model="ground_level">
+					</div>
+				</div>
+				<div class="col-xs-6 col-sm-6">
+					<div class="item_select_2">
+						<span>距地偏移</span>
+						<input class="form-control input-sm dl" type="text" style="width:100px;" placeholder="0.0" v-model="offset_level">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-sm-6">
+					<div class="item_select_2">
+						<span>&nbsp;&nbsp;布置方式</span>
+						<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="placeType">
+							<option>直线</option>
+							<!--option>三点弧</option>
+							<option>网格</option-->
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-6 col-sm-6">
+					<div class="item_select_2">
+						偏移X：<input type="text" class="form-control input-sm dl" style="width:120px;margin-right:10px;flex: 20%;" v-model="offsetX">Y：<input type="text" class="form-control input-sm dl" style="width:120px;flex: 20%;" v-model="offsetY">
+					</div>
+				</div>
+			</div>
+			
+
 			<div class="row box_footer">
 				<div class="col-md-12">
 					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="place" >确定</button>
@@ -146,7 +166,7 @@
 					JQ.raiseEvent(JSON.stringify(sendJson));
 				}
 				else {
-					this.$http.get('../public/javascripts/type.json').then(this.loadRes)
+					this.$http.get('/javascripts/type.json').then(this.loadRes)
 					.catch(function(error) {
 						console.log(error.body)
 						//that.loadRes(error.bodyText);
