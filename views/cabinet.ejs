@@ -73,7 +73,7 @@
 												        </select>
 													</td>
 													<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="list.Count"></input></td>
-													<td><button class="btn btn-primary btn-sm" data-toggle="modal" @click="showEditSymbol(this)">新增类型</button></td>
+													<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 												</tr>
 												<tr @change="tr_changeEvent">
 													<td>
@@ -88,7 +88,7 @@
 												        </select>
 													</td>
 													<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb"></td>
-													<td><button class="btn btn-primary btn-sm" data-toggle="modal" @click="showEditSymbol(this)">新增类型</button></td>
+													<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 												</tr>
 										  </tbody>
 										</table>
@@ -131,7 +131,7 @@
 																</select>
 															</td>
 															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="list.Count"></input></td>
-															<td><button class="btn btn-primary btn-sm" data-toggle="modal" @click="showEditSymbol(this)">新增类型</button></td>
+															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 														</tr>
 														<tr @change="tr_changeEvent_t">
 															<td>
@@ -145,7 +145,7 @@
 														        </select>
 															</td>
 															<td><input class="input-noborder" style="height:25px;text-align: center;width:50px;" v-model="input_numb_t" :class="{disabled:isDisabled}"></td>
-															<td><button class="btn btn-primary btn-sm" data-toggle="modal" @click="showEditSymbol(this)">新增类型</button></td>
+															<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#NewAddTypeModel">新增类型</button></td>
 														</tr>
 
 											  		</tbody>
@@ -385,7 +385,7 @@
 
 			methods:{
 				loadSymbols(info) {
-					//console.log(info)
+					console.log(info)
 					this.optionList.length = 0
 					this.optionListSecond.length = 0
 					this.options.length = 0;
@@ -413,16 +413,9 @@
 					that.input_add_height = obj.parameters.长度;
 				},
 
-				//显示新增类型对话框
-				showEditSymbol(e) {
-					//console.log(e.list.Name)
-					$("#NewAddTypeModel").modal("show");
-					this.selected = e.list.Name;
-				},
-
 				submitData(obj,status) {
 					var that = this;
-					//console.log(obj)
+					console.log(obj)
 					if(status == '修改') {
 						if (window.JQ)
 						{
@@ -519,7 +512,7 @@
 						FirstRow: that.firstRow,
 						SecondRow: that.secondRow
 					}
-					//console.log(JSON.stringify(info))
+					console.log(JSON.stringify(info))
 					//JQ.clickOK(JSON.stringify(info));
 					//JQ.raiseEvent(JSON.stringify(info));
 					if (window.JQ) {
@@ -557,7 +550,7 @@
 						if (e.value == selectedOptionName)
 						items = e.items;
 					});
-					//console.log(items);
+					console.log(items);
 					return items;
 				}
 			},
