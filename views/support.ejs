@@ -265,6 +265,59 @@
 						</div>
 	      		</div>
 	      	</div>
+
+	        	<!-- <div flex="box:mean">
+					<div class="flex">
+						<div class="item_select_2" id="select_zu">
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</span>
+							<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+								<option v-for="(index , option) in options">{{option.value}}</option>
+							</select>
+						</div>
+<<<<<<< HEAD
+						<div class="item_select_2" id="select_type_zu">
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族类型</span>
+							<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
+								<option v-for="(index , item) in items" @click="clickItems(item)"> {{item.symbolName}}</option>
+							</select>
+=======
+						<div class="clearfix">
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="addSymbol()" v-cloak>增加</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="modifySymbol()" v-cloak>修改</button>
+
+						</div>
+					</div>
+					<div class="flex">
+						<div class="add_new_type_box">
+							<p>新增族类型</p>
+							<div class="form-group">
+								<span>名字&nbsp;&nbsp;</span>
+								<input type="text" v-model="input_add_name" class="form-control input-sm">
+							</div>
+							<div class="col-sm-2 p-0">属性</div>
+							<div class="col-sm-10">
+								<div class="table-height" style="max-height:156px; margin-bottom:20px;">
+									<table class="table-bordered text-center">
+										<tr v-for="(key,value) in parameterDict">
+											<td style="width:80px;">{{key}}</td>
+
+											<td>
+												<input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
+											</td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
+							<div class="clearfix">
+								<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'增加')" v-cloak>增加</button>
+								<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
+							</div>
+						</div>
+
+					</div>
+				</div> -->
+
 	        </div>
 	    </div>
 	  </div>

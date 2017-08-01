@@ -37,6 +37,36 @@
                                 <div class="checkbox m-0">计算结果：</div>
                             </div>
                             <div class="panel-body-wrap ptb-5" :class="{ischeck:isDynamoCheck}">
+                                <p class="pull-right mr-15">单位：米</p>
+                                <div class="row  p-5">
+
+                                    <div class="col-xs-12 col-sm-12">
+                                        <table class="table table-bordered table-condensed text-center">
+                                          <thead>
+                                            <tr>
+                                              <td><input type="checkbox" name="" v-model="allData.parCheck" @change="allSelect()"></td>
+                                              <td>避雷针编号</td>
+                                              <td>避雷针高度或间距</td>
+                                              <td>保护半径或最小宽度</td>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr v-for="item in checkData" v-cloak>
+                                                <td>
+                                                   <div class="checkbox m-0">
+                                                        <label>
+                                                          <input type="checkbox" @change="singleSelect()" v-model="item.isCheck" :id="item.id">
+                                                        </label>
+                                                    </div>
+                                               </td>
+                                              <td>{{item.value}}-{{allData.parCheck}}</td>
+                                              <td>{{item.height}}</td>
+                                              <td>{{item.width}}</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                                 <div class="row p-15">
                                     <div class="col-sm-8">
                                         <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="计算结果"></textarea>
@@ -85,7 +115,31 @@
                 protectHeight:'10',
                 isShowMask:false,
                 showMaskInfoLine1:'hello',
-                showMaskInfoLine2:'world'
+                showMaskInfoLine2:'world',
+                allData: {
+                    parCheck: false,
+                    text: '全选'
+                },
+                checkData: [{
+                    id: '1',
+                    value: '1#',
+                    height:25, //避雷针高度或间距
+                    width:16.5,
+                    isCheck: false
+                }, {
+                    id: '2',
+                    value: '2#',
+                    height:25, //避雷针高度或间距
+                    width:16.5,
+                    isCheck: false
+                }, {
+                    id: '3',
+                    value: '3#',
+                    height:25, //避雷针高度或间距
+                    width:16.5,
+                    isCheck: false
+                }], 
+                dataArr:[],               
             },
 
             created(){
@@ -122,8 +176,29 @@
                 hideMaskInfo:function()
                 {
                     this.isShowMask = false;
+                },
+                allSelect() {
+                    var that = this;
+                    that.checkData.forEach(item => {
+                        item.isCheck = that.allData.parCheck
+                    })
+                    var checkData = that.checkData.filter(item => {
+                        return item.isCheck == true
+                    })
+                    console.log(checkData) //全选获取所有全选数据
+                },
+                singleSelect() {
+                    var that = this;
+                    var selectData = that.checkData.filter(item => {
+                        return item.isCheck == true
+                    })
+                    console.log(selectData) //selectData 就是得到选中的某行数据
+                    selectData.length == that.checkData.length ? that.allData.parCheck = true : that.allData.parCheck = false;
                 }
-            }
+            },
+            watch:{
+                
+            }   
         })
     </script>
 </body>
