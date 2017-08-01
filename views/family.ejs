@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="../public/stylesheets/flex.css">
 	<link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
 	<link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">  
+	<link rel="stylesheet" href="../public/stylesheets/style.css">
 	<style type="text/css">
 		.row-list {
 			border:2px solid transparent;
@@ -58,7 +58,7 @@
 		 			</div>
 		 			<div class="col-sm-8 max-height">
 		 					<div class="col-sm-4 col-md-4 row-list pt-15" v-for="(index,list) in lists" :key="index" :class="{active: chooseList == list}" @click="clickList(list)" style="height:135px;">
-		 						<img :src=list.url alt="" class="img-responsive center" style="height:70px;">
+		 						<img :src=list.img alt="" class="img-responsive center" style="height:70px;">
 		 						<p class="text-center">{{list.name}}</p>
 		 					</div>
 		 			</div>
@@ -71,13 +71,13 @@
 	<script src="../public/javascripts/bootstrap-treeview.js"></script> <!--引入bootstrap-treeview.js-->
 	<script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
 	<script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
-	
+
 	<script type="text/javascript">
 
 	</script>
-	
+
 	<script type="text/javascript">
-		new Vue({
+		var vue = new Vue({
 			el:'body',
 			data:{
 				isToNext:true,
@@ -95,33 +95,60 @@
 						{text:'穿墙套管'},
 						{text:'电抗器'},
 						{text:'电缆头'},
-						{text:'电缆支吊架'},
+						//{text:'电缆支吊架'},
 						{text:'电流互感器'},
 						{text:'电压互感器'},
 						{text:'电容器'},
 						{text:'断路器'},
 						{text:'隔离开关'},
 						{text:'接地开关'},
-						{text:'绝缘子'},
+						//{text:'绝缘子'},
 						{text:'开关柜'},
 						{text:'熔断器'},
 						{text:'消弧线圈'},
 						{text:'中性点接地设备'}
-					]}/*,
+					]},
+					{text:'电气二次', nodes:[
+						{text:'屏柜'}
+					]},
+					{text:'暖通', nodes:[
+						{text:'风机'},
+						{text:'空调'}
+					]},
+					{text:'水工', nodes:[
+						{text:'阀门'},
+						{text:'附件'},
+						{text:'灭火器'},
+						{text:'喷头'},
+						{text:'水泵接合器'},
+						{text:'消防炮'},
+						{text:'消防水箱'},
+						{text:'消火栓'},
+					]},
 					{text:'土建', nodes:[
+						{text:'窗'},
 						{text:'单柱'},
 						{text:'单柱梁'},
+						{text:'构架'},
+						{text:'结构柱'},
+						{text:'门'},
 						{text:'人字柱'},
 						{text:'三角梁'},
 						{text:'栅栏'},
-					]}*/
+						{text:'遮栏'},
+						{text:'支架'},
+					]},
 				],
+				lists:[],
 				chooseList:{},
-				isActive:false
+				isActive:false,
 			},
+
 			created(){
 				this.initTree()
+				this.nodeSelected(null, $('#tree').treeview('getSelected')[0])
 			},
+
 			methods:{
 				initTree() {
 					$('#tree').treeview({
@@ -130,11 +157,45 @@
 						onNodeSelected: this.nodeSelected
 					})
 				},
-				
+
+				loadList(info) {
+					console.log(info)
+					this.lists.length = 0
+					var that = this;
+					var infos = info;
+					//var infos = JSON.parse(info);
+					infos.forEach(function(e) {
+						e.img = e.img.replace('#', '%23')
+						that.lists.push(e)
+					})
+					this.isShowMask= false;
+				},
+
 				//选中节点
 				nodeSelected(event, node) {
-					alert(node.text)
+					var parent = $('#tree').treeview('getParent', node)
+					//var node0 = $('#tree').treeview('getParent', node1)
+					//alert(node0)
+					if (parent.parentId != undefined) {
+						var rootNode = $('#tree').treeview('getParent', parent)
+						var path = rootNode.text + '\\' + parent.text + '\\' + node.text;
+					} else {
+						var path = parent.text + '\\' + node.text
+					}
+					//alert(path)
+					if (window.JQ) {
+						var sendJson = {
+							EventName:'JQFamily',
+							Path:path,
+							Operation:'getFamilyFileInfos',
+							Callback:'vue.loadList'
+						}
+						JQ.raiseEvent(JSON.stringify(sendJson));
+					}
+					this.showMaskInfo = '正在获取族类型信息'
+					this.isShowMask= true;
 				},
+
 				clickList(obj){ //选中的某一项
 					console.log(obj)
 					this.chooseList = obj;

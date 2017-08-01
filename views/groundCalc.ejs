@@ -22,19 +22,19 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">电阻率</label>
+                    <label class="col-sm-4 control-label">电阻率(Ω·m)</label>
                     <div class="col-sm-8 pl-0">
                       <input type="text" class="form-control input-sm dl" v-model="electricResistivity">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">短路电流</label>
+                    <label class="col-sm-4 control-label">短路电流(kA)</label>
                     <div class="col-sm-8 pl-0">
-                      <input type="text" class="form-control input-sm dl" v-model="s">
+                      <input type="text" class="form-control input-sm dl" v-model="shortCircuitCurrent">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">持续时间</label>
+                    <label class="col-sm-4 control-label">故障持续时间(s)</label>
                     <div class="col-sm-8 pl-0">
                       <input type="text" class="form-control input-sm dl" v-model="duration">
                     </div>
@@ -43,6 +43,12 @@
                     <label class="col-sm-4 control-label">热稳定系数</label>
                     <div class="col-sm-8 pl-0">
                       <input type="text" class="form-control input-sm dl" v-model="thermalStabilityFactor">
+                    </div>
+                  </div>
+		  <div class="form-group">
+                    <label class="col-sm-4 control-label">表层衰减系数</label>
+                    <div class="col-sm-8 pl-0">
+                      <input type="text" class="form-control input-sm dl" v-model="surfaceAttenuationFactor">
                     </div>
                   </div>
                 </div>
@@ -65,7 +71,7 @@
                 <h4 class="modal-title" id="myModalLabel">计算结果</h4>
               </div>
               <div class="modal-body">
-                    <textarea name="" class="form-control" id="" cols="30" rows="5" v-model="calcResult"></textarea>
+                    <textarea name="" class="form-control" id="" cols="30" rows="8" v-model="calcResult"></textarea>
               </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -99,13 +105,13 @@
         new Vue({
             el:'body',
             data:{
-                groundTypeSectioned:'',//接地类型选中值
-                groundTypeLists:["type1","type2","type3"],//接地类型值
-                electricResistivity:'10',//电阻率
-                shortCircuitCurrent:'10',//短路电流
-                duration:'1',//持续时间
-                thermalStabilityFactor:'',//热稳定系数
-
+                groundTypeSectioned:'110kV及以上有效接地系统',//接地类型选中值
+                groundTypeLists:["110kV及以上有效接地系统","6kV~66kV不接地"],//接地类型值
+                electricResistivity:'16',//电阻率
+                shortCircuitCurrent:'14.5',//短路电流
+                duration:'0.4',//故障持续时间
+                thermalStabilityFactor:'70',//热稳定系数
+		surfaceAttenuationFactor:'1',//表层衰减系数
                 calcResult:''//Model 计算结果框
             },
 
@@ -120,7 +126,9 @@
                         Type: this.groundTypeSectioned,
                         R: this.electricResistivity,
                         I: this.shortCircuitCurrent,
-                        T: this.duration
+                        T: this.duration,
+			TF: this.thermalStabilityFactor,
+			SF: this.surfaceAttenuationFactor
                     }
                     var that = this
                     JQ.groundCalc(JSON.stringify(info)).then(function(res) {
@@ -134,7 +142,9 @@
                         Type: this.groundTypeSectioned,
                         R: this.electricResistivity,
                         I: this.shortCircuitCurrent,
-                        T: this.duration
+                        T: this.duration,
+			TF: this.thermalStabilityFactor,
+			SF: this.surfaceAttenuationFactor
                     }
                     JQ.clickOK(JSON.stringify(info));
                 }

@@ -11,8 +11,8 @@
 	<div class="body-wrap">
 		<div class="panel-wrap ">
 		<div class="panel-body box-wrap" id="win_hook">
-			<div class="row">	
-					<div class="col-sm-12">	
+			<div class="row">
+					<div class="col-sm-12">
 						<div class="item_select_2" id="select_zu">
 							<span>结构柱族&nbsp;</span>
 							<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
@@ -22,7 +22,7 @@
 
 							</select>
 						</div>
-						
+
 					<!-- 	<div class="item_select_2">
 							<span>&nbsp;&nbsp;&nbsp;&nbsp;插入点</span>
 							<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
@@ -31,7 +31,7 @@
 						</div> -->
 					</div>
 				</div>
-				<div class="row">	
+				<div class="row">
 					<div class="col-xs-6 col-sm-6">
 						<div class="item_select_2" id="select_type_zu">
 							<span>&nbsp;&nbsp;&nbsp;族类型&nbsp;</span>
@@ -72,8 +72,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">	
-					<div class="col-xs-6 col-sm-6">	
+				<div class="row">
+					<div class="col-xs-6 col-sm-6">
 						<div class="item_select_2">
 							<span>&nbsp;&nbsp;&nbsp;&nbsp;插入点</span>
 							<select name="" id="" v-model="selected_bz_type" class="form-control input-sm">
@@ -81,7 +81,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-xs-6 col-sm-6">	
+					<div class="col-xs-6 col-sm-6">
 						<div style="margin-top:15px;">
 						偏移 x : <input type="text" style="width:50px;" placeholder="0.0" v-model="offset_x">
 							 y : <input type="text" style="width:50px;" placeholder="0.0" v-model="offset_y">
@@ -114,7 +114,7 @@
 								{{item.symbolName}}
 							</option>
 						</select>
-						
+
 					</div>
 					<div class="item_select_2">
 						<span>&nbsp;&nbsp;&nbsp;&nbsp;插入点</span>
@@ -195,7 +195,7 @@
 			data:{
 				options:[],
 				selected:'',//设置族
-				selected_type:'',//设置族类型
+				selected_type:[],//设置族类型
 				selected_bz_type: '框选轴网',//设置布置类型
 				type_options: [  //布置类型选项
 					{value:'框选轴网'},
@@ -266,7 +266,7 @@
 								Path:that.path,
 								Operation:'modifyFamilySymbol',
 								FamilyName:that.selected,
-								SymbolName:that.selected_type,
+								SymbolName:that.selected_type[0],
 								SymbolNewName:that.input_add_name,
 								Parameters:that.parameterDict,
 								Callback:'vue.reloadData'
@@ -329,7 +329,7 @@
 						OffsetX: that.offset_x,
 						OffsetY: that.offset_y,
 						FamilyName: that.selected,
-						SymbolName: that.selected_type,
+						SymbolName: that.selected_type[0],
 						PlaceType: that.selected_bz_type,
 						Path:that.path
 					};
@@ -362,10 +362,10 @@
 				selected: {
 					handler:function(val,oldVal) {
 						if (this.items.length > 0) {
-							this.selected_type = this.items[0].symbolName;
+							this.selected_type = [this.items[0].symbolName];
 							this.clickItems(this.items[0]);
 						} else {
-							this.selected_type = "";
+							this.selected_type = [];
 						}
 					}
 				},
@@ -373,10 +373,10 @@
 				options: {
 					handler:function(val,oldVal) {
 						if (this.selected.length > 0 && this.items.length > 0) {
-							this.selected_type = this.items[0].symbolName;
+							this.selected_type = [this.items[0].symbolName];
 							this.clickItems(this.items[0]);
 						} else {
-							this.selected_type = "";
+							this.selected_type = [];
 						}
 					}
 				}
