@@ -38,14 +38,30 @@
 				</div>
 				<div class="col-xs-6 col-sm-6">
 					<div class="add_new_type_box">
+
 						<p>新增族类型</p>
 						<div class="form-group">
 							<span>名字&nbsp;&nbsp;</span>
 							<input type="text" v-model="input_add_name" class="form-control input-sm">
 						</div>
-						<div class="col-sm-2 p-0">属性</div>
-						<div class="col-sm-10">
-							<div class="table-height" style="max-height:156px; margin-bottom:20px;">
+						<div class="form-group">
+							<span>属性&nbsp;&nbsp;</span>
+							<div class="table-height" style="max-height:156px; margin-bottom:20px;flex:50%;">
+								<table class="table-bordered text-center"  style="width:100%;">
+									<tr v-for="(key,value) in parameterDict">
+										<td style="width:50%;">{{key}}</td>
+
+										<td>
+											<input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
+										</td>
+									</tr>
+
+								</table>
+							</div>
+						</div>
+						<!-- <div class="col-sm-2 p-0">属性</div> -->
+						<!-- <div class="col-sm-10"> -->
+							<!-- <div class="table-height" style="max-height:156px; margin-bottom:20px;">
 								<table class="table-bordered text-center">
 									<tr v-for="(key,value) in parameterDict">
 										<td style="width:80px;">{{key}}</td>
@@ -56,10 +72,10 @@
 									</tr>
 
 								</table>
-							</div>
-						</div>
+							</div> -->
+						<!-- </div> -->
 						<div class="clearfix">
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" @click="submitData(this,'增加')" v-cloak>增加</button>
+							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right ml-15" @click="submitData(this,'增加')" v-cloak>增加</button>
 							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
 						</div>
 					</div>
@@ -85,18 +101,19 @@
 						<span>&nbsp;&nbsp;布置方式</span>
 						<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="placeType">
 							<option>直线</option>
-							<!--option>三点弧</option>
-							<option>网格</option-->
+							<option>三点弧</option>
+							<option>网格</option>
 						</select>
 					</div>
 				</div>
 				<div class="col-xs-6 col-sm-6">
 					<div class="item_select_2">
-						偏移X：<input type="text" class="form-control input-sm dl" style="width:120px;margin-right:10px;flex: 20%;" v-model="offsetX">Y：<input type="text" class="form-control input-sm dl" style="width:120px;flex: 20%;" v-model="offsetY">
+						间距X<input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;flex: 20%;" v-model="offsetX">
+						Y<input type="text" class="form-control input-sm dl" style="width:100px;flex: 20%;" v-model="offsetY">
 					</div>
 				</div>
 			</div>
-			
+
 
 			<div class="row box_footer">
 				<div class="col-md-12">
@@ -142,7 +159,9 @@
 				status:false,
 				offset_level:'-800',
 				ground_level:'0',
-				placeType: '直线', //布置方式
+				placeType: '网格', //布置方式
+				offsetX: 1000,
+				offsetY: 1000,
 				path:'电气一次\\接地\\接地网类型\\',
 				parameterTemplate:{W:'',H:'',D:''},
 				parameterDict:{},
@@ -152,20 +171,18 @@
 
 			created() {
 				var that = this;
-				if (window.JQ)
-				{
+				if (window.JQ) {
 					var sendJson = {
 						EventName:'JQFamily',
 						Path:this.path,
 						Operation:'getFamilyFileInfos',
 						Parameters:this.parameterTemplate,
 						Callback:'vue.loadRes'
-						}
+					}
 					this.showMaskInfo = '正在获取族类型信息';
 					this.isShowMask = true;
 					JQ.raiseEvent(JSON.stringify(sendJson));
-				}
-				else {
+				} else {
 					this.$http.get('/javascripts/type.json').then(this.loadRes)
 					.catch(function(error) {
 						console.log(error.body)
@@ -268,6 +285,9 @@
 						SymbolName: that.selected_type[0],
 						OffsetLevel:that.offset_level,
 						GroundLevel:that.ground_level,
+						PlaceType: that.placeType,
+						OffsetX: that.offsetX,
+						OffsetY: that.offsetY,
 						Path:that.path
 					};
 
