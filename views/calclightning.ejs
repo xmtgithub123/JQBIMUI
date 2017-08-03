@@ -29,25 +29,24 @@
                         <label for="protectHeight" class="sr-only"> </label>
                         <input class="form-control" id="protectHeight" v-model="protectHeight">&nbsp;&nbsp;m
                       </div>
-                      <button class="btn btn-info pull-right">计算</button>
+                      <!-- <button class="btn btn-info pull-right">计算</button> -->
                     </form>
                     <div class="group-item mt-15">
                         <div class="panel panel-info penel-fix">
                             <div class="panel-heading">
-                                <div class="checkbox m-0">计算结果：</div>
+                                <div class="checkbox m-0">纳入计算的避雷针</div>
                             </div>
-                            <div class="panel-body-wrap ptb-5" :class="{ischeck:isDynamoCheck}">
-                                <p class="pull-right mr-15">单位：米</p>
+                            <div class="panel-body-wrap ptb-5" :class="{ischeck:isDynamoCheck}" style="height:200px;">
+                                <!-- <p class="pull-right mr-15">单位：米</p> -->
                                 <div class="row  p-5">
-
                                     <div class="col-xs-12 col-sm-12">
                                         <table class="table table-bordered table-condensed text-center">
                                           <thead>
                                             <tr>
                                               <td><input type="checkbox" name="" v-model="allData.parCheck" @change="allSelect()"></td>
                                               <td>避雷针编号</td>
-                                              <td>避雷针高度或间距</td>
-                                              <td>保护半径或最小宽度</td>
+                                              <td>避雷针高度(单位:m)</td>
+                                              <!-- <td>保护半径或最小宽度</td> -->
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -59,29 +58,28 @@
                                                         </label>
                                                     </div>
                                                </td>
-                                              <td>{{item.value}}-{{allData.parCheck}}</td>
+                                              <td>{{item.value}}</td>
                                               <td>{{item.height}}</td>
-                                              <td>{{item.width}}</td>
+                                              <!-- <td>{{item.width}}</td> -->
                                             </tr>
                                           </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <div class="row p-15">
-                                    <div class="col-sm-8">
-                                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="计算结果"></textarea>
-                                    </div>
-                                    <div class="col-sm-4" flex="dir:top cross:center">
-                                        <button class="btn btn-primary btn-bim btn-sm mb-0" @click="draw3D">三维图展示</button>
-                                        <button class="btn btn-primary btn-bim btn-sm mb-0" @click="draw2D">生成二维图</button>
-                                        
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
+            
             </div>
+
+             <div style="padding-left:20px;padding-right:20px;padding-top:15px;">
+                 <button class="btn btn-primary pull-right ml-15" @click="draw3D" >三维区域展示</button>
+                <button class="btn btn-primary pull-right" @click="draw2D" >保护范围计算</button>
+            </div> 
+
         </div>
     </div>
 
@@ -113,6 +111,7 @@
             el:'body',
             data:{
                 protectHeight:'10',
+                calcLightningIds:'',
                 isShowMask:false,
                 showMaskInfoLine1:'hello',
                 showMaskInfoLine2:'world',
@@ -123,35 +122,57 @@
                 checkData: [{
                     id: '1',
                     value: '1#',
-                    height:25, //避雷针高度或间距
-                    width:16.5,
+                    height:'25', //避雷针高度或间距
+                    width:'16.5',
                     isCheck: false
                 }, {
                     id: '2',
                     value: '2#',
-                    height:25, //避雷针高度或间距
-                    width:16.5,
+                    height:'25', //避雷针高度或间距
+                    width:'16.5',
                     isCheck: false
                 }, {
                     id: '3',
                     value: '3#',
-                    height:25, //避雷针高度或间距
-                    width:16.5,
+                    height:'25', //避雷针高度或间距
+                    width:'16.5',
                     isCheck: false
-                }], 
-                dataArr:[],               
+                }],                
             },
 
             created(){
-
+                    var info = {
+                        EventName: "GetLightningConductor"
+                    }
+                    if (window.JQ) {
+                        JQ.raiseEvent(JSON.stringify(info));
+                    }
             },
 
             methods:{
+                setTableData:function(checkData)
+                {
+                    this.checkData = checkData;
+                },
                 draw3D()
                 {
+                    this.calcLightningIds = '';
+                    var that = this;
+                    this.checkData.forEach(function(item)
+                    {
+                        if (item.isCheck)
+                        {
+                            if (that.calcLightningIds.length > 0 )
+                                that.calcLightningIds += ",";
+                            that.calcLightningIds += item.id;
+                        }
+
+                    })
+
                     var info = {
                         EventName: "CreateLightningFormArea",
-                        ProtectHeight:this.protectHeight
+                        ProtectHeight:this.protectHeight,
+                        CalcLightningIds:this.calcLightningIds
                     }
                     if (window.JQ) {
                         JQ.raiseEvent(JSON.stringify(info));
@@ -159,14 +180,27 @@
                 },
                 draw2D()
                 {
+                    this.calcLightningIds = '';
+                    var that = this;
+                    this.checkData.forEach(function(item)
+                    {
+                        if (item.isCheck)
+                        {
+                            if (that.calcLightningIds.length > 0 )
+                                that.calcLightningIds += ",";
+                            that.calcLightningIds += item.id;
+                        }
+                    })
+
                     var info = {
                         EventName: "CreateLightningPlaneArea",
-                        ProtectHeight:this.protectHeight
+                        ProtectHeight:this.protectHeight,
+                        CalcLightningIds:this.calcLightningIds
                     }
                     if (window.JQ) {
                         JQ.raiseEvent(JSON.stringify(info));
                     }
-                },
+                }, 
                 showMaskInfo:function(line1,line2)
                 {
                     this.showMaskInfoLine1 = line1;
@@ -182,10 +216,6 @@
                     that.checkData.forEach(item => {
                         item.isCheck = that.allData.parCheck
                     })
-                    var checkData = that.checkData.filter(item => {
-                        return item.isCheck == true
-                    })
-                    console.log(checkData) //全选获取所有全选数据
                 },
                 singleSelect() {
                     var that = this;
@@ -197,7 +227,7 @@
                 }
             },
             watch:{
-                
+
             }   
         })
     </script>
