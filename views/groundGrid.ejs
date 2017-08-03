@@ -114,7 +114,32 @@
 				</div>
 			</div>
 
-
+			<div class="row">
+				<div class="col-xs-3 col-sm-3">
+					<div class="item_select_2">
+						&nbsp;&nbsp;墙内偏移 上<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="">
+					
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-3">
+					<div class="item_select_2">
+						&nbsp;&nbsp;下<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="">
+					
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-3">
+					<div class="item_select_2">
+						&nbsp;&nbsp;左<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="">
+					
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-3">
+					<div class="item_select_2">
+						&nbsp;&nbsp;右<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="">
+					
+					</div>
+				</div>
+			</div>
 			<div class="row box_footer">
 				<div class="col-md-12">
 					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="place" >确定</button>
@@ -183,7 +208,7 @@
 					this.isShowMask = true;
 					JQ.raiseEvent(JSON.stringify(sendJson));
 				} else {
-					this.$http.get('/javascripts/type.json').then(this.loadRes)
+					this.$http.get('../public/javascripts/type.json').then(this.loadRes)
 					.catch(function(error) {
 						console.log(error.body)
 						//that.loadRes(error.bodyText);
