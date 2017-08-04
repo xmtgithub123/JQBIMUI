@@ -86,4 +86,7 @@ router.get('/groundGrid', function(req, res, next) {
 router.get('/doorWindow', function(req, res, next) {
   res.render('doorWindow', { title: '布置门窗' });
 });
+router.get('/pdzz', function(req, res, next) {
+  res.render('pdzz', { title: '配电装置-安全净距' });
+});
 module.exports = router;
