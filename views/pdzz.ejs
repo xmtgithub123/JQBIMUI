@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="../public/stylesheets/flex.css">
     <link rel="stylesheet" href="../public/stylesheets/style.css">
-    <script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 </head>
 <body>
     <div class="body-wrap">
@@ -16,19 +16,20 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">额定电压</label>
                         <div class="col-sm-9 pl-0">
-                            <select name="" id="" class="form-control input-sm dl" v-cloak v-model="selected">
+                       
+                            <select name="" id="" class="form-control input-sm dl" style="width:50%;" v-cloak v-model="selected">
                                 <template v-for="list in lists" >
                                     <option>{{list.key}}</option>
                                 </template>
                                 
-                            </select>
+                            </select>  KV
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label"></label>
                         <div class="col-sm-9 pl-0">
                             <div class="bg-footer">
-                            <button class="btn btn-primary btn-bim btn-sm" @click="sure()">确定</button>
+                            <button class="btn btn-primary btn-bim btn-sm m-0" @click="sure()">确定</button>
                         </div>
                         </div>  
                            
