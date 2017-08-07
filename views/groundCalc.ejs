@@ -3,52 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <title>编辑标高</title>
-    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../public/stylesheets/flex.css">
-    <link rel="stylesheet" href="../public/stylesheets/style.css">
-    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <link rel="stylesheet" href="./public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="./public/stylesheets/flex.css">
+    <link rel="stylesheet" href="./public/stylesheets/style.css">
+    <script src="./public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 </head>
 <body>
     <div class="body-wrap">
         <div class="panel-body box-wrap">
-            <div class="bg-box" style="width:400px;height:auto">
+            <div class="bg-box" style="width:800px;height:auto">
                 <div class="form-horizontal">
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">接地类型</label>
-                    <div class="col-sm-8 pl-0">
+                    <label class="col-sm-2 control-label">接地类型</label>
+                    <div class="col-sm-3 pl-0">
                         <select name="" id="" class="form-control input-sm dl" v-cloak v-model="groundTypeSectioned">
                             <option v-for="list in groundTypeLists">{{list}}</option>
                         </select>
                     </div>
+                    <label class="col-sm-3 control-label">接地网长度(m)</label>
+                    <div class="col-sm-4 pl-0">
+                        <input type="text" class="form-control input-sm dl" v-model="netLength">
+                    </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">电阻率(Ω·m)</label>
-                    <div class="col-sm-8 pl-0">
+                    <label class="col-sm-2 control-label">电阻率(Ω·m)</label>
+                    <div class="col-sm-3 pl-0">
                       <input type="text" class="form-control input-sm dl" v-model="electricResistivity">
                     </div>
+                    <label class="col-sm-3 control-label">接地网宽度(m)</label>
+                    <div class="col-sm-4 pl-0">
+                        <input type="text" class="form-control input-sm dl" v-model="netWidth">
+                    </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">短路电流(kA)</label>
-                    <div class="col-sm-8 pl-0">
+                    <label class="col-sm-2 control-label">短路电流(kA)</label>
+                    <div class="col-sm-3 pl-0">
                       <input type="text" class="form-control input-sm dl" v-model="shortCircuitCurrent">
                     </div>
+                    <label class="col-sm-3 control-label">长方向布置导体根数</label>
+                    <div class="col-sm-4 pl-0">
+                      <input type="text" class="form-control input-sm dl" v-model="lengthDirConductorNumb">
+                    </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">故障持续时间(s)</label>
-                    <div class="col-sm-8 pl-0">
+                    <label class="col-sm-2 control-label">故障持续时间(s)</label>
+                    <div class="col-sm-3 pl-0">
                       <input type="text" class="form-control input-sm dl" v-model="duration">
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-4 control-label">热稳定系数</label>
-                    <div class="col-sm-8 pl-0">
-                      <input type="text" class="form-control input-sm dl" v-model="thermalStabilityFactor">
+                    <label class="col-sm-3 control-label">宽方向布置导体根数</label>
+                    <div class="col-sm-4 pl-0">
+                        <input type="text" class="form-control input-sm dl" v-model="widthDirConductorNumb">
                     </div>
                   </div>
-		  <div class="form-group">
-                    <label class="col-sm-4 control-label">表层衰减系数</label>
-                    <div class="col-sm-8 pl-0">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">热稳定系数</label>
+                    <div class="col-sm-3 pl-0">
+                      <input type="text" class="form-control input-sm dl" v-model="thermalStabilityFactor">
+                    </div>
+                    <label class="col-sm-3 control-label">水平接地极埋设深度(m)</label>
+                    <div class="col-sm-4 pl-0">
+                        <input type="text" class="form-control input-sm dl" v-model="horGroundDepth">
+                    </div>
+                  </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">表层衰减系数</label>
+                    <div class="col-sm-3 pl-0">
                       <input type="text" class="form-control input-sm dl" v-model="surfaceAttenuationFactor">
+                    </div>
+                    <label class="col-sm-3 control-label">水平接地极等效直径式直径(m)</label>
+                    <div class="col-sm-2 pl-0">
+                        <select name="" id="" class="form-control input-sm dl" v-cloak v-model="horGroundDiameter">
+                            <option>圆形截面</option>
+                            <option>矩形截面</option>
+                            <option>等边角钢截面</option>
+                        </select>
+                        
+                    </div>
+                    <div class="col-sm-2 pl-0">
+                        <input type="text" class="form-control input-sm dl" v-model="">
                     </div>
                   </div>
                 </div>
@@ -98,9 +130,9 @@
                 </div>
             </div>
         </div>
-    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
-    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
-    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script src="./public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="./public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="./public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
     <script type="text/javascript">
         new Vue({
             el:'body',
@@ -111,8 +143,16 @@
                 shortCircuitCurrent:'14.5',//短路电流
                 duration:'0.4',//故障持续时间
                 thermalStabilityFactor:'70',//热稳定系数
-		surfaceAttenuationFactor:'1',//表层衰减系数
-                calcResult:''//Model 计算结果框
+                surfaceAttenuationFactor:'1',//表层衰减系数
+                calcResult:'',//Model 计算结果框
+                netLength:'',//接地网长度
+                netWidth:'',//接地网宽度(m)
+                lengthDirConductorNumb:'',//长方向布置导体根数
+                widthDirConductorNumb:'',//宽方向布置导体根数
+                horGroundDepth:'',//水平接地极埋设深度(m)
+                horGroundDiameter:'' ,//水平接地极等效直径式直径
+
+
             },
 
             created() {
@@ -127,8 +167,8 @@
                         R: this.electricResistivity,
                         I: this.shortCircuitCurrent,
                         T: this.duration,
-			TF: this.thermalStabilityFactor,
-			SF: this.surfaceAttenuationFactor
+                        TF: this.thermalStabilityFactor,
+                        SF: this.surfaceAttenuationFactor
                     }
                     var that = this
                     JQ.groundCalc(JSON.stringify(info)).then(function(res) {
@@ -143,8 +183,8 @@
                         R: this.electricResistivity,
                         I: this.shortCircuitCurrent,
                         T: this.duration,
-			TF: this.thermalStabilityFactor,
-			SF: this.surfaceAttenuationFactor
+                        TF: this.thermalStabilityFactor,
+                        SF: this.surfaceAttenuationFactor
                     }
                     JQ.clickOK(JSON.stringify(info));
                 }

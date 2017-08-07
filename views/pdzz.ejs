@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>配电装置安全净值</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box" style="width:400px;height:auto">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">额定电压</label>
+                        <div class="col-sm-9 pl-0">
+                       
+                            <select name="" id="" class="form-control input-sm dl" style="width:50%;" v-cloak v-model="selected">
+                                <template v-for="list in lists" >
+                                    <option>{{list.key}}</option>
+                                </template>
+                                
+                            </select>  KV
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-sm-9 pl-0">
+                            <div class="bg-footer">
+                            <button class="btn btn-primary btn-bim btn-sm m-0" @click="sure()">确定</button>
+                        </div>
+                        </div>  
+                           
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script type="text/javascript">
+        new Vue({
+            el:'body',
+            data:{
+                selected:'',//选择框选定值
+                lists:[{
+                    key:3,
+                    value:['A1',75]
+                },{
+                    key:6,
+                    value:['A1',100]
+                }]
+            },
+
+            created() {
+                console.log(this.lists)
+            },
+
+            methods:{
+                sure() {
+                    var lists = this.lists;
+                    var selected = this.selected;
+                    for(var i  = 0;i<lists.length;i++) {
+                        if(lists[i].key ==selected ){
+                            console.log(lists[i].value[0] + ',' + lists[i].value[1] )  //这个就是你选择的电压 对应符号及所对应的电压的值
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
