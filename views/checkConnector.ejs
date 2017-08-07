@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>屋内配电装置安全净距检测</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box" style="width:400px;height:auto">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"> 额定电压 </label>
+                        <div class="col-sm-9 pl-0">
+                            <select name="" id="" class="form-control input-sm dl" style="width:100px;" v-cloak v-model="selected">
+                                <template v-for="list in lists" >
+                                    <option>{{list.key}}</option>
+                                </template>
+                                
+                            </select>  KV
+                        </div>
+                    </div>
+                    <div class="form-group pull-right">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-sm-9 pl-0">
+                            <div class="bg-footer">
+                            <button class="btn btn-primary btn-bim btn-sm m-0" @click="onOk()">确定</button>
+                        </div>
+                        </div>  
+                           
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script type="text/javascript">
+        new Vue({
+            el:'body',
+            data:{
+                selected:'',//选择框选定值
+                lists:[{
+                    key:'3',
+                    A1:75,
+                    A2:75
+                },{
+                    key:'6',
+                    A1:100,
+                    A2:100
+                },{
+                    key:'10',
+                    A1:125,
+                    A2:125
+                },{
+                    key:'15',
+                    A1:150,
+                    A2:150
+                },{
+                    key:'20',
+                    A1:180,
+                    A2:180
+                },{
+                    key:'35',
+                    A1:300,
+                    A2:300
+                },{
+                    key:'63',
+                    A1:550,
+                    A2:550
+                },{
+                    key:'110J',
+                    A1:850,
+                    A2:900
+                },{
+                    key:'110',
+                    A1:950,
+                    A2:1000
+                }]
+            },
+
+            created() {
+                this.selected = '10'
+            },
+
+            methods:{
+                onOk() {
+                    var A1 = 75;
+                    var A2 = 75;
+                    var lists = this.lists;
+                    var selected = this.selected;
+                    for(var i  = 0;i<lists.length;i++) {
+                        if(lists[i].key == selected ){
+                            A1 = lists[i].A1;
+                            A2 = lists[i].A2;
+                        }
+                    }
+
+                    var info = {
+                        EventName: "CheckConnectorDist",
+                        A1:A1,
+                        A2:A2
+                    }
+                    if (window.JQ) {
+                        JQ.raiseEvent(JSON.stringify(info));
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -117,26 +117,26 @@
 			<div class="row">
 				<div class="col-xs-3 col-sm-3">
 					<div class="item_select_2">
-						&nbsp;&nbsp;墙内偏移 上<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="">
-					
+						墙内偏移 上<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="offsetTop">
+
 					</div>
 				</div>
 				<div class="col-xs-3 col-sm-3">
 					<div class="item_select_2">
-						&nbsp;&nbsp;下<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="">
-					
+						&nbsp;&nbsp;下<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="offsetBottom">
+
 					</div>
 				</div>
 				<div class="col-xs-3 col-sm-3">
 					<div class="item_select_2">
-						&nbsp;&nbsp;左<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="">
-					
+						&nbsp;&nbsp;左<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="offsetLeft">
+
 					</div>
 				</div>
 				<div class="col-xs-3 col-sm-3">
 					<div class="item_select_2">
-						&nbsp;&nbsp;右<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="">
-					
+						&nbsp;&nbsp;右<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="offsetRight">
+
 					</div>
 				</div>
 			</div>
@@ -187,6 +187,10 @@
 				placeType: '网格', //布置方式
 				offsetX: 1000,
 				offsetY: 1000,
+				offsetTop:100,
+				offsetBottom:100,
+				offsetLeft:100,
+				offsetRight:100,
 				path:'电气一次\\接地\\接地网类型\\',
 				parameterTemplate:{W:'',H:'',D:''},
 				parameterDict:{},
@@ -313,6 +317,10 @@
 						PlaceType: that.placeType,
 						OffsetX: that.offsetX,
 						OffsetY: that.offsetY,
+						OffsetTop: that.offsetTop,
+						OffsetBottom: that.offsetBottom,
+						OffsetLeft: that.offsetLeft,
+						OffsetRight: that.offsetRight,
 						Path:that.path
 					};
 
