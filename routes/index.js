@@ -89,4 +89,10 @@ router.get('/doorWindow', function(req, res, next) {
 router.get('/pdzz', function(req, res, next) {
   res.render('pdzz', { title: '配电装置-安全净距' });
 });
+router.get('/checkGrid', function(req, res, next) {
+  res.render('checkGrid', { title: '碰撞检查' });
+});
+router.get('/conflictExport', function(req, res, next) {
+  res.render('conflictExport', { title: '碰撞检查' });
+});
 module.exports = router;

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>冲突报告</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link href="../public/stylesheets/bootstrap-treeview.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+
+    <style type="text/css">
+        .bg-box-0 {
+            min-height: auto;
+        }
+        .categoryForm-box {
+            margin-top: 15px;
+            border:1px solid #ddd;
+            min-height:400px;
+            max-height: 400px;
+            overflow-y:auto;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box-0">
+                <div class="bg-box-b">
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">
+                                <div class="checkbox m-0">冲突报告</div>
+                            </div>
+                            <div class="panel-body ptb-5" :class="{ischeck:isDynamoCheck}">
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6">
+                                        <div class="categoryFrom">
+                                            <div class="item_select_2" id="select_type_zu">
+                                                <span>&nbsp;&nbsp;&nbsp;组成条件&nbsp;</span>
+                                                <select name="" id="" class="form-control input-sm" v-model="" v-cloak>
+                                                   <option value="1">1111</option>
+                                                    <option value="1">2222</option>
+                                                </select>
+                                                <!-- <p>选择：{{selected_type}}</p> -->
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12">
+                                        <div class="categoryForm-box">
+                                          <div id="treeview-checkable" class=""></div>
+                                           <div id="checkable-output"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-footer">
+                            <div class="col-xs-8 col-sm-8">
+                                <button class="btn btn-default btn-bim btn-sm" @click="sure"><span class="glyphicon glyphicon-th"></span> 显示</button>
+                                <button class="btn btn-default btn-bim btn-sm" @click="sure"><span class="glyphicon glyphicon-open"></span> 导出</button>
+                                <button class="btn btn-default btn-bim btn-sm" @click="sure"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 刷新</button>
+                            </div>
+                            <div class="pull-right">
+                                <button class="btn btn-primary btn-bim btn-sm" >确定</button>
+                                <button class="btn btn-default btn-bim btn-sm" >关闭</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/bootstrap-treeview.js"></script>
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                defaultData:[
+                {
+                    text: '墙',
+                    href: '#parent1',
+                    tags: ['4'],
+                    nodes: [
+                      {
+                        text: '电气设备',
+                        href: '#child1',
+                        tags: ['2'],
+                        nodes: [
+                          {
+                            text: '墙:基本墙:Generic - 200mm:ID 205065',
+                            href: '#grandchild1',
+                            tags: ['0']
+                          },
+                          {
+                            text: '电气设备:110KV-GIS E-E : 110KVGISK-K,0 V ,单相 相位，2导线 - 标记2：ID 205287',
+                            href: '#grandchild2',
+                            tags: ['0']
+                          }
+                        ]
+                      }]
+                  },{
+                    text: '电气设备',
+                    href: '#parent1',
+                    tags: ['4'],
+                    nodes: [
+                      {
+                        text: '墙',
+                        href: '#child1',
+                        tags: ['2'],
+                        nodes: [
+                          {
+                            text: '墙:基本墙:Generic - 200mm:ID 205065',
+                            href: '#grandchild1',
+                            tags: ['0']
+                          },
+                          {
+                            text: '电气设备:110KV-GIS E-E : 110KVGISK-K,0 V ,单相 相位，2导线 - 标记2：ID 205287',
+                            href: '#grandchild2',
+                            tags: ['0']
+                          }
+                        ]
+                      },{
+                        
+                        text: '电气设备',
+                        href: '#child1',
+                        tags: ['2'],
+                        nodes: [
+                          {
+                            text: '墙:基本墙:Generic - 200mm:ID 205065',
+                            href: '#grandchild1',
+                            tags: ['0']
+                          },
+                          {
+                            text: '电气设备:110KV-GIS E-E : 110KVGISK-K,0 V ,单相 相位，2导线 - 标记2：ID 205287',
+                            href: '#grandchild2',
+                            tags: ['0']
+                          }
+                        ]
+                  
+                      }]
+                  }],
+                treeSelectContent:''
+            },
+
+            created(){
+                var that = this;
+                 var $checkableTree = $('#treeview-checkable').treeview({
+                  data: this.defaultData,
+                  showIcon: false,
+                  showCheckbox: true,
+                  onNodeChecked: function(event, node) {
+                    that.treeSelectContent = node.text
+                    
+                    $('#checkable-output').prepend('<p> 你选择的是：' + node.text + ' </p>');
+                  },
+                  onNodeUnchecked: function (event, node) {
+                    $('#checkable-output').prepend('<p> 你取消了' + node.text + ' 的选择</p>');
+                  }
+                });
+            },
+
+            methods:{
+
+            }
+        })
+    </script>
+</body>
+</html>
