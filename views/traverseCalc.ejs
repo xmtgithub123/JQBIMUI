@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>短路计算</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/stylesheets/flex.css">
+    <link rel="stylesheet" href="/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <style type="text/css">
+        /*.ischeck input,
+        .ischeck select,.ischeck .input-group{
+            background-color:#eee;
+            pointer-events: none;
+        }
+        .col-flex {
+            display: flex;
+            align-items: center;
+        }*/
+    </style>
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box-2" style="width:1002px;border:1px solid #ddd">
+                <div class="bg-box-b">
+                    <div  style="padding:15px">
+                        <label>工程信息 &nbsp;&nbsp;<input type="text" class="form-control input-sm dl" style="width:150px;" v-model="projInfo"></label>
+                    </div>
+
+                    <div class="group-item mt-15">
+                        <div class=" penel-fix">
+                            <div class="form-horizontal">
+                                <div class="row plr-15">
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="panel panel-default panel-chort-circuit">
+                                                <div class="panel-heading">
+                                                    <div class="radio">
+                                                        <label>气像条件</label>
+                                                    </div>
+                                                </div>
+                                              <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">气像区</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%" v-model="">
+                                                                <option>1</option>
+                                                                <option>2</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">最高温度</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                            <label class="col-sm-6 control-label">最低温度</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">最大风速</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                            <label class="col-sm-6 control-label">安检检修时最大风速</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">覆冰厚度</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                            <label class="col-sm-6 control-label">覆冰时风速</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+
+                                                  </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="panel panel-default panel-chort-circuit">
+                                                <div class="panel-heading">
+                                                <div class="radio">
+                                                  <label>导线特性</label>
+                                                </div>
+
+                                              </div>
+                                              <div class="panel-body" :class="{ischeck:!isThreeCheck}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">型号</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%">
+                                                                 <option>1</option>
+                                                                <option>2</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                     <div class="form-group">
+                                                        <label class="col-sm-3 control-label">计算截面(mm2)</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                            <label class="col-sm-6 control-label">膨胀系数(E-6/C)</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">弹性模量</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                            <label class="col-sm-6 control-label">允许拉力</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                       <label class="col-sm-offset-1 control-label"></label>
+                                                        <div class="col-sm-11 col-flex">
+                                                             <label class="control-label">q1</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:70px;display:inline-block">
+                                                            <label class="control-label center pl-0 pr-0">q7&nbsp;&nbsp;</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:70px;display:inline-block">
+                                                            <label class="control-label center pl-0 pr-0">q6&nbsp;&nbsp;</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:70px;display:inline-block">
+                                                            <label class="control-label center pl-0">q6'&nbsp;&nbsp;</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:70px;display:inline-block">
+                                                        </div>
+                                                    </div>
+
+                                              </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                 <div class="row plr-15 mt-15">
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="panel panel-default panel-chort-circuit">
+                                              <div class="panel-heading">
+                                                    <div class="radio">
+                                                      <label>绝缘子串</label>
+                                                    </div>
+                                              </div>
+                                              <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">型号</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%">
+                                                                 <option>1</option>
+                                                                <option>2</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                     <div class="form-group">
+                                                        <label class="col-sm-3 control-label">长度 LA</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                            <label class="col-sm-6 control-label">LB</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Q1A</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                            <label class="col-sm-6 control-label">Q1B</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Q2</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                            <label class="col-sm-6 control-label">Q4</label>
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="panel panel-default panel-chort-circuit">
+                                                <div class="panel-heading">
+                                                <div class="radio">
+                                                  <label>构架信息</label>
+                                                </div>
+
+                                              </div>
+                                              <div class="panel-body" :class="{ischeck:!isThreeCheck}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">电压等级</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%">
+                                                                <option>1</option>
+                                                                <option>2</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">构架跨距</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">构架高差</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">允许弧垂</label>
+                                                        <div class="col-sm-9 col-flex">
+                                                            <input type="text" class="form-control input-sm" aria-label="..." v-model="" style="width:80px;float:left">
+                                                        </div>
+                                                    </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="group-item mt-15">
+                        <div class=" penel-fix">
+                            <div class="form-horizontal">
+                                <div class="row plr-15">
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="panel panel-default panel-chort-circuit">
+                                                <div class="panel-heading">
+                                                    <div class="radio">
+                                                      <label>集中荷重</label>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <table class="table table-bordered text-center">
+                                                        <col class="col-xs-2">
+                                                        <col class="col-xs-1">
+                                                        <col class="col-xs-1">
+                                                        <col class="col-xs-1">
+                                                        <col class="col-xs-1">
+                                                        <col class="col-xs-1">
+                                                        <col class="col-xs-1">
+                                                        <col class="col-xs-1">
+                                                       
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>编号</td>
+                                                                <td>P1</td>
+                                                                <td>P2</td>
+                                                                <td>P3</td>
+                                                                <td>P4</td>
+                                                                <td>P5</td>
+                                                                <td>P6</td>
+                                                                <td>P7</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>跳线/引下线型号</td>
+                                                                <td>
+                                                                    <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%" v-model="p1_selected">
+                                                                        <option v-for="option in optionList" :value="option.value" v-cloak>
+                                                                            {{option.value}}
+                                                                        </option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%" v-model="">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%" v-model="">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%" v-model="">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%" v-model="">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%" v-model="">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100%" v-model="">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>长度(m)</td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                            </tr>
+                                                          <tr>
+                                                                <td>线夹质量(kg)</td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>相对距离</td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="" />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="bg-footer pull-right mt-15 mb-15 mr-15">
+                        <button class="btn btn-primary btn-bim btn-sm mb-0 pull-right" @click="calc()" data-toggle="modal" data-target="#CalcSheetModel">计算</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                projInfo:'',//工程信息
+                optionList:[     //水平间隔 - 选择框 - options
+                    {value:1000},
+                    {value:2000},
+                    {value:3000},
+                    {value:4000}
+                ],
+            },
+
+            created(){
+                
+            },
+
+            methods:{
+                
+            },
+
+            watch:{
+                
+            }
+        })
+    </script>
+</body>
+</html>

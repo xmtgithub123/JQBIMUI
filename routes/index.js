@@ -95,4 +95,7 @@ router.get('/checkGrid', function(req, res, next) {
 router.get('/conflictExport', function(req, res, next) {
   res.render('conflictExport', { title: '碰撞检查' });
 });
+router.get('/traverseCalc', function(req, res, next) {
+  res.render('traverseCalc', { title: '导线计算' });
+});
 module.exports = router;
