@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>碰撞检查</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link href="../public/stylesheets/bootstrap-treeview.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <style type="text/css">
+        .bg-box-0 {
+            min-height: auto;
+        }
+        .categoryForm-box {
+            margin-top: 15px;
+            border:1px solid #ddd;
+            min-height:400px;
+            max-height: 400px;
+            overflow-y:auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap" style="padding-left:25px;padding-right:25px;">
+            <div class="bg-box-b">
+                <div class="group-item mt-15">
+                    <div class="panel panel-info penel-fix">
+                        <div class="panel-heading">
+                            <div class="checkbox m-0">碰撞检查</div>
+                        </div>
+                        <div class="panel-body ptb-5" :class="{ischeck:isDynamoCheck}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6">
+                                    <div class="categoryFrom">
+                                        <!-- <span>类别来自</span>
+                                        <select name="" id="" class="form-control input-sm">
+                                            <option value="1">专业类别</option>
+                                        </select> -->
+                                        <div class="categoryForm-box">
+                                            <div id="treeView-left" class="treeview-checkable"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-6">
+                                    <div class="categoryFrom">
+                                        <!-- <span>类别来自</span>
+                                        <select name="" id="" class="form-control input-sm">
+                                            <option value="1">专业类别</option>
+                                        </select> -->
+                                    </div>
+                                    <div class="categoryForm-box">
+                                        <div id="treeView-right" class="treeview-checkable"></div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-xs-8 col-sm-8" style="min-width:530px;">
+                        <span>类型：</span>
+                        <select name="" id="" class="input-sm mt-15" style="width:100px;" v-model="interferenceType" @change="interferenceTypeChanged">
+                            <option value="1">硬碰撞</option>
+                            <option value="2">软碰撞</option>
+                        </select>
+                        <span v-show="isToleranceVisible" v-cloak>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间隙：</span>
+                        <input class="form-control input-sm dl" style="width:60px;" v-model="tolerance" v-show="isToleranceVisible" onkeyup="value=value.replace(/[^\d]/g,'')" v-cloak></input>
+                        <span v-show="isToleranceVisible" v-cloak>mm</span>
+                        <span v-show="isToleranceVisible" style="color:red;" v-cloak>&nbsp;&nbsp;(推荐范围：50 ~ 2000mm)</span>
+                    </div>
+                    <div class="bg-footer pull-right">
+                            <button class="btn btn-primary btn-bim btn-sm" @click="onOk">运行检测</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/bootstrap-treeview.js"></script>
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                defaultData:[
+                {
+                    text: '电气一次',
+                    nodes: [
+                        {
+                            text: 'GIS',
+                        },
+                        {
+                            text: '变压器',
+                        }]
+                  },{
+                    text: '电气二次',
+                    nodes: [
+                        {
+                            text: '屏柜',
+                        },
+                        {
+                            text: '电缆桥架',
+                        }]
+                  }],
+                leftViewCheckArr:[],
+                rightViewCheckArr:[],
+                interferenceType:'1',
+                isToleranceVisible:false,
+                tolerance:'100'
+            },
+
+            created(){
+                var info = {
+                    EventName: "GetCheckMajors",
+                }
+
+                if (window.JQ) {
+                    JQ.raiseEvent(JSON.stringify(info));
+                }
+                
+                //  $checkableTree.treeview('collapseNode', [ expandibleNodes, { silent: $('#chk-expand-silent').is(':checked') }]);
+            },
+
+            methods:{
+                addItemToArray:function(item, arr)
+                {
+                    hasFound = false;
+                    for (var i = 0 ; i < arr.length ; i++)
+                    {
+                        if (arr[i] == item)
+                        {
+                            hasFound = true;
+                            break;
+                        }
+                    }
+                    if (!hasFound)
+                    {
+                        arr.push(item);
+                    }
+                },
+
+                deleteItemInArray:function(item ,arr)
+                {
+                    for (var i = 0 ; i < arr.length ; i++)
+                    {
+                        if (arr[i] == item)
+                        {
+                            arr.splice(i , 1);
+                            break;
+                        }
+                    }
+                },
+
+                createTreeView:function(tableData)
+                {
+                    this.createTreeViewLeft(tableData);
+                    this.createTreeViewRight(tableData);
+                },
+
+                createTreeViewLeft:function(tableData)
+                {
+                    var that = this;
+                    var $checkableTree = $('#treeView-left').treeview({
+                        data: tableData,
+                        levels:1,
+                        showIcon: false,
+                        showCheckbox: true,
+                        onNodeChecked: function(event, node) {
+                            if (node.hasOwnProperty("nodes"))
+                            {
+                                childs = node.nodes;
+                                childs.forEach(function(child) {
+                                     $('#treeView-left').treeview('checkNode',child.nodeId,{silent:true});  
+                                });
+                            }
+                            else
+                            {
+                                that.addItemToArray(node.text, that.leftViewCheckArr);
+                            }
+                        },
+                        onNodeUnchecked: function (event, node) {
+                            if (node.hasOwnProperty("nodes"))
+                            {
+                                childs = node.nodes;
+                                childs.forEach(function(child) {
+                                     $('#treeView-left').treeview('uncheckNode',child.nodeId,{silent:true});  
+                                });
+                            }
+                            else
+                            {
+                                that.deleteItemInArray(node.text, that.leftViewCheckArr);
+                            }
+                        }
+                    });
+                },
+                createTreeViewRight:function(tableData)
+                {
+                    var that = this;
+                    var $checkableTree = $('#treeView-right').treeview({
+                        data: tableData,
+                        levels:1,
+                        showIcon: false,
+                        showCheckbox: true,
+                        onNodeChecked: function(event, node) {
+                            if (node.hasOwnProperty("nodes"))
+                            {
+                                childs = node.nodes;
+                                childs.forEach(function(child) {
+                                     $('#treeView-right').treeview('checkNode',child.nodeId,{silent:true});  
+                                });
+                            }
+                            else
+                            {
+                                that.addItemToArray(node.text, that.rightViewCheckArr);
+                            }
+                        },
+                        onNodeUnchecked: function (event, node) {
+                            if (node.hasOwnProperty("nodes"))
+                            {
+                                childs = node.nodes;
+                                childs.forEach(function(child) {
+                                     $('#treeView-right').treeview('uncheckNode',child.nodeId,{silent:true});  
+                                });
+                            }
+                            else
+                            {
+                                that.deleteItemInArray(node.text, that.rightViewCheckArr);
+                            }
+                        }
+                    });
+                },
+                interferenceTypeChanged()
+                {
+                    if (this.interferenceType == '1')
+                        this.isToleranceVisible = false;
+                    else if (this.interferenceType == '2')
+                        this.isToleranceVisible = true;
+                },
+                onOk(){
+                    var firstDevice = this.leftViewCheckArr.length == 0 ? "" : this.leftViewCheckArr.join("-");
+                    var secondDevice = this.rightViewCheckArr.length == 0 ? "" : this.rightViewCheckArr.join("-");
+
+                    var info = {
+                        EventName: "CheckInterference",
+                        FirstDevice:firstDevice,
+                        SecondDevice:secondDevice,
+                        InterferenceType:this.interferenceType,
+                        Tolerance:this.tolerance
+                    }
+                    if (window.JQ) {
+                        JQ.raiseEvent(JSON.stringify(info));
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

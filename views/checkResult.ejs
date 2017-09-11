@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>冲突报告</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link href="../public/stylesheets/bootstrap-treeview.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+
+    <style type="text/css">
+        .bg-box-0 {
+            min-height: auto;
+        }
+        .categoryForm-box {
+            margin-top: 10px;
+            margin-bottom:10px;
+            border:1px solid #ddd;
+            min-height:400px;
+            max-height: 400px;
+            overflow-y:auto;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+                <div class="bg-box-b">
+                    <div class="group-item">
+                        <div class="panel panel-info penel-fix">
+                            <!-- <div class="panel-heading">
+                                <div class="checkbox m-0">冲突报告</div>
+                            </div> -->
+                            <div class="panel-body ptb-5" :class="{ischeck:isDynamoCheck}">
+                                <div class="row">
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12">
+                                        <div class="categoryForm-box">
+                                          <div id="treeview-checkable" class=""></div>
+                                           <div id="checkable-output"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/bootstrap-treeview.js"></script>
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                defaultData:[
+                {
+                    text: '碰撞1',
+                    elementID: 1,
+                    nodes: [
+                           {
+                            text: '墙:基本墙:Generic - 200mm:ID 205065',
+                            elementID: 11,
+                          },
+                          {
+                            text: '电气设备:110KV-GIS E-E : 110KVGISK-K,0 V ,单相 相位，2导线 - 标记2：ID 205287',
+                            elementID: 12,
+                          }]
+                  },{
+                    text: '碰撞2',
+                    elementID: 2,
+                    nodes: [
+                     {
+                            text: '墙:基本墙:Generic - 200mm:ID 205065',
+                            elementID: 21,
+                          },
+                          {
+                            text: '电气设备:110KV-GIS E-E : 110KVGISK-K,0 V ,单相 相位，2导线 - 标记2：ID 205287',
+                            elementID: 22,
+                          }]
+                  }],
+                treeSelectContent:''
+            },
+
+            created(){
+                var info = {
+                    EventName: "GetCheckResult",
+                }
+
+                if (window.JQ) {
+                    JQ.raiseEvent(JSON.stringify(info));
+                }
+
+            },
+
+            methods:{
+                createTreeView:function(tableData)
+                {
+                    var that = this;
+                    var $checkableTree = $('#treeview-checkable').treeview({
+                        data: tableData,
+                        showIcon: false,
+                        showCheckbox: false,
+                        onNodeSelected: function(event, node)
+                        {
+                             var isGroup = false;
+                             if (node.nodes != undefined && node.nodes.length > 0)
+                                isGroup = true;
+                             var info = {
+                                    EventName: "ShowCheckResult",
+                                    ElementID: node.elementID,
+                                    WarningElementID: node.warningElementID,
+                                    IsGroup: isGroup
+                                }
+
+                                if (window.JQ) {
+                                    JQ.raiseEvent(JSON.stringify(info));
+                                }
+                        }
+                    });
+                },
+                
+            }
+        })
+    </script>
+</body>
+</html>

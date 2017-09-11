@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>编辑标高</title>
-    <link rel="stylesheet" href="./public/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="./public/stylesheets/flex.css">
-    <link rel="stylesheet" href="./public/stylesheets/style.css">
-    <script src="./public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <title>接地计算</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 </head>
 <body>
     <div class="body-wrap">
@@ -70,17 +70,15 @@
                     <div class="col-sm-3 pl-0">
                       <input type="text" class="form-control input-sm dl" v-model="surfaceAttenuationFactor">
                     </div>
-                    <label class="col-sm-3 control-label">水平接地极等效直径式直径(m)</label>
+                    <label class="col-sm-3 control-label">水平接地极截面尺寸(m)</label>
                     <div class="col-sm-2 pl-0">
                         <select name="" id="" class="form-control input-sm dl" v-cloak v-model="horGroundDiameter">
-                            <option>圆形截面</option>
-                            <option>矩形截面</option>
-                            <option>等边角钢截面</option>
+                             <option v-for="list in horGroundDiameterLists">{{list}}</option>
                         </select>
                         
                     </div>
                     <div class="col-sm-2 pl-0">
-                        <input type="text" class="form-control input-sm dl" v-model="">
+                        <input type="text" class="form-control input-sm dl" v-model="Dlenth">
                     </div>
                   </div>
                 </div>
@@ -130,11 +128,11 @@
                 </div>
             </div>
         </div>
-    <script src="./public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
-    <script src="./public/javascripts/vue.js"></script> <!--引入vue.js-->
-    <script src="./public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
     <script type="text/javascript">
-        new Vue({
+        vue = new Vue({
             el:'body',
             data:{
                 groundTypeSectioned:'110kV及以上有效接地系统',//接地类型选中值
@@ -150,16 +148,28 @@
                 lengthDirConductorNumb:'',//长方向布置导体根数
                 widthDirConductorNumb:'',//宽方向布置导体根数
                 horGroundDepth:'',//水平接地极埋设深度(m)
-                horGroundDiameter:'' ,//水平接地极等效直径式直径
-
+		horGroundDiameterLists:["圆形截面","矩形截面","等边角钢截面"],
+                horGroundDiameter:'圆形截面',//水平接地极等效直径式直径
+		Dlenth:''
 
             },
 
             created() {
-
+			 JQ.getGroundParam();
             },
 
             methods:{
+		setAttr(long, width, longNumb, widthNumb, deep, diameter, lenth)
+		{
+			this.netLength = long;
+			this.netWidth = width;
+			this.lengthDirConductorNumb = longNumb;
+			this.widthDirConductorNumb = widthNumb;
+			this.horGroundDepth = deep;
+			this.horGroundDiameter = diameter;
+			this.Dlenth = lenth;
+		},
+
                 //计算
                 calc() {
                     var info = {
@@ -168,7 +178,14 @@
                         I: this.shortCircuitCurrent,
                         T: this.duration,
                         TF: this.thermalStabilityFactor,
-                        SF: this.surfaceAttenuationFactor
+                        SF: this.surfaceAttenuationFactor,
+			LL: this.netLength,
+			LH: this.netWidth,
+			LN: this.lengthDirConductorNumb,
+			HN: this.widthDirConductorNumb,
+			H: this.horGroundDepth,
+			TypeN: this.horGroundDiameter,
+			TypeSize: this.Dlenth
                     }
                     var that = this
                     JQ.groundCalc(JSON.stringify(info)).then(function(res) {

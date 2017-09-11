@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>屋内配电装置安全净距检测</title>
+    <title>电气连接点安全净距检测</title>
     <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="../public/stylesheets/flex.css">
     <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
@@ -10,7 +10,29 @@
     <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
 </head>
 <body>
-    <div class="body-wrap">
+    <div class="body-wrap" style="margin-right:20px;padding:10px;">
+        <div flex="box:mean">
+            <div class="flex">
+                <div class="item_select_2" id="select_zu">
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额定电压&nbsp;</span>
+                    <select name="" id="" class="form-control input-sm dl" style="max-width:120px;" v-cloak v-model="selected">
+                            <template v-for="list in lists" >
+                                <option>{{list.key}}</option>
+                            </template>                            
+                    </select> &nbsp; KV
+                </div>	
+            </div>
+        </div>
+                
+        <div class="row box_footer">
+            <div class="col-md-12">
+                <button class="btn btn-primary btn-xs btn-bim pull-right" @click="onOk()" >确定</button>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- <div class="body-wrap">
         <div class="panel-body box-wrap">
             <div class="bg-box" style="width:400px;height:auto">
                 <div class="form-horizontal">
@@ -37,7 +59,7 @@
                   </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
    
     <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->

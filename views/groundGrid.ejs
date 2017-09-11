@@ -173,7 +173,7 @@
 		var vue = new Vue ({
 			el:'body',
 			data:{
-				objs:[],
+				//objs:[],
 				options:[],
 				lists:[],
 				//selectedFamilyId:0,
@@ -185,8 +185,8 @@
 				offset_level:'-800',
 				ground_level:'0',
 				placeType: '网格', //布置方式
-				offsetX: 1000,
-				offsetY: 1000,
+				offsetX: 5000,
+				offsetY: 5000,
 				offsetTop:100,
 				offsetBottom:100,
 				offsetLeft:100,
@@ -229,7 +229,7 @@
 					isReload = that.options.length > 0;
 					that.options = [];
 					res.forEach(function(e) {
-						that.options.push({value:e.name,items:e.symbols});
+						that.options.push({value:e.name, items:e.symbols});
 					})
 
 					if (!isReload && that.options.length > 0) {

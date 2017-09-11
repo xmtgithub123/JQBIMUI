@@ -124,9 +124,9 @@
 				if (this.type == 'Transformer') {
 					this.tree = [
 						{text:"变压器", nodes:[
-							{text:"接地变", state:{selected: true}},
-							{text:'站用变'},
-							{text:'主变'}
+							{text:"主变", state:{selected: true}},
+							{text:'接地变'},
+							{text:'站用变'}
 						]}
 					]
 					//path += '变压器\\接地变'
@@ -228,10 +228,18 @@
 					this.tree = [
 						{text:'构架', state:{selected: true}}
 					]
+				} else if (this.type == 'Stand') {
+					this.path = '土建\\'
+					this.tree = [
+						{text:'支架', state:{selected: true}}
+					]
 				} else {
 					this.tree = [
 						{text:'其他设备', nodes:[
-							{text:'穿墙套管', state:{selected: true}}
+							{text:'穿墙套管', state:{selected: true}},
+							{text:'绝缘子串'},
+							{text:'支柱绝缘子'},
+							{text:'母线桥'}
 						]}
 					]
 				}
