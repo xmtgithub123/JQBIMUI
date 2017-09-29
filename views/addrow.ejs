@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加数据行</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <style>
+        table tr td input {
+            text-align: center;
+        }
+        .table_height{
+            height: 380px;
+            overflow: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box" style="display:block">
+                <button class="btn btn-info btn-sm"  @click="addNew">新增</button>
+                <div class="table_height">
+                     <table class="table table-bordered mt-15">
+                        <!-- 设置表头 -->
+                        <thead>
+                            <tr>
+                              <th class="text-center">高度（mm）</th>
+                              <th class="text-center">宽度（mm）</th>
+                              <th class="text-center">标高（mm）</th>
+                              <th class="text-center">参考值（mm）</th>
+                            </tr>
+                      </thead>
+                  <!-- 设置表格内部的内容 -->
+                  <tbody >
+                    
+                      
+                      <tr v-for="(index,item) in trItem" id="key" v-cloak>
+                        <td><input class="input-noborder" style="height:25px;" type="number" v-model="item.height" placeholder="请填写高度" /></td>
+                        <td><input class="input-noborder" style="height:25px;" type="number" v-model="item.width" placeholder="请填写宽度"  /></td>
+                        <td><input class="input-noborder" style="height:25px;" type="number" v-model="item.bgao" placeholder="请填写标高"  /></td>
+                        <td>
+                           <select name="" id=""  class="form-control input-sm " v-cloak>
+                                <template v-for="option in items" >
+                                    <option  v-if="item.bgValue == option.value" value="{{item.bgValue}}"  selected>{{item.bgValue}}</option>
+                                    <option  v-else >{{option.value}}</option>
+                                </template>
+                            </select>
+                        </td>
+                      </tr>
+                       <tr @change="tr_changeEvent_t"> 
+                        <td ><input class="input-noborder" style="height:25px;" type="number" v-model="h_text" placeholder="请填写高度"  /></td>
+                        <td ><input class="input-noborder" style="height:25px;" type="number" v-model="w_text" placeholder="请填写宽度"  /></td>
+                        <td ><input class="input-noborder" style="height:25px;" type="number" v-model="b_text" placeholder="请填写标高"  /></td>
+                        <td>
+                            <select name="" id="" class="form-control input-sm" v-model="selected_value_old">
+                                <option v-for="item in items" v-cloak>{{item.value}}</option>
+                            </select>
+                        </td>
+                      </tr>
+                  </tbody>
+                </table>
+                </div>
+               
+                <div class="tz-footer">
+
+                    <button class="btn btn-primary btn-bim btn-sm" @click="submit">确定</button>
+                     <!-- <button class="btn btn-default btn-bim btn-sm" @click="cancel">取消</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+                
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script type="text/javascript">
+        
+    </script>
+    <script type="text/javascript">
+        new Vue({
+            el:'body',
+            data:{
+                h_text:'',
+                w_text:'',
+                b_text:'',
+                trItem:[
+                    // {
+                        // height:'',
+                        // width:'',
+                        // bgao:'',
+                    // }
+                ],
+                itemArr:[],
+                selected_value_old:'', //选择的某个参考值
+                items:[                //参考值数据列表
+                    {value:1000},
+                    {value:2000},
+                    {value:3000},
+                ],//数据参考值
+            },
+
+            created() {
+
+            },
+
+            methods:{
+                //一行编辑都完成后，自动添加到数组
+                tr_changeEvent_t(){
+                    var that = this;
+                    if(this.h_text && this.w_text && this.b_text != '' && this.selected_value_old !='') {
+                        that.itemArr.push({height:that.h_text,width:that.w_text,bgao:that.b_text,bgValue:that.selected_value_old})
+                        console.log(that.itemArr)
+                    }
+
+                },
+                addNew(){
+                    var that = this;
+                    //console.log('add')
+                    if(this.h_text=='' || this.w_tex=='' || this.b_text=='' ||  this.selected_value_old ==''){
+                        alert('请填写完整')
+                    }
+                    else {
+                        that.trItem.push({height:that.h_text,width:that.w_text,bgao:that.b_text,bgValue:that.selected_value_old,bgValue:that.selected_value_old})
+                        that.h_text = '';
+                        that.w_text = '';
+                        that.b_text = '';
+                        that.selected_value_old = ''
+
+                    }
+               },
+               submit(){
+                    
+                    if(this.h_text=='' || this.w_tex=='' || this.b_text=='' ||  this.selected_value_old ==''){
+                        alert('请填写完整')
+                    }
+                    else {
+                       console.log(this.itemArr)//点击确定之后，若表格中内容不为空，则itemArr最终获取的数据
+
+                    }
+               }
+
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闸墩</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <style type="text/css">
+        .bg-box-0 {
+            min-height: auto;
+        }
+        .show-section-img {
+            /*border:1px solid red;*/
+            max-height: 350px;
+            min-height: 350px;
+            height:300px;
+        }
+        .show-section-img img{
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box-0" style="width:1000px;">
+                <div class="bg-box-b">
+
+                    <div class="row p-15">
+                        <div class="col-sm-5">
+                            <div class="show-section-img">
+                                <!-- 最后生成的图片放在这 -->
+                            </div>  
+                        </div>
+                        <div class="col-sm-7">
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">厚度</label>
+                                <div class="col-sm-9" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label">上游长度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                                 <label class="col-sm-3 control-label">上游高度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label">检修闸槽宽度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                                 <label class="col-sm-3 control-label">检修闸槽深度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label">工作桥部位长度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                                 <label class="col-sm-3 control-label">工作桥部位高度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                              </div>
+                               <div class="form-group">
+                                <label class="col-sm-3 control-label">工作闸槽宽度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                                <label class="col-sm-3 control-label">工作闸槽深度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                              </div>
+                               <div class="form-group">
+                                <label class="col-sm-3 control-label">下游长度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                                 <label class="col-sm-3 control-label">下游高度</label>
+                                <div class="col-sm-3" style="padding-left: 0;">
+                                    <input type="text" class="input-sm form-control" v-model="">
+                                </div>
+                              </div>
+                            <div class="form-group mt-30">
+                                 <label class="col-sm-7 control-label">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                  <div class="col-sm-5" style="padding-left: 0;">
+                                    <button class="btn btn-primary btn-sm btn-block pull-right" @click="submit">确定 </button>
+                                  </div>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                
+            },
+
+            created(){
+
+            },
+
+            methods:{
+                submit() {
+
+                }
+            }
+        })
+    </script>
+</body>
+</html>

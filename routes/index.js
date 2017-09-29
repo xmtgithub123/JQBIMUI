@@ -98,4 +98,13 @@ router.get('/conflictExport', function(req, res, next) {
 router.get('/traverseCalc', function(req, res, next) {
   res.render('traverseCalc', { title: '导线计算' });
 });
+router.get('/addrow', function(req, res, next) {
+  res.render('addrow', { title: '增加数据行' });
+});
+router.get('/showCrossSection', function(req, res, next) {
+  res.render('showCrossSection', { title: '截面轮廓' });
+});
+router.get('/pier', function(req, res, next) {
+  res.render('pier', { title: '闸墩参数' });
+});
 module.exports = router;
