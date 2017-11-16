@@ -107,4 +107,8 @@ router.get('/showCrossSection', function(req, res, next) {
 router.get('/pier', function(req, res, next) {
   res.render('pier', { title: '闸墩参数' });
 });
+
+router.get('/RoadSet', function(req, res, next) {
+  res.render('RoadSet', { title: '道路绘制' });
+});
 module.exports = router;

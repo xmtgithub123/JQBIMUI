@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>布置支吊架</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <style type="text/css">
+        .img-preview {
+            height:300px;
+            width:80%;
+            padding:5px;
+            margin:0 auto;
+            border:1px solid #dbdbdb;
+        }
+    </style>
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box-0">
+                <div class="bg-box-b">
+                    <div class="group-item">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">基本数据</div>
+                            <div class="panel-body-wrap ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">道路类型</label>
+                                    <div class="col-sm-10 pl-0">
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px;margin-right:10px;" v-model="roadTypeSelect">
+                                            <option v-for="option in roadTypeList">
+                                                {{option}}
+                                            </option>
+                                        </select>
+                                        <label>通过高度：</label>
+                                        <input type="text" class="form-control input-sm dl" style="width:80px;margin-right:10px;" v-model="road_g"> 
+                                        <label>起点标高：</label>
+                                        <input type="text" class="form-control input-sm dl" style="width:80px;margin-right:10px;" v-model="road_qb">
+                                        <label>终点标高：</label>
+                                        <input type="text" class="form-control input-sm dl" style="width:80px" v-model="road_zb">  
+                                        
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">拐角数据</div>
+                            <div class="panel-body-wrap ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">转弯半径</label>
+                                    <div class="col-sm-10 pl-0">
+                                       <input type="text" class="form-control input-sm dl" style="width:100px" v-model="turn_radius"> 
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">道路数据</div>
+                            <div class="panel-body-wrap ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">路面宽度(W1)</label>
+                                    <div class="col-sm-10 pl-0">
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="road_w">
+                                      <label>路面厚度(H1)</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="road_h">
+                                       <label>路面材料</label>
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px" v-model="roadMaterialSelect">
+                                            <option v-for="option in roadMaterialList">
+                                                {{option.symbolName}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">路基宽度(W1)</label>
+                                    <div class="col-sm-10 pl-0">
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="road_j_w">
+                                      <label>路基厚度(H1)</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="road_j_h">
+                                       <label>路基材料</label>
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px" v-model="roadJMaterialSelect">
+                                            <option v-for="option in roadJMaterialList">
+                                                {{option.symbolName}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">垫层宽度(W1)</label>
+                                    <div class="col-sm-10 pl-0">
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="dc_w">
+                                      <label>垫层厚度(H1)</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="dc_h">
+                                       <label>垫层材料</label>
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px" v-model="dcMaterialSelect">
+                                            <option v-for="option in dcMaterialList">
+                                                {{option.symbolName}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">路牙参数</div>
+                            <div class="panel-body-wrap ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">路牙宽度</label>
+                                    <div class="col-sm-10 pl-0">
+                                       <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="ly_w"> 
+                                        <label>路牙高度</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="ly_h">
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">预览图</div>
+                            <div class="panel-body-wrap-1 ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <div class="img-preview"></div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="bg-footer ">
+                        <span style="margin-top:20px;display:inline-block">单位:mm</span>
+                        <button class="btn btn-default btn-bim btn-sm mb-0 pull-right ml-15" @click="drawRoad()">绘制道路</button>
+                        <button class="btn btn-primary btn-bim btn-sm mb-0 pull-right ml-15" @click="configJoint()">配置接头</button>
+                        <button class="btn btn-default btn-bim btn-sm mb-0 pull-right " @click="accessMainRoad()">辅路接入主路</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="body-full-mask" v-if="isShowMask" v-cloak>
+        <div class="app-loading">
+            <div class="box">
+                <div class="line-spin-fade-loader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <p>{{showMaskInfo}}</p>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script type="text/javascript">
+    </script>
+
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                roadTypeSelect:'',//道路类型
+                roadTypeList:['a','b','c'],//道路类型列表 
+                road_g:'',//通过高度
+                road_qb:'',//起点标高
+                road_zb:'',//终点标高
+                turn_radius:'',//转弯半径
+                road_w:'',//路面宽度
+                road_h:'',//路面厚度
+                roadMaterialSelect:'',//路面材料
+                roadMaterialList:['a1','b1','c1'],//路面材料列表
+                road_j_w:'',//路基宽度
+                road_j_h:'',//路基厚度
+                roadJMaterialSelect:'',//路基材料
+                roadJMaterialList:['a2','b2','c2'],//路基材料列表
+                dc_w:'',//垫层宽度
+                dc_h:'',//垫层厚度
+                dcMaterialSelect:'',//垫层材料
+                dcMaterialList:['a3','b3','c3'],//垫层材料列表
+                ly_w:'',//路牙宽度
+                ly_h:'',//路牙高度
+
+
+                isShowMask:false,//是否显示全屏遮罩
+            },
+            created(){
+
+            },
+
+            methods:{
+                //绘制道路
+               drawRoad() {
+
+               },
+               //配置接头
+               configJoint() {
+
+               },
+               //辅路接入主路
+               accessMainRoad() {
+
+               }
+            },
+
+            computed:{
+               
+            },
+
+            watch:{
+
+            }
+        })
+    </script>
+</body>
+</html>
