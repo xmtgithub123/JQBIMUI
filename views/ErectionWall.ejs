@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>装配式围墙</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <style type="text/css">
+        .img-preview {
+            height:300px;
+            width:80%;
+            padding:5px;
+            margin:0 auto;
+            border:1px solid #dbdbdb;
+        }
+    </style>
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="bg-box-0">
+                <div class="bg-box-b">
+                    <div class="group-item">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">材质</div>
+                            <div class="panel-body-wrap ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">道路类型</label>
+                                    <div class="col-sm-10 pl-0">
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px;margin-right:10px;" v-model="ModelSelect">
+                                            <option v-for="option in ModelList">
+                                                {{option}}
+                                            </option>
+                                        </select>
+                                        <label>墙体材料：</label>
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px;margin-right:10px;" v-model="materialSelect">
+                                            <option v-for="option in materialList">
+                                                {{option}}
+                                            </option>
+                                        </select>
+                                        
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">柱</div>
+                            <div class="panel-body-wrap ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">H型柱</label>
+                                    <div class="col-sm-10 pl-0">
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px;margin-right:10px;" v-model="HTypeZSelect">
+                                            <option v-for="option in HTypeZList">
+                                                {{option}}
+                                            </option>
+                                        </select>
+                                        <label>U型柱：</label>
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px;margin-right:10px;" v-model="UTypeZSelect">
+                                            <option v-for="option in UTypeZList">
+                                                {{option}}
+                                            </option>
+                                        </select>
+                                        <label>转角柱：</label>
+                                        <select name="" id=""  class="form-control input-sm dl" v-cloak style="width:100px;margin-right:10px;" v-model="rotationZSelect">
+                                            <option v-for="option in rotationZList">
+                                                {{option}}
+                                            </option>
+                                        </select>
+                                        <label>立柱高度</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="LZh">
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">墙</div>
+                            <div class="panel-body-wrap ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">墙垛间距</label>
+                                    <div class="col-sm-10 pl-0">
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="QD_Space">
+                                      <label>墙板高</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="QB_h">
+                                      <label>墙板厚</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="QB_W">
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">墙板数</label>
+                                    <div class="col-sm-10 pl-0">
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="qb_Numb">
+                                      <label>地梁高</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="DL_h">
+                                      <label>地梁厚</label>
+                                      <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="DL_w">
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    
+                    <div class="group-item mt-15">
+                        <div class="panel panel-info penel-fix">
+                            <div class="panel-heading">偏移</div>
+                            <div class="panel-body-wrap ptb-5">
+                                <div class="form-horizontal">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 control-label">偏移量</label>
+                                    <div class="col-sm-10 pl-0">
+                                       <input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;" v-model="offset"> 
+                                     
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    
+
+                    <div class="bg-footer ">
+                        <input type="checkbox" id="DDZ" value="DDZ" v-model="checkedDDZ" style="margin-top:20px;display:inline-block">
+                        <label for="jack">端点柱</label>
+                         <input type="checkbox" id="DL" value="DL" v-model="checkedDL" style="margin-top:20px;display:inline-block">
+                        <label for="jack">地梁</label>
+                        <button class="btn btn-default btn-bim btn-sm mb-0 pull-right " @click="draw()">绘制</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="body-full-mask" v-if="isShowMask" v-cloak>
+        <div class="app-loading">
+            <div class="box">
+                <div class="line-spin-fade-loader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <p>{{showMaskInfo}}</p>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script type="text/javascript">
+    </script>
+
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                
+                ModelSelect:'',//道路类型
+                ModelList:['a','b','c'],//道路类型列表 
+                materialSelect:[],//墙体材料
+                materialList:['a','b','c'],//墙体材料列表 
+                HTypeZSelect:'',//H型柱
+                HTypeZList:['a','b','c'],//H型柱列表 
+                UTypeZSelect:'',//U型柱
+                UTypeZList:['a','b','c'],//U型柱列表 
+                rotationZSelect:'',//转角柱
+                rotationZList:['a','b','c'],//转角柱列表 
+                QD_Space:'',//墙垛间距
+                QB_h:'',//墙板高
+                QB_W:'',//墙板厚
+                qb_Numb:'',//墙板数
+                DL_h:'',//地梁高
+                DL_w:'',//地梁厚
+                offset:'',//偏移量
+
+                checkedDDZ:false, //端点柱
+                checkedDL:false, //地梁
+
+                isShowMask:false,//是否显示全屏遮罩
+            },
+            created(){
+
+            },
+
+            methods:{
+                //绘制
+               draw(){
+                    console.log(this.checkedDDZ)
+               }
+            },
+
+            computed:{
+               
+            },
+
+            watch:{
+
+                DDZ:{
+                    handler:function(val,oldVal) {
+                        if(val) {
+                            console.log(val)
+                        }
+                        else {
+                            
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

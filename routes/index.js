@@ -111,4 +111,8 @@ router.get('/pier', function(req, res, next) {
 router.get('/RoadSet', function(req, res, next) {
   res.render('RoadSet', { title: '道路绘制' });
 });
+
+router.get('/ErectionWall', function(req, res, next) {
+  res.render('ErectionWall', { title: '装配式围墙' });
+});
 module.exports = router;
