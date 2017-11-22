@@ -25,10 +25,10 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-6 col-sm-6">
+				<div class="col-xs-12 col-sm-12">
 					<div class="item_select_2" id="select_type_zu">
 						<span>&nbsp;&nbsp;&nbsp;族类型&nbsp;</span>
-						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak>
+						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak style="height:70px;">
 							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
 								{{item.symbolName}}
 							</option>
@@ -36,17 +36,19 @@
 						<!-- <p>选择：{{selected_type}}</p> -->
 					</div>
 				</div>
-				<div class="col-xs-6 col-sm-6">
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12">
 					<div class="add_new_type_box">
 
-						<p>新增族类型</p>
-						<div class="form-group">
+						<h5>新增族类型</h5>
+						<div class="form-group mt-15">
 							<span>名字&nbsp;&nbsp;</span>
 							<input type="text" v-model="input_add_name" class="form-control input-sm">
 						</div>
 						<div class="form-group">
 							<span>属性&nbsp;&nbsp;</span>
-							<div class="table-height" style="max-height:156px; margin-bottom:20px;flex:50%;">
+							<div class="table-height" style="min-height:156px;max-height:156px; margin-bottom:20px;flex:50%;">
 								<table class="table-bordered text-center"  style="width:100%;">
 									<tr v-for="(key,value) in parameterDict">
 										<td style="width:50%;">{{key}}</td>
@@ -59,21 +61,6 @@
 								</table>
 							</div>
 						</div>
-						<!-- <div class="col-sm-2 p-0">属性</div> -->
-						<!-- <div class="col-sm-10"> -->
-							<!-- <div class="table-height" style="max-height:156px; margin-bottom:20px;">
-								<table class="table-bordered text-center">
-									<tr v-for="(key,value) in parameterDict">
-										<td style="width:80px;">{{key}}</td>
-
-										<td>
-											<input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
-										</td>
-									</tr>
-
-								</table>
-							</div> -->
-						<!-- </div> -->
 						<div class="clearfix">
 							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right ml-15" @click="submitData(this,'增加')" v-cloak>增加</button>
 							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
@@ -81,65 +68,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-xs-6 col-sm-6">
-					<div class="item_select_2">
-						<span>&nbsp;&nbsp;地面高度</span>
-						<input class="form-control input-sm dl" type="text" style="width:100px;" placeholder="0.0" v-model="ground_level">
-					</div>
-				</div>
-				<div class="col-xs-6 col-sm-6">
-					<div class="item_select_2">
-						<span>距地偏移</span>
-						<input class="form-control input-sm dl" type="text" style="width:100px;" placeholder="0.0" v-model="offset_level">
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-6 col-sm-6">
-					<div class="item_select_2">
-						<span>&nbsp;&nbsp;布置方式</span>
-						<select name="" id="" class="form-control input-sm dl" v-cloak style="width:100px;" v-model="placeType">
-							<option>直线</option>
-							<option>三点弧</option>
-							<option>网格</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-xs-6 col-sm-6">
-					<div class="item_select_2">
-						间距X<input type="text" class="form-control input-sm dl" style="width:100px;margin-right:10px;flex: 20%;" v-model="offsetX">
-						Y<input type="text" class="form-control input-sm dl" style="width:100px;flex: 20%;" v-model="offsetY">
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-xs-3 col-sm-3">
-					<div class="item_select_2">
-						墙内偏移 上<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="offsetTop">
-
-					</div>
-				</div>
-				<div class="col-xs-3 col-sm-3">
-					<div class="item_select_2">
-						&nbsp;&nbsp;下<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="offsetBottom">
-
-					</div>
-				</div>
-				<div class="col-xs-3 col-sm-3">
-					<div class="item_select_2">
-						&nbsp;&nbsp;左<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="offsetLeft">
-
-					</div>
-				</div>
-				<div class="col-xs-3 col-sm-3">
-					<div class="item_select_2">
-						&nbsp;&nbsp;右<input type="text" class="form-control input-sm dl" style="flex: 25%;" v-model="offsetRight">
-
-					</div>
-				</div>
-			</div>
+			
 			<div class="row box_footer">
 				<div class="col-md-12">
 					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="place" >确定</button>
