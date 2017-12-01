@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电缆敷设</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <style>
+        table tr td input {
+            text-align: center;
+        }
+        .table_height{
+            height: 380px;
+            overflow: auto;
+        }
+        .bg-box {
+            padding:15px;
+            border:1px solid #dbdbdb;
+            height:auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="body-wrap">
+    <div class="panel-body box-wrap">
+        <div class="bg-box" style="display:block">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="item_select_2" id="select_zu">
+                        <span>接地网族&nbsp;</span>
+                        <select name="" id=""  v-model="selected" class="form-control input-sm" v-cloak>
+                            <option v-for="option in options">
+                                {{option.Name}}
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="item_select_2" id="select_type_zu">
+                        <span>&nbsp;&nbsp;&nbsp;族类型&nbsp;</span>
+                        <select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak style="height:70px;">
+                            <option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
+                                {{item}}
+                            </option>
+                        </select>
+                        <!-- <p>选择：{{selected_type}}</p> -->
+                    </div>
+                </div>
+            </div>
+
+
+
+            <button class="btn btn-info btn-sm mt-15"  @click="addNew">新增一层电缆桥架</button>
+            <div class="table_height table-responsive">
+                <table class="table table-bordered mt-15">
+                    <!-- 设置表头 -->
+                    <colgroup>
+                        <col class="col-xs-2">
+                        <col class="col-xs-2">
+                        <col class="col-xs-3">
+                        <col class="col-xs-2">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                        <th>截面高度（mm）</th>
+                        <th>截面宽度（mm）</th>
+                        <th>基于参照标高偏移量（mm）</th>
+                        <th>参照标高</th>
+                        <th>操作</th>
+                        </tr>
+                    </thead>
+                  <!-- 设置表格内部的内容 -->
+                    <tbody >
+                        <tr v-for="(index,item) in trItem" id="key" v-cloak>
+                            <td><input class="input-noborder" style="height:25px;width:120px;" type="number" v-model="item.height" placeholder="高度" /></td>
+                            <td><input class="input-noborder" style="height:25px;width:120px;" type="number" v-model="item.width" placeholder="宽度"  /></td>
+                            <td><input class="input-noborder" style="height:25px;width:120px;" type="number" v-model="item.bgao" placeholder="标高偏移量"  /></td>
+                            <td>
+                                <select name="" id=""  class="form-control input-sm " v-cloak>
+                                    <template v-for="option in list" >
+                                        <option  v-if="item.bgValue == option.Name" value="{{option.ID}}" selected>{{option.Name}}</option>
+                                        <option  v-else >{{option.Name}}</option>
+                                    </template>
+                                </select>
+                            </td>
+                             <td>
+                                <button class="btn btn-danger btn-sm" @click="removerTr($index)">删除</button>
+                            </td>
+                        </tr>
+                        <tr @change="tr_changeEvent_t">
+                            <td ><input class="input-noborder" style="height:25px;width:120px;" type="number" v-model="h_text" placeholder="高度"  /></td>
+                            <td ><input class="input-noborder" style="height:25px;width:120px;" type="number" v-model="w_text" placeholder="宽度"  /></td>
+                            <td ><input class="input-noborder" style="height:25px;width:120px;" type="number" v-model="b_text" placeholder="标高偏移量"  /></td>
+                            <td>
+                                <select name="" id="" class="form-control input-sm" v-model="selected_value_old">
+                                    <option v-for="item in list" value="{{item.ID}}" v-cloak>{{item.Name}}</option>
+                                </select>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                       
+                  </tbody>
+                </table>
+                </div>
+
+                <div class="tz-footer">
+                    <button class="btn btn-primary btn-bim btn-sm" @click="submit">确定</button>
+                     <!-- <button class="btn btn-default btn-bim btn-sm" @click="cancel">取消</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script type="text/javascript">
+
+    </script>
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                h_text:'',
+                w_text:'',
+                b_text:'',
+                trItem:[
+                    // {Name
+                        // height:'',
+                        // width:'',
+                        // bgao:'',
+                    // }
+                ],
+                itemArr:[],
+                selected_value_old:'', //选择的某个参考值
+
+                selected:'',//设置族
+                selected_type:[],//设置族类型
+                options:[
+                    {
+                        Name:'111',
+                        items:['101','102']
+                    },
+                    {
+                        Name:'222',
+                        items:['201','202']
+                    },
+                ],
+                list:[
+                    {'Name':'100'},{'Name':'200'}
+                ],//数据参考值
+            },
+
+            created() {
+                var info = {
+                    EventName: "GetLevels",
+                };
+               // JQ.raiseEvent(JSON.stringify(info));
+            },
+
+            methods:{
+                //一行编辑都完成后，自动添加到数组
+                tr_changeEvent_t(){
+                    var that = this;
+                    if(this.h_text && this.w_text && this.b_text != '' && this.selected_value_old !='') {
+                        that.itemArr.push({height:that.h_text,width:that.w_text,bgao:that.b_text,bgValue:that.selected_value_old})
+                        console.log(that.itemArr)
+                    }
+
+                },
+
+                setItems(items)
+                {
+                    this.items = items;
+                },
+
+                addNew(){
+                    var that = this;
+                    //console.log('add')
+                    if(this.h_text=='' || this.w_tex=='' || this.b_text=='' ||  this.selected_value_old ==''){
+                        alert('有数据为空，请填写完整！')
+                    }
+                    else {
+                        that.trItem.push({height:that.h_text, width:that.w_text, bgao:that.b_text, bgValue:that.selected_value_old})//bgValue:that.selected_value_old})
+                        that.h_text = '';
+                        that.w_text = '';
+                        that.b_text = '';
+                        that.selected_value_old = ''
+
+                    }
+                },
+
+                removerTr(e){
+                    // console.log(e)
+                    this.trItem.splice(e,1)
+                },
+                    
+                submit(){
+
+                    if (this.h_text=='' || this.w_tex=='' || this.b_text=='' ||  this.selected_value_old =='') {
+                        alert('有数据为空，请填写完整！')
+                    }
+                    else {
+                       console.log(this.itemArr)//点击确定之后，若表格中内容不为空，则itemArr最终获取的数据
+                        var that = this;
+
+                        var info = {
+                            EventName: "CableInstallation",
+                            json:JSON.stringify(that.itemArr),
+                        };
+
+                        if (window.JQ) {
+                            //JQ.clickOK(JSON.stringify(info));
+                            JQ.raiseEvent(JSON.stringify(info));
+                        }
+                    }
+                }
+
+            },
+            computed:{
+                //获取族类型
+                items() {
+                    var data = this.$data;
+                    
+                    var selectedFamilyName = data.selected;
+                    console.log(data)
+                    for (var i = 0; i < data.options.length; i++) {
+                        console.log(data.options[i])
+                        if (data.options[i].Name == selectedFamilyName) {
+                            return data.options[i].items
+                        }
+                    }
+                  
+                    return [];
+                }
+            }
+        })
+    </script>
+</body>
+</html>

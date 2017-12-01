@@ -1,311 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>接地网布置</title>
-	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet" href="../public/stylesheets/flex.css">
-	<link rel="stylesheet" href="../public/stylesheets/style.css">
+    <meta charset="UTF-8">
+    <title>接地网布置</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
 </head>
 <body>
-	<div class="body-wrap">
-		<div class="panel-wrap ">
-		<div class="panel-body box-wrap" id="win_hook">
-			<div class="row">
-				<div class="col-xs-12 col-sm-12">
-					<div class="item_select_2" id="select_zu">
-						<span>接地网族&nbsp;</span>
-						<select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
-							<option v-for="option in options">
-								{{option.value}}
-							</option>
+    <div class="body-wrap">
+        <div class="panel-wrap ">
+        <div class="panel-body box-wrap" id="win_hook">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="item_select_2" id="select_zu">
+                        <span>接地网族&nbsp;</span>
+                        <select name="" id=""  v-model="selected" class="form-control input-sm" :class="{danger:isDanger}" v-cloak>
+                            <option v-for="option in options">
+                                {{option.value}}
+                            </option>
 
-						</select>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 col-sm-12">
-					<div class="item_select_2" id="select_type_zu">
-						<span>&nbsp;&nbsp;&nbsp;族类型&nbsp;</span>
-						<select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak style="height:70px;">
-							<option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
-								{{item.symbolName}}
-							</option>
-						</select>
-						<!-- <p>选择：{{selected_type}}</p> -->
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 col-sm-12">
-					<div class="add_new_type_box">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="item_select_2" id="select_type_zu">
+                        <span>&nbsp;&nbsp;&nbsp;族类型&nbsp;</span>
+                        <select name="" id="" multiple class="item_select_h form-control" v-model="selected_type" v-cloak style="height:70px;">
+                            <option v-for="(index , item) in items" :id='item.Id' @click="clickItems(item)">
+                                {{item.symbolName}}
+                            </option>
+                        </select>
+                        <!-- <p>选择：{{selected_type}}</p> -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="add_new_type_box">
 
-						<h5>新增族类型</h5>
-						<div class="form-group mt-15">
-							<span>名字&nbsp;&nbsp;</span>
-							<input type="text" v-model="input_add_name" class="form-control input-sm">
-						</div>
-						<div class="form-group">
-							<span>属性&nbsp;&nbsp;</span>
-							<div class="table-height" style="min-height:156px;max-height:156px; margin-bottom:20px;flex:50%;">
-								<table class="table-bordered text-center"  style="width:100%;">
-									<tr v-for="(key,value) in parameterDict">
-										<td style="width:50%;">{{key}}</td>
+                        <h5>新增族类型</h5>
+                        <div class="form-group mt-15">
+                            <span>名字&nbsp;&nbsp;</span>
+                            <input type="text" v-model="input_add_name" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <span>属性&nbsp;&nbsp;</span>
+                            <div class="table-height" style="min-height:156px;max-height:156px; margin-bottom:20px;flex:50%;">
+                                <table class="table-bordered text-center"  style="width:100%;">
+                                    <tr v-for="(key,value) in parameterDict">
+                                        <td style="width:50%;">{{key}}</td>
 
-										<td>
-											<input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
-										</td>
-									</tr>
+                                        <td>
+                                            <input class="input-noborder" style="height:25px;text-align: center;width:80px;" v-model="value" />
+                                        </td>
+                                    </tr>
 
-								</table>
-							</div>
-						</div>
-						<div class="clearfix">
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right ml-15" @click="submitData(this,'增加')" v-cloak>增加</button>
-							<button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="row box_footer">
-				<div class="col-md-12">
-					<button class="btn btn-primary btn-xs btn-bim pull-right" @click="place" >确定</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right ml-15" @click="submitData(this,'增加')" v-cloak>增加</button>
+                            <button class="btn btn-primary btn-sm m-0 btn-bim btn-xs pull-right" v-show="selected_type.length > 0" @click="submitData(this,'修改')" v-cloak>修改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row box_footer">
+                <div class="col-md-12">
+                    <button class="btn btn-primary btn-xs btn-bim pull-right" @click="place" >确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
-	<div class="body-full-mask" v-if="isShowMask" v-cloak>
-		<div class="app-loading">
-	  		<div class="box">
-	  			<div class="line-spin-fade-loader">
-	  				<div></div>
-	  				<div></div>
-	  				<div></div>
-	  				<div></div>
-	  				<div></div>
-	  				<div></div>
-	  				<div></div>
-	  				<div></div>
-	  			</div>
-	  			<p>{{showMaskInfo}}</p>
+    <div class="body-full-mask" v-if="isShowMask" v-cloak>
+        <div class="app-loading">
+            <div class="box">
+                <div class="line-spin-fade-loader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <p>{{showMaskInfo}}</p>
 
-	  		</div>
-  		</div>
-	</div>
-	<script src="../public/javascripts/vue.js"></script>
-	<script src="../public/javascripts/vue-resource.min.js"></script>
-	<script>
-		var vue = new Vue ({
-			el:'body',
-			data:{
-				//objs:[],
-				options:[],
-				lists:[],
-				//selectedFamilyId:0,
-				selected:'',//设置族
-				selected_type:[],//设置族类型
-				input_add_name:'', //族类型
-				isDanger:false,
-				status:false,
-				offset_level:'-800',
-				ground_level:'0',
-				placeType: '网格', //布置方式
-				offsetX: 5000,
-				offsetY: 5000,
-				offsetTop:100,
-				offsetBottom:100,
-				offsetLeft:100,
-				offsetRight:100,
-				path:'电气一次\\接地\\接地网类型\\',
-				parameterTemplate:{W:'',H:'',D:''},
-				parameterDict:{},
-				isShowMask:true,//是否显示全屏遮罩
-				showMaskInfo:'正在获取族类型信息'
-			},
+            </div>
+        </div>
+    </div>
+    <script src="../public/javascripts/vue.js"></script>
+    <script src="../public/javascripts/vue-resource.min.js"></script>
+    <script>
+        var vue = new Vue ({
+            el:'body',
+            data:{
+                //objs:[],
+                options:[],
+                lists:[],
+                //selectedFamilyId:0,
+                selected:'',//设置族
+                selected_type:[],//设置族类型
+                input_add_name:'', //族类型
+                isDanger:false,
+                status:false,
+                offset_level:'-800',
+                ground_level:'0',
+                placeType: '网格', //布置方式
+                offsetX: 5000,
+                offsetY: 5000,
+                offsetTop:100,
+                offsetBottom:100,
+                offsetLeft:100,
+                offsetRight:100,
+                path:'电气一次\\接地\\接地网类型\\',
+                parameterTemplate:{W:'',H:'',D:''},
+                parameterDict:{},
+                isShowMask:true,//是否显示全屏遮罩
+                showMaskInfo:'正在获取族类型信息'
+            },
 
-			created() {
-				var that = this;
-				if (window.JQ) {
-					var sendJson = {
-						EventName:'JQFamily',
-						Path:this.path,
-						Operation:'getFamilyFileInfos',
-						Parameters:this.parameterTemplate,
-						Callback:'vue.loadRes'
-					}
-					this.showMaskInfo = '正在获取族类型信息';
-					this.isShowMask = true;
-					JQ.raiseEvent(JSON.stringify(sendJson));
-				} else {
-					this.$http.get('../public/javascripts/type.json').then(this.loadRes)
-					.catch(function(error) {
-						console.log(error.body)
-						//that.loadRes(error.bodyText);
-					})
-				}
-			},
+            created() {
+                var that = this;
+                if (window.JQ) {
+                    var sendJson = {
+                        EventName:'JQFamily',
+                        Path:this.path,
+                        Operation:'getFamilyFileInfos',
+                        Parameters:this.parameterTemplate,
+                        Callback:'vue.loadRes'
+                    }
+                    this.showMaskInfo = '正在获取族类型信息';
+                    this.isShowMask = true;
+                    JQ.raiseEvent(JSON.stringify(sendJson));
+                } else {
+                    this.$http.get('../public/javascripts/type.json').then(this.loadRes)
+                    .catch(function(error) {
+                        console.log(error.body)
+                        //that.loadRes(error.bodyText);
+                    })
+                }
+            },
 
-			methods: {
-				//加载族，族类型信息
-				loadRes(res) {
-					var that = this;
+            methods: {
+                //加载族，族类型信息
+                loadRes(res) {
+                    var that = this;
 
-					var that = this;
-					isReload = that.options.length > 0;
-					that.options = [];
-					res.forEach(function(e) {
-						that.options.push({value:e.name, items:e.symbols});
-					})
+                    var that = this;
+                    isReload = that.options.length > 0;
+                    that.options = [];
+                    res.forEach(function(e) {
+                        that.options.push({value:e.name, items:e.symbols});
+                    })
 
-					if (!isReload && that.options.length > 0) {
-						that.selected = that.options[0].value
-					}
-					this.isShowMask = false;
-				},
+                    if (!isReload && that.options.length > 0) {
+                        that.selected = that.options[0].value
+                    }
+                    this.isShowMask = false;
+                },
 
-				//添加族类型
-				submitData(obj,status) {
-					var that = this;
-					console.log(obj)
-					if(status == '修改') {
-						if (window.JQ)
-						{
-							var sendJson = {
-								EventName:'JQFamily',
-								Path:that.path,
-								Operation:'modifyFamilySymbol',
-								FamilyName:that.selected,
-								SymbolName:that.selected_type[0],
-								SymbolNewName:that.input_add_name,
-								Parameters:that.parameterDict,
-								Callback:'vue.reloadData'
-								}
-							this.showMaskInfo = '正在更新族类型';
-							that.isShowMask = true;
-							JQ.raiseEvent(JSON.stringify(sendJson));
-						}
+                //添加族类型
+                submitData(obj,status) {
+                    var that = this;
+                    console.log(obj)
+                    if(status == '修改') {
+                        if (window.JQ)
+                        {
+                            var sendJson = {
+                                EventName:'JQFamily',
+                                Path:that.path,
+                                Operation:'modifyFamilySymbol',
+                                FamilyName:that.selected,
+                                SymbolName:that.selected_type[0],
+                                SymbolNewName:that.input_add_name,
+                                Parameters:that.parameterDict,
+                                Callback:'vue.reloadData'
+                                }
+                            this.showMaskInfo = '正在更新族类型';
+                            that.isShowMask = true;
+                            JQ.raiseEvent(JSON.stringify(sendJson));
+                        }
 
-						that.status = false;
+                        that.status = false;
 
-					}
-					else if (status == '增加'){
-						if (window.JQ)
-						{
-							var sendJson = {
-								EventName:'JQFamily',
-								Path:that.path,
-								Operation:'addFamilySymbol',
-								FamilyName:that.selected,
-								SymbolName:that.input_add_name,
-								Parameters:that.parameterDict,
-								Callback:'vue.reloadData'
-								}
-							this.showMaskInfo = '正在更新族类型';
-							that.isShowMask = true;
-							JQ.raiseEvent(JSON.stringify(sendJson));
-						}
-					}
-				},
+                    }
+                    else if (status == '增加'){
+                        if (window.JQ)
+                        {
+                            var sendJson = {
+                                EventName:'JQFamily',
+                                Path:that.path,
+                                Operation:'addFamilySymbol',
+                                FamilyName:that.selected,
+                                SymbolName:that.input_add_name,
+                                Parameters:that.parameterDict,
+                                Callback:'vue.reloadData'
+                                }
+                            this.showMaskInfo = '正在更新族类型';
+                            that.isShowMask = true;
+                            JQ.raiseEvent(JSON.stringify(sendJson));
+                        }
+                    }
+                },
 
-				reloadData()
-				{
-					var sendJson = {
-						EventName:'JQFamily',
-						Path:this.path,
-						Operation:'getFamilyFileInfos',
-						Parameters:this.parameterTemplate,
-						Callback:'vue.loadRes'
-						}
-					JQ.raiseEvent(JSON.stringify(sendJson));
-					this.isShowMask = false;
-				},
+                reloadData()
+                {
+                    var sendJson = {
+                        EventName:'JQFamily',
+                        Path:this.path,
+                        Operation:'getFamilyFileInfos',
+                        Parameters:this.parameterTemplate,
+                        Callback:'vue.loadRes'
+                        }
+                    JQ.raiseEvent(JSON.stringify(sendJson));
+                    this.isShowMask = false;
+                },
 
-				//选中族类型
-				clickItems(obj) {
-					this.status = true;
-					// console.log(obj)
-					var that = this;
-					that.input_add_name = obj.symbolName;
-					that.parameterDict = obj.parameters;
-				},
+                //选中族类型
+                clickItems(obj) {
+                    this.status = true;
+                    // console.log(obj)
+                    var that = this;
+                    that.input_add_name = obj.symbolName;
+                    that.parameterDict = obj.parameters;
+                },
 
-				//布置构件
-				place() {
-					var that = this;
+                //布置构件
+                place() {
+                    var that = this;
 
-					var info = {
-						EventName: "PlaceGroundGrid",
-						FamilyName: that.selected,
-						SymbolName: that.selected_type[0],
-						OffsetLevel:that.offset_level,
-						GroundLevel:that.ground_level,
-						PlaceType: that.placeType,
-						OffsetX: that.offsetX,
-						OffsetY: that.offsetY,
-						OffsetTop: that.offsetTop,
-						OffsetBottom: that.offsetBottom,
-						OffsetLeft: that.offsetLeft,
-						OffsetRight: that.offsetRight,
-						Path:that.path
-					};
+                    var info = {
+                        EventName: "PlaceGroundGrid",
+                        FamilyName: that.selected,
+                        SymbolName: that.selected_type[0],
+                        OffsetLevel:that.offset_level,
+                        GroundLevel:that.ground_level,
+                        PlaceType: that.placeType,
+                        OffsetX: that.offsetX,
+                        OffsetY: that.offsetY,
+                        OffsetTop: that.offsetTop,
+                        OffsetBottom: that.offsetBottom,
+                        OffsetLeft: that.offsetLeft,
+                        OffsetRight: that.offsetRight,
+                        Path:that.path
+                    };
 
-					console.log(info);
-					if (window.JQ) {
-						//JQ.clickOK(JSON.stringify(info));
-						JQ.raiseEvent(JSON.stringify(info));
-					}
-				}
-			},
+                    console.log(info);
+                    if (window.JQ) {
+                        //JQ.clickOK(JSON.stringify(info));
+                        JQ.raiseEvent(JSON.stringify(info));
+                    }
+                }
+            },
 
-			computed:{
-				//获取族类型
-				items() {
-					var data = this.$data;
-					var selectedFamilyName = data.selected;
-					for (var i = 0; i < data.options.length; i++) {
-						//console.log(data.options[i])
-						if (data.options[i].value == selectedFamilyName) {
-							return data.options[i].items
-						}
-					}
+            computed:{
+                //获取族类型
+                items() {
+                    var data = this.$data;
+                    var selectedFamilyName = data.selected;
+                    for (var i = 0; i < data.options.length; i++) {
+                        //console.log(data.options[i])
+                        if (data.options[i].value == selectedFamilyName) {
+                            return data.options[i].items
+                        }
+                    }
 
-					return []
-				}
-			},
+                    return []
+                }
+            },
 
-			watch:{
-				selected:
-				{
-					handler:function(val,oldVal) {
-						if (this.items.length > 0)
-						{
-							this.selected_type = [this.items[0].symbolName];
-							this.clickItems(this.items[0]);
-						}
-						else
-							this.selected_type = [];
-					}
-				},
-				options:
-				{
-					handler:function(val,oldVal) {
-						if (this.selected.length > 0 && this.items.length > 0)
-						{
-							this.selected_type = [this.items[0].symbolName];
-							this.clickItems(this.items[0]);
-						}
-						else
-							this.selected_type = [];
-					}
-				}
-			}
+            watch:{
+                selected:
+                {
+                    handler:function(val,oldVal) {
+                        if (this.items.length > 0)
+                        {
+                            this.selected_type = [this.items[0].symbolName];
+                            this.clickItems(this.items[0]);
+                        }
+                        else
+                            this.selected_type = [];
+                    }
+                },
+                options:
+                {
+                    handler:function(val,oldVal) {
+                        if (this.selected.length > 0 && this.items.length > 0)
+                        {
+                            this.selected_type = [this.items[0].symbolName];
+                            this.clickItems(this.items[0]);
+                        }
+                        else
+                            this.selected_type = [];
+                    }
+                }
+            }
 
-		})
+        })
 
-	</script>
+    </script>
 </body>
 </html>

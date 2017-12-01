@@ -115,4 +115,8 @@ router.get('/RoadSet', function(req, res, next) {
 router.get('/ErectionWall', function(req, res, next) {
   res.render('ErectionWall', { title: '装配式围墙' });
 });
+
+router.get('/CableInstallation', function(req, res, next) {
+  res.render('CableInstallation', { title: '电缆敷设' });
+});
 module.exports = router;
