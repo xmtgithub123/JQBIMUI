@@ -119,4 +119,8 @@ router.get('/ErectionWall', function(req, res, next) {
 router.get('/CableInstallation', function(req, res, next) {
   res.render('CableInstallation', { title: '电缆敷设' });
 });
+
+router.get('/tab', function(req, res, next) {
+  res.render('tab', { title: 'tab' });
+});
 module.exports = router;

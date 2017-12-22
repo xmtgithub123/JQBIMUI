@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>插入电气柜</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/flex.css">
+    <link rel="stylesheet" href="/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <style>
+        .tab-content-list{
+            border:1px solid #ddd;
+            border-top:0;
+            min-height: 300px;
+            padding:15px;
+        }
+        .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+            color:#337ab7;
+        }
+     /*   .nav-tabs {
+            border-bottom: 1px solid #337ab7;
+            background: #337ab7;
+        }*/
+        /*.nav-tabs>li {
+            overflow:hidden;
+        }*/
+       /* .nav-tabs>li>a {
+            border-radius: 0;
+            color:white;
+            margin-right: 0;
+        }*/
+        /*.nav-tabs>li>a:hover {
+            border-color: #204d74;
+            height:41px;
+        }
+      
+        .nav>li>a:focus, .nav>li>a:hover {
+            text-decoration: none;
+            background-color: #204d74;
+            color:white;
+        }*/
+
+    </style>
+</head>
+<body>
+    <div class="body-wrap p-5">
+        <div class="box-wrap">
+            <div class="bg-box-0" flex="dir:top main:justify">
+                <div class="bg-box-b">
+                   <div>
+
+                      <!-- Nav tabs -->
+                      <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#one" aria-controls="one" role="tab" data-toggle="tab">连接</a></li>
+                        <li role="presentation"><a href="#two" aria-controls="two" role="tab" data-toggle="tab">导线</a></li>
+                        <li role="presentation"><a href="#three" aria-controls="three" role="tab" data-toggle="tab">间隔棒</a></li>
+                        <li role="presentation"><a href="#four" aria-controls="four" role="tab" data-toggle="tab">起点线夹1</a></li>
+                        <li role="presentation"><a href="#five" aria-controls="five" role="tab" data-toggle="tab">起点线夹2</a></li>
+                        <li role="presentation"><a href="#six" aria-controls="six" role="tab" data-toggle="tab">终点线夹1</a></li>
+                      </ul>
+
+                      <!-- Tab panes -->
+                      <div class="tab-content tab-content-list">
+                        <div role="tabpanel" class="tab-pane active" id="one">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6">
+                                    <div class="item_select_2" id="select_zu">
+                                        <span>连接方式&nbsp;</span>
+                                        <select name="" id=""  v-model="selected1" class="form-control input-sm"  v-cloak>
+                                            <option v-for="option in options1">
+                                                {{option.value}}
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-6">
+                                    <div class="item_select_2" id="select_zu">
+                                        <span>电压等级&nbsp;</span>
+                                        <select name="" id=""  v-model="selected2" class="form-control input-sm" v-cloak>
+                                            <option v-for="option in options2">
+                                                {{option.value}}
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="two">2</div>
+                        <div role="tabpanel" class="tab-pane" id="three">3</div>
+                        <div role="tabpanel" class="tab-pane" id="four">4</div>
+                        <div role="tabpanel" class="tab-pane" id="five">5</div>
+                        <div role="tabpanel" class="tab-pane" id="six">6</div>
+                      </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  
+
+    <script src="/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script type="text/javascript">
+
+    </script>
+
+    <script type="text/javascript">
+        vue = new Vue({
+            el:'body',
+            data:{
+                
+            },
+
+            created(){
+                
+            },
+
+            methods:{
+                
+            },
+
+            computed:{
+                
+
+            },
+            watch:{
+                
+            }
+        })
+    </script>
+</body>
+</html>
