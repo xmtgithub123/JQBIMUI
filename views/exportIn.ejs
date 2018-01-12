@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>导入Excel</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <style type="text/css">
+        .a-upload {
+            padding: 6px 10px;
+            width:150px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            color: #888;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            display: inline-block;
+            *display: inline;
+            *zoom: 1
+        }
+
+        .a-upload  input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            cursor: pointer
+        }
+
+        .a-upload:hover {
+            color: #444;
+            background: #eee;
+            border-color: #ccc;
+            text-decoration: none
+        }
+        li {
+            list-style:none;
+        }
+
+        #selectList {
+            max-height: 240px;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="body-wrap p-5">
+        <div class="box-wrap">
+            <div class="bg-box-0">
+                <div class="form-inline" flex="dir:left,cross:center;">
+                  <div class="form-group" style="width:80%;">
+                    <label for="exampleInputAmount">选择文件(*.xls  *.xlsx ) &nbsp;&nbsp;</label>
+                    <div class="input-group" style="width:60%">
+                      <input type="text" class="form-control" id="exampleInputAmount" v-model="path">
+                    </div>
+                  </div>
+                  <a href="javascript:;" class="a-upload" >
+                    <input type="file" name="" id="filepicker" @click="ImportFile()"> 导入
+                  </a>
+                    <!-- <button class="btn btn-primary btn-bim pull-right" @click="exportExcel()">导入</button> -->
+                   <!--  <a href="javascript:;" class="a-upload" >
+                        <input type="file" name="" id="filepicker" webkitdirectory multiple>导入
+                    </a> -->
+
+                </div>
+                <div class="file-list">
+                    <!-- <div id="tree"></div> -->
+                    <select name="" id="" class="form-control input-sm" v-model="selected" multiple>
+                        <template  v-for="item in mainData">
+                            <option>{{item}}</option>
+                        </template>
+                    </select>
+                    <div class="ul" id="selectList">
+                        <li v-for="liitem in DataList"  :id="key" v-cloak >
+                            <div class="row mt-15">
+                                <div class="col-sm-5">
+                                     <select name="" id="" class="form-control input-sm" v-model="" >
+                                        <template  v-for="item in mainData">
+                                            <option>{{item}}</option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2" style="line-height:30px;text-align: center; font-size: 14px;">
+                                    <span class="glyphicon glyphicon-arrow-right"></span>
+                                </div>
+                                <div class="col-sm-5">
+                                     <select name="" id="" class="form-control input-sm" id="">
+                                        <template  v-for="item in fixData">
+                                            <option>{{item}}</option>
+                                        </template>
+                                        
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                    
+                </div>
+                 <button class="btn btn-primary btn-bim pull-right mt-30 ml-15" @click="addText()">增加</button>
+                <button class="btn btn-primary btn-bim pull-right mt-30" @click="exportDWG()">导出</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/bootstrap.min.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="../public/javascripts/bootstrap-treeview.js"></script>
+    <script type="text/javascript">
+          
+    </script>
+    <script type="text/javascript">
+        new Vue({
+            el:'body',
+            data:{
+                isToNext:true,
+                selected:'',
+                path: '',
+                tree: [
+                        {
+                            text: '文件列表',
+                            state: {
+                                checked: true
+                            },
+                            nodes: []
+                        }
+                      ],
+                mainData:['1','2','3'],
+                fixData:['A','B','C','D','E','F','G'],
+                DataList:[
+                    {
+                        'Name':'100'
+                    },
+                    {
+                        'Name':'200'
+                    }
+                ]
+
+            },
+
+            created(){
+                var that = this;
+                
+            },
+
+            methods:{
+                ImportFile(){
+                    //console.log('aaaaa')
+                    document.getElementById("filepicker").addEventListener("change", function(event) {
+                         
+                        var  output = document.getElementById("exampleInputAmount");
+
+                        var  files = event.target.files;
+                        
+                        var fileName = files[0].name;
+                        var ext = fileName.slice(fileName.lastIndexOf(".")+1).toLowerCase();
+                       
+                        if(ext =='xlsx' || ext =='xls') {
+                            $('#exampleInputAmount').val(files[0].name) 
+                        }
+                        else {
+                            alert("只能上传Excle文件");  
+                            $('#exampleInputAmount').val('')
+                            return false; 
+                        }
+                    }, false);
+                },
+
+                addText(){
+                    this.Data.push({Name:'text'})
+                },
+                exportDWG() {
+                    console.log(this.selected)
+                }
+                // exportDWG() {
+                //     var nodes = $('#tree').treeview('getSelected', null);
+                //     var info = {path: this.path, nodes:[]}
+                //     nodes.forEach(function(e) {
+                //         info.nodes.push({Name:e.text, Id:e.id})
+                //     })
+                //     JQ.clickOK(JSON.stringify(infos));
+                // }
+            },
+            watch:{
+                DataList:{
+                    handler:function(val,oldVal) {
+                        console.log('123456')
+                        console.log(val)
+                         console.log(oldVal)
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

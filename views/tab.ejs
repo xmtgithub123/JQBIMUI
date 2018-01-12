@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>插入电气柜</title>
-    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../public/stylesheets/flex.css">
-    <link rel="stylesheet" href="../public/stylesheets/font-awesome.css">
-    <link rel="stylesheet" href="../public/stylesheets/jquery.treegrid.css">
-    <link rel="stylesheet" href="../public/stylesheets/style.css">
-    <script src="../public/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/flex.css">
+    <link rel="stylesheet" href="/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="/stylesheets/jquery.treegrid.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="/javascripts/jquery-1.11.1.min.js"></script> <!--引入vue.js-->
     <style>
         .tab-content-list{
             border:1px solid #ddd;
@@ -80,8 +80,8 @@
                                     <div class="item_select_2" id="select_zu">
                                         <span>电压等级&nbsp;</span>
                                         <select name="" id=""  v-model="selected2" class="form-control input-sm" v-cloak>
-                                            <option v-for="option in options2">
-                                                {{option.value}}
+                                            <option v-for="option in newItems">
+                                                {{option.text}}
                                             </option>
 
                                         </select>
@@ -116,11 +116,35 @@
         vue = new Vue({
             el:'body',
             data:{
-                
+                selected1:'',
+                selected2:'',
+                newItems:[],
+                 
+                items:{
+                    "文件1":{
+                            "800*800":{'name':'a100'},
+                            "900*900":{'name':'a200'},
+                        },
+                    "文件2":{
+                            "1000*1000":{'name':'b100'},
+                           
+                        }
+                }
+
             },
 
             created(){
-                
+                //console.log(this.items)
+                var that = this;
+                var data = this.items;
+                for(var obj  in data) {
+                    for(var text in data[obj]){
+                        that.newItems.push({text,childName:[data[obj][text].name]})
+                    }
+                }
+                console.log(that.newItems)
+
+
             },
 
             methods:{

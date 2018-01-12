@@ -123,4 +123,8 @@ router.get('/CableInstallation', function(req, res, next) {
 router.get('/tab', function(req, res, next) {
   res.render('tab', { title: 'tab' });
 });
+
+router.get('/exportIn', function(req, res, next) {
+  res.render('exportIn', { title: '导入文件' });
+});
 module.exports = router;
