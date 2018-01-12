@@ -127,4 +127,8 @@ router.get('/tab', function(req, res, next) {
 router.get('/exportIn', function(req, res, next) {
   res.render('exportIn', { title: '导入文件' });
 });
+
+router.get('/tableCell', function(req, res, next) {
+  res.render('tableCell', { title: '' });
+});
 module.exports = router;

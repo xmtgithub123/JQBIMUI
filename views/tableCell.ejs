@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建图纸</title>
+    <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/flex.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+</head>
+<body>
+    <div class="body-wrap">
+        <div class="panel-body box-wrap">
+            <div class="tz-box">
+                <div class="table-wrap" style="height: 500px;overflow-y: auto;">
+                    <table class="table table-bordered">
+                          <col class="col-xs-1">
+                          <col class="col-xs-1">
+                          <col class="col-xs-1">
+                          <col class="col-xs-2">
+                          <col class="col-xs-1">
+                          <col class="col-xs-2">
+                          <col class="col-xs-1">
+                          <thead>
+                            <tr>
+                            <th>电缆编号</th>
+                            <th>电缆型号及截面</th>
+                            <th>起点名称</th>
+                            <th>起点安装设备名称</th>
+                            <th>终点名称</th>
+                            <th>终点安装设备名称</th>
+                            <th>护管类型</th>
+
+                          </tr>
+                          </thead>
+                        <tbody>
+                            <tr v-for="trList in trData">
+                                <td>{{trList.ID}}</td>
+                                <td>{{trList.CableType}}</td>
+                                <td>{{trList.Begin}}</td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                      <input type="text" class="form-control" placeholder="..." value="{{trList.BeginName}}">
+                                      <input type="hidden" value="{{trList.BeginID}}">
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">btn</button>
+                                      </span>
+                                    </div>
+                                </td>
+                                <td>{{trList.End}}</td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                      <input type="text" class="form-control" placeholder="..." value="{{trList.EndName}}">
+                                      <input type="hidden" value="{{trList.EndID}}">
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">btn</button>
+                                      </span>
+                                    </div>
+                                </td>
+                                <td>{{trList.Other}}</td>
+                            </tr>
+
+                      </tbody>
+                    </table>
+                    
+                </div>
+                <div class="tz-footer">
+                    <button class="btn btn-primary btn-bim btn-sm" @click="cancel">取消</button>
+                    <button class="btn btn-primary btn-bim btn-sm" @click="submit">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="../public/javascripts/vue.js"></script> <!--引入vue.js-->
+    <script src="../public/javascripts/vue-resource.min.js"></script><!--引入vue.js 插件库 vue中的ajax-->
+    <script src="../public/javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        new Vue({
+            el:'body',
+            data:{
+                
+                trData:[
+                    {
+                        ID:'A1001', //电缆编号
+                        CableType:'A123',//电缆型号及截面
+                        Begin:'AName', //起点名称
+                        BeginName:'ABEquipName',//起点安装设备名称
+                        BeginID:'1', //起点安装设备ID（界面不体现，只做存储）
+                        End:'AEndName', //终点名称
+                        EndName:'AEEquipName',//终点安装设备名称
+                        EndID:'2',//终点安装设备ID（界面不体现，只做存储）
+                        Other:'Aother',//护管材料
+
+
+                    }
+                ]
+            },
+
+            created() {
+                
+            },
+
+            methods:{
+
+                cancel(){
+
+                },
+                submit() { //确定提交事件
+                   
+                }
+            }
+        })
+    </script>
+</body>
+</html>
